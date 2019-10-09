@@ -1123,7 +1123,7 @@ print(result)
 
 //Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
-class Solution_multiply {
+class Solution1_multiply {
     func multiply(_ num1: String, _ num2: String) -> String {
         // convert num2 into array of numbers
         // most significant number at last index order
@@ -1166,7 +1166,7 @@ class Solution_multiply {
 "840477629533"
  this below solution is not effective as it fails for following test case
 let num1 = "498828660196", num2 = "840477629533"
-let result = Solution_multiply().multiply(num1, num2)
+let result = Solution1_multiply().multiply(num1, num2)
 print(result)
  */
 
@@ -1699,65 +1699,6 @@ func permutate1(input:String) -> [String] {
     return result
 }
 
-/*
-let result1 = permutate1(input: "ABC")
-print(result1)
- */
-
-class Solution_swapPairs {
-    func swapPairs(_ head: ListNode?) -> ListNode? {
-        
-        let tempNext = head?.next
-        head?.next = tempNext?.next
-        tempNext?.next = head
-        let resultHead = tempNext
-        
-        var currNode = resultHead?.next
-        
-        while currNode?.next?.next != nil {
-            let tempNext = currNode?.next
-            currNode?.next = tempNext?.next
-            tempNext?.next = currNode?.next?.next
-            currNode?.next?.next = tempNext
-            
-            currNode = tempNext
-        }
-        
-        return resultHead
-    }
-}
-
-/*
-let head = ListNode(1)
-let secondNode = ListNode(2)
-let thirdNode = ListNode(3)
-let fourthNode = ListNode(4)
-let fivthNode = ListNode(5)
-let sixthNode = ListNode(6)
-let seventhNode = ListNode(7)
-let eiththNode = ListNode(8)
-
-head.next = secondNode
-secondNode.next = thirdNode
-thirdNode.next = fourthNode
-fourthNode.next = fivthNode
-fivthNode.next = sixthNode
-sixthNode.next = seventhNode
-seventhNode.next = eiththNode
-
-var runnerNode1:ListNode? = head
-
-if let result = Solution_swapPairs().swapPairs(head) {
-    var runnerNode:ListNode? = result
-    while runnerNode != nil {
-        if let val = runnerNode?.val {
-            print(val)
-        }
-        runnerNode = runnerNode?.next
-    }
-}
- */
-
 /***********************************************************************************/
 
 class Solution_permutations {
@@ -2108,7 +2049,7 @@ print(res)
 
 /***********************************************************************************/
 
-class Solution {
+class Solution_maxDepth {
     func maxDepth(_ root: TreeNode?) -> Int {
         if root == nil {
             return 0
@@ -2331,7 +2272,7 @@ class Solution_majorityElement {
 
 /***********************************************************************************/
 
-class Solution {
+class Solution_reverseWords {
     func reverseWords(_ s: String) -> String {
         
         let arr = s.split(separator: " ")
@@ -2364,7 +2305,7 @@ class Solution {
 
 /*
 let input = "the    sky       is blue"
-let result = Solution().reverseWords(input)
+let result = Solution_reverseWords().reverseWords(input)
 print(result)
 */
 
@@ -2468,6 +2409,7 @@ class Solution_removeNthFromEnd {
 }
 
 
+/*
 let linkedList = createLinkedListFromArray(arr: [1,2,3])
 
 print("Input: ")
@@ -2477,6 +2419,8 @@ if let newLinkedList = Solution_removeNthFromEnd().removeNthFromEnd(linkedList, 
     print("output: ")
     printLinkedList(head: newLinkedList)
 }
+*/
+
 
 /***********************************************************************************/
 
@@ -2547,3 +2491,123 @@ if let res = Solution_mergeTwoLists().mergeTwoLists(l1, l2) {
 }
 */
 
+/***********************************************************************************/
+
+/*
+let result1 = permutate1(input: "ABC")
+print(result1)
+*/
+
+class Solution_swapPairs {
+    func swapPairs(_ head: ListNode?) -> ListNode? {
+        
+        if head == nil {
+            return nil
+        }
+        
+        if head?.next == nil {
+            return head
+        }
+        
+        let tempNext = head?.next
+        head?.next = tempNext?.next
+        tempNext?.next = head
+        let resultHead = tempNext
+        
+        var currNode = resultHead?.next
+        
+        while currNode?.next?.next != nil {
+            let tempNext = currNode?.next
+            currNode?.next = tempNext?.next
+            tempNext?.next = currNode?.next?.next
+            currNode?.next?.next = tempNext
+            
+            currNode = tempNext
+        }
+        
+        return resultHead
+    }
+}
+
+/*
+let head = ListNode(1)
+let secondNode = ListNode(2)
+let thirdNode = ListNode(3)
+let fourthNode = ListNode(4)
+let fivthNode = ListNode(5)
+let sixthNode = ListNode(6)
+let seventhNode = ListNode(7)
+let eiththNode = ListNode(8)
+
+head.next = secondNode
+secondNode.next = thirdNode
+thirdNode.next = fourthNode
+fourthNode.next = fivthNode
+fivthNode.next = sixthNode
+sixthNode.next = seventhNode
+seventhNode.next = eiththNode
+
+var runnerNode1:ListNode? = head
+
+if let result = Solution_swapPairs().swapPairs(head) {
+    var runnerNode:ListNode? = result
+    while runnerNode != nil {
+        if let val = runnerNode?.val {
+            print(val)
+        }
+        runnerNode = runnerNode?.next
+    }
+} else {
+    print("nothing")
+}
+*/
+
+/***********************************************************************************/
+
+// adding two numbers without using decimal arithmatic operators
+func add(x:Int, y:Int) -> Int {
+    var sum = x
+    var carry = y
+    
+    while carry != 0 {
+        let tempCarry = sum & carry
+        print("tempCarry: \(tempCarry)")
+        
+        sum = sum ^ carry
+        print("Sum: \(sum)")
+        
+        carry = tempCarry << 1
+        print("nextCarry: \(carry)")
+        
+        print(" ")
+    }
+    return sum
+}
+
+/*
+var x = 12
+var y = 4
+print(add(x: x, y: y))
+ */
+
+
+//let x = 10
+//let y = 3
+//let res = x ^ y
+//print(res)
+//
+//var carry = 2
+//print(carry << 1)
+
+
+/***********************************************************************************/
+
+//class Solution {
+//    func search(_ nums: [Int], _ target: Int) -> Int {
+//        
+//        // first finding pivot
+//        
+//        // do binary search in both arrays to find target
+//        
+//    }
+//}

@@ -2604,10 +2604,97 @@ print(add(x: x, y: y))
 
 //class Solution {
 //    func search(_ nums: [Int], _ target: Int) -> Int {
-//        
+//
 //        // first finding pivot
-//        
+//
 //        // do binary search in both arrays to find target
-//        
+//
 //    }
 //}
+
+
+class Solution {
+    
+    enum IterateDirection {
+        case RIGHT, DOWN, LEFT, UP
+    }
+    
+    func getNextDirection(currDir:IterateDirection) -> IterateDirection {
+        switch currDir {
+        case .RIGHT:
+            return .DOWN
+        case .DOWN:
+            return .LEFT
+        case .LEFT:
+            return .UP
+        case .UP:
+            return .RIGHT
+        }
+    }
+    
+    func spiralOrder(_ matrix: [[Int]]) -> [Int] {
+        
+        guard matrix.count > 0 else {
+            return []
+        }
+        
+        guard matrix[0].count > 0 else {
+            return []
+        }
+
+        var i = 0
+        var j = 0
+        
+        var h_counter = 0
+        var v_counter = 0
+        
+        var max_v_counter = matrix.count - 1
+        var max_h_counter = matrix[0].count
+        
+        var dir:IterateDirection = .RIGHT
+        
+        var result:[Int] = []
+        let totalCount = matrix.count * matrix[0].count
+        while result.count != totalCount {
+            
+            result.append(matrix[i][j])
+
+            if dir == .LEFT || dir == .RIGHT {
+                h_counter = h_counter + 1
+                if h_counter == max_h_counter {
+                    max_h_counter = max_h_counter - 1
+                    h_counter = 0
+                    dir = self.getNextDirection(currDir: dir)
+                }
+                
+            } else {
+                v_counter = v_counter + 1
+                if v_counter == max_v_counter {
+                    max_v_counter = max_v_counter - 1
+                    v_counter = 0
+                    dir = self.getNextDirection(currDir: dir)
+                }
+            }
+            
+            switch dir {
+            case .RIGHT:
+                j = j + 1
+            case .DOWN:
+                i = i + 1
+            case .LEFT:
+                j = j - 1
+            case .UP:
+                i = i - 1
+            }
+        }
+        return result
+    }
+}
+
+var input:[[Int]] = []
+let emptyArr:[Int] = []
+input.append(emptyArr)
+
+var res = Solution().spiralOrder(input)
+print(res)
+

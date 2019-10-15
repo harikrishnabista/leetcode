@@ -1400,28 +1400,28 @@ print(result)
 // Permutation using String instead [String]
 
 func permutate(input:String) -> [String] {
-    func permuteMe(input: String, start:Int, end:Int) -> [String] {
-        
-        func swapCharacters(input: String, index1: Int, index2: Int) -> String {
-            var characters = Array(input)
-            characters.swapAt(index1, index2)
-            return String(characters)
-        }
-        
+    
+    func swapCharacters(input: String, index1: Int, index2: Int) -> String {
+        var characters = Array(input)
+        characters.swapAt(index1, index2)
+        return String(characters)
+    }
+    
+    func permuteMe(input: String, pivotIndex:Int) -> [String] {
         var result:[String] = []
         
-        if start == end {
+        if pivotIndex == (input.count - 1) {
             result.append(input)
         } else {
-            for i in start...end {
-                let nextInput = swapCharacters(input: input, index1: start, index2: i)
-                result.append(contentsOf: permuteMe(input: nextInput, start: start + 1, end: end))
+            for i in pivotIndex...(input.count - 1) {
+                let nextInput = swapCharacters(input: input, index1: pivotIndex, index2: i)
+                result.append(contentsOf: permuteMe(input: nextInput, pivotIndex: pivotIndex + 1))
             }
         }
         return result
     }
     
-    let result = permuteMe(input: input, start: 0, end: input.count - 1)
+    let result = permuteMe(input: input, pivotIndex: 0)
     return result
 }
 
@@ -2613,7 +2613,7 @@ print(add(x: x, y: y))
 //}
 
 
-class Solution {
+class Solution_spiralOrder {
     
     enum IterateDirection {
         case RIGHT, DOWN, LEFT, UP
@@ -2691,10 +2691,183 @@ class Solution {
     }
 }
 
+/*
 var input:[[Int]] = []
 let emptyArr:[Int] = []
 input.append(emptyArr)
 
-var res = Solution().spiralOrder(input)
+var res = Solution_spiralOrder().spiralOrder(input)
 print(res)
+*/
 
+/**********************************************************************************/
+
+// https://leetcode.com/problems/permutation-sequence/
+
+class Solution_getPermutation {
+    func getPermutation(_ n: Int, _ k: Int) -> String {
+        var input:[String] = []
+        for i in 1...n {
+            input.append("\(i)")
+        }
+        var counter = 0
+        return self.permutate(input: input, fixedPivotIndex: 0, k: k, counter: &counter)
+    }
+    
+    private func permutate(input:[String], fixedPivotIndex:Int, k:Int, counter:inout Int) -> String {
+        
+        if fixedPivotIndex == input.count {
+            counter = counter + 1
+        }
+        
+        if counter == k {
+            return input.joined()
+        }
+
+        var lCounter = fixedPivotIndex
+        while lCounter != input.count {
+            
+            var nextInput = input
+            nextInput.swapAt(fixedPivotIndex, lCounter)
+            
+            let result = permutate(input: nextInput, fixedPivotIndex: fixedPivotIndex + 1, k: k, counter: &counter)
+            if result != "" { return result }
+            
+            lCounter = lCounter + 1
+        }
+        
+        return ""
+    }
+}
+
+// let res = Solution_getPermutation().getPermutation(4, 9)
+// print(res)
+
+class Solution_rotateRight {
+    func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
+        
+        if head == nil {
+            return head
+        }
+        
+        // find total count of the linked list
+        var runnerNode = head
+        var listCount = 0
+        while runnerNode != nil {
+            listCount = listCount + 1
+            runnerNode = runnerNode?.next
+        }
+        
+        var realRotationCount = k % listCount
+        
+        // if there is not rotation needed then return original head
+        if realRotationCount == 0 {
+            return head
+        }
+        
+        // forward fast runner by realRotationCount
+        var fastRunner = head
+        while realRotationCount > 0 {
+            fastRunner = fastRunner?.next
+            realRotationCount = realRotationCount - 1
+        }
+        
+        var slowRunner = head
+        while fastRunner?.next != nil {
+            fastRunner = fastRunner?.next
+            slowRunner = slowRunner?.next
+        }
+        
+        // now we got previous node as slowRunner and last node as fastRunner
+        
+        // lets do rotation and return the result
+        let result = slowRunner?.next
+        fastRunner?.next = head
+        
+        // now slowRunner next becomes last item whose next is set to nil
+        slowRunner?.next = nil
+        
+        return result
+    }
+}
+
+/*
+let llInput = createLinkedListFromArray(arr: [1,2,3,4,5])
+let result = Solution_rotateRight().rotateRight(nil, 0)
+printLinkedList(head: result)
+*/
+
+
+class Solution1_sortColors {
+    func sortColors(_ nums: inout [Int]) {
+        var dict:[Int:Int] = [:]
+        for item in nums {
+            if let count = dict[item] {
+                dict[item] = count + 1
+            } else {
+                dict[item] = 1
+            }
+        }
+        
+        var finalResult:[Int] = []
+        
+        let keys = Array(dict.keys.sorted())
+        
+        for key in keys {
+            let arr = Array<Int>(repeating: key, count: dict[key] ?? 0)
+            finalResult.append(contentsOf: arr)
+        }
+        
+        nums = finalResult
+    }
+}
+/*
+var input = [2,0,2,1,1,0]
+Solution1_sortColors().sortColors(&input)
+print(input)
+ */
+
+
+class Solution2_sortColors {
+    func sortColors(_ nums: inout [Int]) {
+        var left = -1
+        var right = nums.count
+        
+        var i = 0
+        while i < nums.count {
+            
+            if nums[i] == 0 {
+                // check if 0 is in wrong place
+                if left + 1 < i {
+                    // move all the zeros towards ending of array
+                    let zero = nums.remove(at: i)
+                    nums.insert(zero, at: 0)
+                } else {
+                    i = i + 1
+                }
+                left = left + 1
+                continue
+            }
+            
+            if nums[i] == 2 {
+                // check if two is in wrong place
+                if i + 1 < right {
+                    // move all the twos towards ending of array
+                    let two = nums.remove(at: i)
+                    nums.append(two)
+                } else {
+                    i = i + 1
+                }
+                right = right - 1
+                continue
+            }
+            
+            i = i + 1
+        }
+    }
+}
+
+var input = [2,0,0,1,2,1,2,0,2,2,1,2,1,2,0,2,1,1,0]
+//var input = [2,1]
+Solution2_sortColors().sortColors(&input)
+print(input)

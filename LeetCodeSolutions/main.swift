@@ -2867,7 +2867,37 @@ class Solution2_sortColors {
     }
 }
 
+/*
 var input = [2,0,0,1,2,1,2,0,2,2,1,2,1,2,0,2,1,1,0]
 //var input = [2,1]
 Solution2_sortColors().sortColors(&input)
 print(input)
+*/
+
+class Solution_powerSet {
+    // non recursive solution
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        var result:[[Int]] = []
+        result.append([])
+
+        for item in nums {
+            product(item: item, result: &result)
+        }
+
+        return result
+    }
+    
+    private func product(item:Int, result: inout [[Int]]) {
+        for items in result {
+            var newItems = items
+            newItems.append(item)
+            result.append(newItems)
+        }
+    }
+}
+
+/*
+let res = Solution_powerSet().subsets([6,2,3,4,5])
+print(res.count)
+ */
+

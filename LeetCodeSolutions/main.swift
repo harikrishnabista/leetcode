@@ -1013,84 +1013,6 @@ func lengthOfLongestSubstring(_ s: String) -> Int {
 //let result = lengthOfLongestSubstring(s)
 //print(result)
 
-
-/***********************************************************************************/
-
-class BinaryTree {
-    var key:String
-    var right:BinaryTree?
-    var left:BinaryTree?
-
-    init(key:String) {
-        self.key = key
-    }
-
-    func search(key:String) -> BinaryTree? {
-        return inOrderSearch(node: self)
-    }
-
-    func inorderTraversal(node:BinaryTree) {
-
-        print(node.key)
-
-        if node.right == nil && node.left == nil {
-//            print(node.key)
-        } else {
-            if let rightNode = node.left {
-                inorderTraversal(node: rightNode)
-            }
-            
-            if let leftNode = node.right {
-                inorderTraversal(node: leftNode)
-            }
-        }
-    }
-
-    func inOrderSearch(node:BinaryTree) -> BinaryTree? {
-
-        if node.right == nil && node.left == nil {
-            return node
-        } else {
-            if let rightNode = node.right {
-                inOrderSearch(node: rightNode)
-            }
-
-            print(node.key)
-
-            if let leftNode = node.left {
-                inOrderSearch(node: leftNode)
-            }
-        }
-
-        return nil
-    }
-}
-
-/*
-let node1 = BinaryTree(key: "1")
-let node2 = BinaryTree(key: "2")
-let node3 = BinaryTree(key: "3")
-let node4 = BinaryTree(key: "4")
-let node5 = BinaryTree(key: "5")
-let node6 = BinaryTree(key: "6")
-let node7 = BinaryTree(key: "7")
-let node8 = BinaryTree(key: "8")
-
-
-node1.left = node2
-node1.right = node3
-
-node2.left = node4
-node2.right = node5
-
-node4.left = node6
-node4.right = node7
-
-node3.left = node8
-
-node1.inorderTraversal(node: node1)
-*/
-
 /***********************************************************************************/
 
 /* https://leetcode.com/problems/first-missing-positive/ */
@@ -2900,4 +2822,235 @@ class Solution_powerSet {
 let res = Solution_powerSet().subsets([6,2,3,4,5])
 print(res.count)
  */
+
+
+
+/***********************************************************************************/
+
+class BSTNode {
+    var key:Int
+    var right:BSTNode?
+    var left:BSTNode?
+    
+    var parent:BSTNode?
+    
+    init(key:Int) {
+        self.key = key
+    }
+    
+    func search(key:Int) -> BSTNode? {
+        return inOrderSearch(node: self)
+    }
+    
+    func inorderTraversal(node:BSTNode) {
+        
+        print(node.key)
+        
+        if node.right == nil && node.left == nil {
+            //            print(node.key)
+        } else {
+            if let rightNode = node.left {
+                inorderTraversal(node: rightNode)
+            }
+            
+            if let leftNode = node.right {
+                inorderTraversal(node: leftNode)
+            }
+        }
+    }
+    
+    func inOrderSearch(node:BSTNode) -> BSTNode? {
+        
+        if node.right == nil && node.left == nil {
+            return node
+        } else {
+            if let rightNode = node.right {
+                inOrderSearch(node: rightNode)
+            }
+            
+            print(node.key)
+            
+            if let leftNode = node.left {
+                inOrderSearch(node: leftNode)
+            }
+        }
+        return nil
+    }
+    
+    func insert(key:Int){
+        self.insert(key: key, into: self)
+    }
+    
+    private func insert(key:Int, into parentNode:BSTNode) {
+        if key < parentNode.key {
+            if let leftNode = parentNode.left {
+                self.insert(key: key, into: leftNode)
+            } else {
+                parentNode.left = BSTNode(key: key)
+                parentNode.left?.parent = parentNode
+            }
+        } else {
+            if let rightNode = parentNode.right {
+                self.insert(key: key, into: rightNode)
+            } else {
+                parentNode.right = BSTNode(key: key)
+                parentNode.right?.parent = parentNode
+            }
+        }
+    }
+    
+    func sorted() -> [Int] {
+        var result:[Int] = []
+        self.inorderTraverse(node: self, result: &result)
+        return result
+    }
+    
+    private func inorderTraverse(node:BSTNode, result:inout [Int]){
+        if let leftNode = node.left {
+            inorderTraverse(node: leftNode, result: &result)
+        }
+    
+        result.append(node.key)
+        
+        if let rightNode = node.right {
+            inorderTraverse(node: rightNode, result: &result)
+        }
+    }
+    
+    func delete(key:Int) {
+        self.delete(key: key, parentNode: self)
+    }
+    
+    var isLeftChild:Bool {
+        if let parentNode = self.parent, parentNode.left?.key == self.key {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var isRightChild:Bool {
+        if let parentNode = self.parent, parentNode.right?.key == self.key {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func delete(key:Int, parentNode:BSTNode) {
+        if let node = self.find(key: key) {
+            // no child
+            if node.right == nil && node.left == nil {
+                if node.isRightChild {
+                    node.parent?.right = nil
+                }
+                
+                if node.isLeftChild {
+                    node.parent?.left = nil
+                }
+                return
+            }
+            
+            // I have only right child
+            if let rightNode = node.right, node.left == nil {
+                if node.isRightChild {
+                    node.parent?.right = rightNode
+                }
+                
+                if node.isLeftChild {
+                    node.parent?.left = rightNode
+                }
+                
+                rightNode.parent = node.parent
+                return
+            }
+            
+            // I have only leftChild
+            if let leftNode = node.left, node.right == nil {
+                if node.isRightChild {
+                    node.parent?.right = leftNode
+                }
+                
+                if node.isLeftChild {
+                    node.parent?.left = leftNode
+                }
+                
+                leftNode.parent = node.parent
+                return
+            }
+            
+            // I have both left and right child
+            // I need to fing minimun from my right subtree
+            if let rightNode = node.right {
+                let nextMaxNode = self.findMininimum(node: rightNode)
+                self.delete(key: nextMaxNode.key)
+                
+                if node.isRightChild {
+                    node.parent?.right = nextMaxNode
+                }
+                
+                if node.isLeftChild {
+                    node.parent?.left = nextMaxNode
+                }
+                
+                nextMaxNode.right = node.right
+                nextMaxNode.left = node.left
+                nextMaxNode.parent = node.parent
+                
+                nextMaxNode.right?.parent = nextMaxNode
+                nextMaxNode.left?.parent = nextMaxNode
+                return
+            }
+        }
+    }
+    
+    private func findMininimum(node:BSTNode) -> BSTNode {
+        // go all they way to the left which is going to be minimum in this sub tree
+        if let leftNode = node.left {
+            return findMininimum(node: leftNode)
+        }
+        return node
+    }
+    
+    func find(key:Int) -> BSTNode? {
+        return self.find(key: key, node: self)
+    }
+    
+    private func find(key:Int, node:BSTNode) -> BSTNode? {
+        if key == node.key {
+            return node
+        } else if key < node.key {
+            if let leftNode = node.left {
+                return find(key: key, node: leftNode)
+            }
+        } else if key > node.key {
+            if let rightNode = node.right {
+                return find(key: key, node: rightNode)
+            }
+        }
+        return nil
+    }
+}
+
+let root = BSTNode(key: 12)
+root.insert(key: 5)
+root.insert(key: 14)
+root.insert(key: 3)
+root.insert(key: 7)
+root.insert(key: 13)
+root.insert(key: 17)
+root.insert(key: 20)
+root.insert(key: 1)
+root.insert(key: 9)
+root.insert(key: 8)
+root.insert(key: 11)
+
+root.delete(key: 14)
+root.delete(key: 5)
+root.delete(key: 3)
+
+let sorted = root.sorted()
+print(sorted)
+
+
 

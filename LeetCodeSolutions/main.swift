@@ -3032,6 +3032,7 @@ class BSTNode {
     }
 }
 
+/*
 let root = BSTNode(key: 12)
 root.insert(key: 5)
 root.insert(key: 14)
@@ -3051,6 +3052,259 @@ root.delete(key: 3)
 
 let sorted = root.sorted()
 print(sorted)
+*/
 
+class Solution_reverseBetween {
+    func reverseBetween(_ head: ListNode?, _ m: Int, _ n: Int) -> ListNode? {
+        
+        // no need to change if m is same as n
+        if m == n {
+            return head
+        }
+        
+        var counter = 1
+        var runnerNode = head
+        
+        while counter + 1 < m {
+            runnerNode = runnerNode?.next
+            counter = counter + 1
+        }
+
+        var prevMNode:ListNode?
+        var prevNode:ListNode?
+        if m == 1 {
+            prevMNode = head
+            prevNode = head
+            runnerNode = head?.next
+        } else {
+            prevMNode = runnerNode
+            prevNode = runnerNode?.next
+            runnerNode = prevNode?.next
+        }
+        
+        counter = m
+        while counter < n {
+            let temp = runnerNode
+            
+            runnerNode = runnerNode?.next
+            
+            temp?.next = prevNode
+            
+            prevNode = temp
+            counter = counter + 1
+        }
+        
+        if m == 1 {
+            head?.next = runnerNode
+            return prevNode
+        }
+        
+        let temp = prevMNode?.next
+        prevMNode?.next = prevNode
+        temp?.next = runnerNode
+        
+        return head
+    }
+}
+
+/*
+let listInput = createLinkedListFromArray(arr: [1,2,3,4,5])
+let res = Solution_reverseBetween().reverseBetween(listInput, 1, 3)
+printLinkedList(head: res)
+ */
+
+
+class Solution_inorderTraversal {
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        var results:[Int] = []
+        guard let root = root else { return results }
+        self.inorderTraversal(node: root, results: &results)
+        return results
+    }
+    
+    private func inorderTraversal(node:TreeNode, results:inout [Int]){
+        if let leftNode = node.left {
+            inorderTraversal(node: leftNode, results: &results)
+        }
+        
+        results.append(node.val)
+        
+        if let rightNode = node.right {
+            inorderTraversal(node: rightNode, results: &results)
+        }
+    }
+}
+
+/*
+let tree = createBinaryTree(with: [1,2,3,4,5,6,7,8])
+let result = Solution_inorderTraversal().inorderTraversal(tree)
+print(result)
+*/
+
+class Solution_merge {
+    func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        
+        if nums2.isEmpty {
+            return
+        }
+        
+        var i = 0
+        var j = 0
+        
+        var didEndRealItemsInNums1 = false
+        
+        if m == 0 {
+            didEndRealItemsInNums1 = true
+        }
+        
+        while j < nums2.count {
+            if didEndRealItemsInNums1 {
+                // append all the remianing elements from nums2 into nums1
+                nums1.insert(nums2[j], at: i)
+                nums1.removeLast()
+                i = i + 1
+                j = j + 1
+                continue
+            }
+            
+            if i >= m + j {
+                didEndRealItemsInNums1 = true
+                continue
+            }
+            
+            if nums1[i] >= nums2[j] {
+                nums1.insert(nums2[j], at: i)
+                nums1.removeLast()
+                j = j + 1
+            }
+            i = i + 1
+        }
+    }
+}
+
+
+/*
+//[2,0]
+//1
+//[1]
+//10ta
+
+//[4,0,0,0,0,0]
+//1
+//[1,2,3,5,6]
+//5
+
+//var nums1 = [1,2,3,0,0,0]
+//var nums2:[Int] = [2,5,6]
+
+var nums1 = [-12,0,0,0,0,0]
+var nums2 = [-49,-45,-42,1,2,3]
+
+Solution_merge().merge(&nums1, 1, nums2, nums2.count)
+print(nums1)
+
+*/
+
+
+class Solution {
+    var visited:[[Bool]] = []
+    func exist(_ board: [[Character]], _ word: String) -> Bool {
+        
+        guard let firstCh = word.first else {
+            return true
+        }
+        
+        guard board.count > 0 && board[0].count > 0 else {
+            return false
+        }
+        
+        self.initializeVisited(board: board)
+        
+        // iterate over to find first matching character and explore its all adjacent
+        for i in 0..<board.count {
+            for j in 0..<board[0].count {
+                if board[i][j] == firstCh {
+                    self.visited[i][j] = true
+                    if exploreAdjacent(chPosition: 1, word: word, board: board, i: i, j: j) {
+                        return true
+                    }
+                    self.initializeVisited(board: board)
+                }
+            }
+        }
+        
+        return false
+    }
+
+    func initializeVisited(board:[[Character]]){
+        self.visited = [[Bool]](repeating: Array<Bool>(repeating: false, count: board[0].count), count: board.count)
+    }
+
+    // explore all the adjacent of board[i][j] if not visited
+    func exploreAdjacent(chPosition:Int, word:String, board:[[Character]], i:Int, j:Int) -> Bool {
+        
+        if chPosition == word.count {
+            return true
+        } else {
+            let chIndex = word.index(word.startIndex, offsetBy: chPosition)
+            let ch = word[chIndex]
+            
+            // explore top
+            let topI = i - 1
+            if topI >= 0 && self.visited[topI][j] == false && board[topI][j] == ch {
+                self.visited[topI][j] = true
+                if exploreAdjacent(chPosition: chPosition + 1, word: word, board: board, i: topI, j: j) {
+                    return true
+                }
+            }
+            
+            // explore left
+            let leftJ = j - 1
+            if leftJ >= 0 && self.visited[i][leftJ] == false && board[i][leftJ] == ch {
+                self.visited[i][leftJ] = true
+                if exploreAdjacent(chPosition: chPosition + 1, word: word, board: board, i: i, j: leftJ) {
+                    return true
+                }
+            }
+            
+            // esplore bottom
+            let bottomI = i + 1
+            if bottomI < board.count && self.visited[bottomI][j] == false && board[bottomI][j] == ch {
+                self.visited[bottomI][j] = true
+                if exploreAdjacent(chPosition: chPosition + 1, word: word, board: board, i: bottomI, j: j) {
+                    return true
+                }
+            }
+            
+            // explore right
+            let rightJ = j + 1
+            if rightJ < board[0].count && self.visited[i][rightJ] == false && board[i][rightJ] == ch {
+                self.visited[i][rightJ] = true
+                if exploreAdjacent(chPosition: chPosition + 1, word: word, board: board, i: i, j: rightJ) {
+                    return true
+                }
+            }
+        }
+        
+        self.visited[i][j] = false
+        
+        return false
+    }
+}
+
+/*
+let board:[[Character]] =
+[
+    ["C","A","A"],
+    ["A","A","A"],
+    ["B","C","D"]
+]
+var word = "AAB"
+
+let board1:[[Character]] = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
+let word1 = "ABCESEEEFS"
+
+print(Solution().exist(board1, word1))
+*/
 
 

@@ -2823,8 +2823,6 @@ let res = Solution_powerSet().subsets([6,2,3,4,5])
 print(res.count)
  */
 
-
-
 /***********************************************************************************/
 
 class BSTNode {
@@ -3054,6 +3052,8 @@ let sorted = root.sorted()
 print(sorted)
 */
 
+/***********************************************************************************/
+
 class Solution_reverseBetween {
     func reverseBetween(_ head: ListNode?, _ m: Int, _ n: Int) -> ListNode? {
         
@@ -3113,6 +3113,7 @@ let res = Solution_reverseBetween().reverseBetween(listInput, 1, 3)
 printLinkedList(head: res)
  */
 
+/***********************************************************************************/
 
 class Solution_inorderTraversal {
     func inorderTraversal(_ root: TreeNode?) -> [Int] {
@@ -3140,6 +3141,8 @@ let tree = createBinaryTree(with: [1,2,3,4,5,6,7,8])
 let result = Solution_inorderTraversal().inorderTraversal(tree)
 print(result)
 */
+
+/***********************************************************************************/
 
 class Solution_merge {
     func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
@@ -3205,8 +3208,9 @@ print(nums1)
 
 */
 
+/***********************************************************************************/
 
-class Solution {
+class Solution_wordSearch {
     var visited:[[Bool]] = []
     func exist(_ board: [[Character]], _ word: String) -> Bool {
         
@@ -3304,7 +3308,174 @@ var word = "AAB"
 let board1:[[Character]] = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
 let word1 = "ABCESEEEFS"
 
-print(Solution().exist(board1, word1))
+print(Solution_wordSearch().exist(board1, word1))
 */
+
+/***********************************************************************************/
+
+// folowing solution exceed time on Leetcode. So, there should be better way to solve this problem
+class Solution_groupAnagrams {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        
+        var resultDict:[String:Set<String>] = [:]
+        
+        for str in strs {
+            // check if the str already belongs to some group
+            var hasGroup = false
+            for item in resultDict {
+                if areAnagrams(sortedKey: item.key, str: str) {
+                    hasGroup = true
+                    resultDict[item.key]?.insert(str)
+                    break
+                }
+            }
+            
+            // if does not have group then create group and reference by sorted str as key
+            if hasGroup == false {
+                var newSet = Set<String>()
+                newSet.insert(str)
+                
+                let newKey = String(str.sorted())
+                resultDict[newKey] = newSet
+            }
+        }
+        
+        var result:[[String]] = []
+        for item in resultDict.values {
+            result.append(Array(item))
+        }
+        return result
+    }
+    
+    private func areAnagrams(sortedKey:String, str:String) -> Bool {
+        return sortedKey == String(str.sorted())
+    }
+}
+
+/*
+let input = ["eat", "tea", "tan", "ate", "nat", "bat"]
+let res = Solution_groupAnagrams().groupAnagrams(input)
+print(res)
+*/
+
+/***********************************************************************************/
+
+// this below solution is breaking target into its candidates
+
+class Solution_breakTarget {
+    var cache:[Int:[[Int]]] = [:]
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        let res = self.combinationSum(candidates: candidates, target: target, tempResult: [])
+        
+        // removing duplicate solutions
+        var newResult:[[Int]] = []
+        for arr in res {
+            var exist = false
+            for newArr in newResult {
+                if newArr.sorted() == arr.sorted() {
+                    exist = true
+                }
+            }
+            if exist == false {
+                newResult.append(arr)
+            }
+        }
+        return newResult
+    }
+    
+    private func combinationSum(candidates:[Int], target:Int, tempResult:[Int]) -> [[Int]] {
+        var result:[[Int]] = []
+
+        if target == 0 {
+            result.append(tempResult)
+        } else {
+            for num in candidates {
+                if num <= target {
+                    let newTarget = target - num
+                    var newTempRes = tempResult
+                    newTempRes.append(num)
+                    let res = self.combinationSum(candidates: candidates, target: newTarget, tempResult: newTempRes)
+                    self.cache[newTarget] = res
+                    result.append(contentsOf: res)
+                }
+            }
+        }
+        
+        return result
+    }
+}
+
+//let input = [2,3,5]
+//let target
+
+//let result = Solution_breakTarget().combinationSum([2,3,5], 8)
+//print(result)
+
+
+// below solution is building up using candidates to make target
+// caching works better in this solution
+// LeetCode Accepted solution
+
+class Solution_buildTarget {
+    var cache:[Int:[[Int]]] = [:]
+    
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        // removing duplicate solutions
+        
+        let result = self.getCombinationSum(candidates, target)
+        
+        var newResult:[[Int]] = []
+        for arr in result {
+            var exist = false
+            for newArr in newResult {
+                if newArr.sorted() == arr.sorted() {
+                    exist = true
+                }
+            }
+            if exist == false {
+                newResult.append(arr)
+            }
+        }
+
+        return newResult
+    }
+    
+    private func getCombinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var result:[[Int]] = []
+        
+        if let cacheResult = self.cache[target] {
+            return cacheResult
+        }
+
+        if target == 0 {
+            let emptyArr:[Int] = []
+            result.append(emptyArr)
+        } else {
+            for num in candidates {
+                if num <= target {
+                    let newTarget = target - num
+                    let tempResult = self.combinationSum(candidates, newTarget)
+                    for soln in tempResult {
+                        var newSoln = soln
+                        newSoln.append(num)
+                        result.append(newSoln)
+                    }
+                }
+            }
+        }
+
+        self.cache[target] = result
+        
+        return result
+    }
+}
+
+/*
+let result = Solution_buildTarget().combinationSum([2,3,5], 8)
+print(result)
+*/
+
+
+/***********************************************************************************/
 
 

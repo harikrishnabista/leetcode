@@ -352,7 +352,7 @@ Leet code
 Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
 */
 
-class Solution_isPalindrome {
+class Solution1_isPalindrome3 {
     func isPalindrome(_ x: Int) -> Bool {
         let strX = String(x)
 
@@ -380,13 +380,11 @@ class Solution_isPalindrome {
 }
 
 /*
-let result = Solution_isPalindrome().isPalindrome(0)
+let result = Solution1_isPalindrome3().isPalindrome(0)
 print(result)
  */
 
-
 /***********************************************************************************/
-
 
 /*
 Integer to Roman : LeetCode
@@ -1757,43 +1755,6 @@ if let result = Solution_deleteDuplicates().deleteDuplicates(head) {
 
 /***********************************************************************************/
 
-class Solution_isSameTree {
-    func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
-        
-        // Quque
-        var queueP:[TreeNode?] = []
-        queueP.append(p)
-        
-        // Queue
-        var queueQ:[TreeNode?] = []
-        queueQ.append(q)
-        
-        while queueP.count > 0 && queueQ.count > 0 {
-            
-            let node_p = queueP.removeFirst()
-            let node_q = queueQ.removeFirst()
-            
-            if node_p?.val != node_q?.val {
-                return false
-            } else {
-                // append from p
-                queueP.append(node_p?.left)
-                queueP.append(node_p?.right)
-                queueQ.append(node_q?.left)
-                queueQ.append(node_q?.right)
-            }
-        }
-        
-        if queueP.count == queueQ.count && queueP.count == 0 {
-            return true
-        } else {
-            return false
-        }
-    }
-}
-
-/***********************************************************************************/
-
 class Solution_plusOne {
     func plusOne(_ digits: [Int]) -> [Int] {
         var input = digits
@@ -1989,7 +1950,7 @@ print(height)
 
 /***********************************************************************************/
 
-class Solution1_isPalindrome {
+class Solution1_isPalindrome4 {
     
     private func isAlphaneumaric(_ ch:Character) -> Bool {
         if let asciiVal = ch.asciiValue {
@@ -2030,7 +1991,7 @@ class Solution1_isPalindrome {
 }
 
 /*
-let result = Solution1_isPalindrome().isPalindrome("A man, a plan, a canal: Panama")
+let result = Solution1_isPalindrome4().isPalindrome("A man, a plan, a canal: Panama")
 print(result)
 */
 
@@ -3475,7 +3436,339 @@ let result = Solution_buildTarget().combinationSum([2,3,5], 8)
 print(result)
 */
 
+/***********************************************************************************/
+
+class Solution_isSameTree {
+    func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
+        
+        if p == nil && q == nil {
+            return true
+        }
+        
+        if p == nil && q != nil {
+            return false
+        }
+        
+        if q == nil && p != nil {
+            return false
+        }
+        
+        if let pTree = p, let qTree = q, pTree.val != qTree.val {
+            return false
+        }
+        
+        return isSameTree(p?.left, q?.left) && isSameTree(p?.right, q?.right)
+    }
+}
+
+/*
+let pTree = createBinaryTree(with: [1,2,3])
+let qTree = createBinaryTree(with: [1,2,3])
+
+let result = Solution_isSameTree().isSameTree(pTree, qTree)
+print(result)
+*/
+
+// wrong solution
+class Solution1_isSameTree {
+    func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
+        
+        // Quque
+        var queueP:[TreeNode?] = []
+        queueP.append(p)
+        
+        // Queue
+        var queueQ:[TreeNode?] = []
+        queueQ.append(q)
+        
+        while queueP.count > 0 && queueQ.count > 0 {
+            
+            let node_p = queueP.removeFirst()
+            let node_q = queueQ.removeFirst()
+            
+            if node_p?.val != node_q?.val {
+                return false
+            } else {
+                // append from p
+                queueP.append(node_p?.left)
+                queueP.append(node_p?.right)
+                queueQ.append(node_q?.left)
+                queueQ.append(node_q?.right)
+            }
+        }
+        
+        if queueP.count == queueQ.count && queueP.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+// 121. Best Time to Buy and Sell Stock
+
+class Solution_maxProfit {
+    func maxProfit(_ prices: [Int]) -> Int {
+        
+        guard prices.count > 1 else {
+            return 0
+        }
+        
+        var minPrice = Int.max
+        
+        var maxProfit = 0
+        
+        for price in prices {
+            if price < minPrice {
+                minPrice = price
+            } else {
+                let profit = price - minPrice
+                if profit > maxProfit {
+                    maxProfit = profit
+                }
+            }
+        }
+        
+        return maxProfit
+    }
+}
+
+/*
+print(Solution_maxProfit().maxProfit([1,2]))
+*/
 
 /***********************************************************************************/
+
+// 98. Validate Binary Search Tree
+
+/* wrong solution */
+
+/*
+class Solution {
+    
+    enum BSTNodeChildType {
+        case LEFT, RIGHT, NONE
+    }
+    
+    func isValidBST(_ root: TreeNode?) -> Bool {
+        return isValidBST(root, childType: .NONE,  parent: nil)
+    }
+    
+    func isValidBST(_ root: TreeNode?, childType:BSTNodeChildType, parent:TreeNode?) -> Bool {
+        
+        guard let root = root else {
+            return true
+        }
+        
+        if let leftChild = root.left {
+            if leftChild.val >= root.val {
+                return false
+            }
+            
+            if childType == .RIGHT {
+                if let parent = parent, leftChild.val < parent.val {
+                    return false
+                }
+            }
+        }
+        
+        if let rightChild = root.right {
+            if rightChild.val <= root.val {
+                return false
+            }
+            
+            if childType == .LEFT {
+                if let parent = parent, rightChild.val > parent.val {
+                    return false
+                }
+            }
+        }
+        
+        return isValidBST(root.left, childType: .LEFT, parent: root) && isValidBST(root.right, childType: .RIGHT, parent: root)
+    }
+}
+*/
+
+class Solution_isValidBST {
+    func isValidBST(_ root: TreeNode?) -> Bool {
+        return isValidBST(root, l: Int.min,  u: Int.max)
+    }
+    
+    func isValidBST(_ root: TreeNode?, l:Int, u:Int) -> Bool {
+        guard let root = root else { return true }
+        
+        if root.val <= l || root.val >= u {
+            return false
+        }
+        
+        return isValidBST(root.left, l: l, u: root.val) && isValidBST(root.right, l: root.val, u: u)
+    }
+}
+
+/*
+let bst1 = createBinaryTree(with: [2,1,3])
+let bst2 = createBinaryTree(with: [5,1,4,nil,nil,3,6])
+let bst3 =  createBinaryTree(with: [1,nil,1])
+let bst4 = createBinaryTree(with: [10,5,15,nil,nil,6,20])
+
+// true
+let bst5 = createBinaryTree(with: [3,1,5,0,2,4,6])
+
+// false
+let bst6 = createBinaryTree(with: [3,1,5,0,2,4,6,nil,nil,nil,3])
+
+print(Solution_isValidBST().isValidBST(bst4))
+*/
+
+// not efficient solution O(n2)
+class Solution1_countPrimes {
+    var primes:[Int] = []
+    func countPrimes(_ n: Int) -> Int {
+        
+        var counter = 2
+        
+        while counter < n {
+            if self.checkIfPrimes(number: counter) {
+                self.primes.append(counter)
+            }
+            
+            counter = counter + 1
+        }
+        
+        return self.primes.count
+    }
+    
+    private func checkIfPrimes(number:Int) -> Bool {
+        for prime in self.primes {
+            if number % prime == 0 {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+class Solution_countPrimes {
+    func countPrimes(_ n: Int) -> Int {
+        
+        var primes:[Bool] = [Bool](repeating: true, count: n)
+
+        var index = 2
+        
+        while index <= primes.count/2 {
+            if primes[index] {
+                self.markMultiplesAsNonPrime(for: index, primes: &primes)
+            }
+            
+            index = index + 1
+        }
+        
+        // now calculate all the true primes
+        index = 2
+        var primeCounter = 0
+        while index < primes.count {
+            if primes[index] {
+                primeCounter = primeCounter + 1
+            }
+            index = index + 1
+        }
+        return primeCounter
+    }
+    
+    private func markMultiplesAsNonPrime(for prime:Int, primes:inout [Bool]) {
+        var index = 2
+        while prime*index < primes.count {
+            primes[prime*index] = false
+            index = index + 1
+        }
+    }
+}
+
+/*
+print(Solution_countPrimes().countPrimes(5))
+ */
+
+/***********************************************************************************/
+
+class Solution_reverseList {
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        if head == nil || head?.next == nil {
+            return head
+        }
+        
+        var prevNode = head
+        var currNode = head?.next
+        
+        // remember this is very important, otherwise it will go to infinite loop
+        head?.next = nil
+        
+        while currNode != nil {
+            let temp = currNode?.next
+            currNode?.next = prevNode
+            prevNode = currNode
+            currNode = temp
+        }
+        
+        return prevNode
+    }
+}
+
+//1->2->3->4->5->NULL
+/*
+let inputLinkedList = createLinkedListFromArray(arr: [1,2,3,4,5,6])
+let ll = Solution_reverseList().reverseList(inputLinkedList)
+printLinkedList(head: ll)
+*/
+
+
+// Below solution is O(n) time and O(1) space
+// this could also be done storing all the items into array and performing palindrome check
+class Solution_isPalindrome1 {
+    func isPalindrome(_ head: ListNode?) -> Bool {
+        
+        if head == nil || head?.next == nil {
+            return true
+        }
+        
+        var runnerNode = head
+        var count = 0
+        
+        while runnerNode != nil {
+            runnerNode = runnerNode?.next
+            count = count + 1
+        }
+        
+        runnerNode = head
+        var previousNode:ListNode? = nil
+        
+        var index = 1
+        
+        while index <= count/2 {
+            let temp = runnerNode?.next
+            runnerNode?.next = previousNode
+            
+            previousNode = runnerNode
+            runnerNode = temp
+            index = index + 1
+        }
+        
+        var revList = previousNode
+        var forwardList = count % 2 == 0 ? runnerNode : runnerNode?.next
+        
+        while revList != nil || forwardList != nil {
+            
+            if revList?.val != forwardList?.val {
+                return false
+            }
+            
+            revList = revList?.next
+            forwardList = forwardList?.next
+        }
+        
+        return revList == nil && forwardList == nil
+    }
+}
+
+// print(Solution_isPalindrome1().isPalindrome(createLinkedListFromArray(arr: [1,1])))
 
 

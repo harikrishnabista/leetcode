@@ -114,4 +114,30 @@ func printLinkedList(head:ListNode?){
     }
 }
 
+func getArray(from node:TreeNode?) -> [TreeNode] {
+    
+    guard let tree = node else {
+        return []
+    }
+    
+    var result:[TreeNode] = []
+    
+    var queue:[TreeNode] = []
+    queue.append(tree)
+    
+    while queue.isEmpty == false {
+        let node = queue.removeFirst()
+        
+        if let leftNode = node.left {
+            queue.append(leftNode)
+        }
+        
+        if let rightNode = node.right {
+            queue.append(rightNode)
+        }
+        result.append(node)
+    }
+    return result
+}
+
 

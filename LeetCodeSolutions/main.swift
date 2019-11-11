@@ -3274,53 +3274,6 @@ print(Solution_wordSearch().exist(board1, word1))
 
 /***********************************************************************************/
 
-// folowing solution exceed time on Leetcode. So, there should be better way to solve this problem
-class Solution_groupAnagrams {
-    func groupAnagrams(_ strs: [String]) -> [[String]] {
-        
-        var resultDict:[String:Set<String>] = [:]
-        
-        for str in strs {
-            // check if the str already belongs to some group
-            var hasGroup = false
-            for item in resultDict {
-                if areAnagrams(sortedKey: item.key, str: str) {
-                    hasGroup = true
-                    resultDict[item.key]?.insert(str)
-                    break
-                }
-            }
-            
-            // if does not have group then create group and reference by sorted str as key
-            if hasGroup == false {
-                var newSet = Set<String>()
-                newSet.insert(str)
-                
-                let newKey = String(str.sorted())
-                resultDict[newKey] = newSet
-            }
-        }
-        
-        var result:[[String]] = []
-        for item in resultDict.values {
-            result.append(Array(item))
-        }
-        return result
-    }
-    
-    private func areAnagrams(sortedKey:String, str:String) -> Bool {
-        return sortedKey == String(str.sorted())
-    }
-}
-
-/*
-let input = ["eat", "tea", "tan", "ate", "nat", "bat"]
-let res = Solution_groupAnagrams().groupAnagrams(input)
-print(res)
-*/
-
-/***********************************************************************************/
-
 // this below solution is breaking target into its candidates
 
 class Solution_breakTarget {
@@ -3772,3 +3725,447 @@ class Solution_isPalindrome1 {
 // print(Solution_isPalindrome1().isPalindrome(createLinkedListFromArray(arr: [1,1])))
 
 
+//func permutate(input:String) -> [String] {
+//
+//    func swapCharacters(input: String, index1: Int, index2: Int) -> String {
+//        var characters = Array(input)
+//        characters.swapAt(index1, index2)
+//        return String(characters)
+//    }
+//
+//    func permuteMe(input: String, pivotIndex:Int) -> [String] {
+//        var result:[String] = []
+//
+//        if pivotIndex == (input.count - 1) {
+//            result.append(input)
+//        } else {
+//            for i in pivotIndex...(input.count - 1) {
+//                let nextInput = swapCharacters(input: input, index1: pivotIndex, index2: i)
+//                result.append(contentsOf: permuteMe(input: nextInput, pivotIndex: pivotIndex + 1))
+//            }
+//        }
+//        return result
+//    }
+//
+//    let result = permuteMe(input: input, pivotIndex: 0)
+//    return result
+//}
+
+class Solution1_isAnagram {
+    
+    private func swapCharacters(input: String, index1: Int, index2: Int) -> String {
+        var characters = Array(input)
+        characters.swapAt(index1, index2)
+        return String(characters)
+    }
+    
+    private func isAnagram(s: String, pivotIndex:Int, t:String) -> Bool {
+        if pivotIndex == (s.count - 1) {
+            return true
+        } else {
+            for i in pivotIndex...(s.count - 1) {
+                let nextInput = swapCharacters(input: s, index1: pivotIndex, index2: i)
+                return isAnagram(s: nextInput, pivotIndex: pivotIndex + 1, t: t)
+            }
+        }
+        return false
+    }
+    
+    func isAnagram(_ s: String, _ t: String) -> Bool {
+        return self.isAnagram(s: s, pivotIndex: 0, t: t)
+    }
+}
+
+//print(Solution1_isAnagram().isAnagram("hari", "abcd"))
+
+
+//let sIndex = input.index(input.startIndex, offsetBy: start)
+//let newStr = String(input[..<sIndex])
+
+
+// amazon interview
+/*
+func topNCompetitors(numCompetitors:Int,topNCompetitors:Int,
+                     competitors:[String], numReviews:Int,
+                     reviews:[String])->[String]{
+    var dict:[String:Int] = [:]
+    
+    for competitor in competitors {
+        dict[competitor] = getCount(competitor: competitor, reviews: reviews)
+    }
+    
+    // now sort the dictionary and get top n competitors
+    let topCompetitors = dict.sorted { $0.1 > $1.1 }
+    
+    var result:[String] = []
+    
+    var count = 0
+    for competitor in topCompetitors {
+        if count < topNCompetitors {
+            result.append(competitor.key)
+            count = count + 1
+        }
+    }
+    
+    return result
+}
+
+func getCount(competitor:String, reviews:[String]) -> Int {
+    var count = 0
+    for review in reviews {
+        if review.contains(competitor) {
+            count = count + 1
+        }
+    }
+    
+    return count
+}
+*/
+
+/***********************************************************************************/
+
+/* post matest interview */
+
+func missingNumber(arr: [Int]) -> Int {
+    var referenceArr:[Bool] = [Bool](repeating:false, count:arr.count + 1)
+    
+    for label in arr {
+        referenceArr[label] = true
+    }
+    
+    for (i,isExists) in referenceArr.enumerated() {
+        if isExists == false {
+            return i
+        }
+    }
+    
+    return 0
+}
+
+//let input = [3, 1, 0]
+//print(missingNumber(arr: input))
+
+func fizzBuzz(n: Int) -> [String] {
+    
+    var result:[String] = []
+    for i in 1...n {
+        if i % 3 == 0 && i % 5 == 0 {
+            result.append("FizzBuzz")
+        } else if i % 3 == 0 {
+            result.append("Fizz")
+        } else if i % 5 == 0 {
+            result.append("Buzz")
+        } else {
+            result.append("\(i)")
+        }
+    }
+    
+    return result
+}
+
+
+/***********************************************************************************/
+
+// pair programming interview at Square
+
+/*
+ let blocks = ["red": 2, "blue": 4]
+ 
+ let pattern = ["red", "blue", "red", "blue"]
+ 
+ let pattern2 = ["red", "red"]
+ 
+ let invalid_pattern = ["red", "blue", "red", "red"] 
+ 
+ let invalid_pattern2 = ["green"]
+ 
+ patternDict = ["red": 2, "blue": 2]
+ 
+ */
+
+
+func isValidPattern(pattern:[String], blocks:[String:Int]) -> Bool {
+    
+    var blocksModified = blocks
+    
+    // 1. convert the pattern into dictionary
+    var patternDict:[String:Int] = [:]
+    
+    for color in pattern {
+        
+        if let val = patternDict[color] {
+            patternDict[color] = val + 1
+        } else {
+            patternDict[color] = 1
+        }
+    }
+    
+    // 2. compare the blocks can hold pattern
+    for item in patternDict {
+        
+        // if patternDict contains a key which is not present in blocks then return false
+        if blocksModified[item.key] == nil {
+            
+            // for the wild card, check it has wild card it sufficient wild card then decrease it and continue
+            
+            if let wildVal = blocksModified["wild"], wildVal > 0 {
+                blocksModified["wild"] = wildVal - 1
+                continue
+            }
+            
+            return false
+        }
+        
+        // if patten dict needs more color count than actually present inside the blocks then return false
+        if let val = blocksModified[item.key], item.value > val {
+            // let requiredWilds = item.value - val
+            // print("Short \(item.value - val) blocks of color \(item.key)")
+            // if let val = blocksModified["wild"], val >= requiredWilds {
+            //   blocksModified["wild"] = val - requiredWilds
+            //   continue
+            // }
+            
+            let requiredWilds = item.value - val
+            
+            if let wildVal = blocksModified["wild"], val > 0 {
+                blocksModified["wild"] = wildVal - 1
+                patternDict[item.key] = item.value - 1
+                continue
+            }
+            
+            return false
+        }
+        
+    }
+    
+    return true
+}
+
+/*
+let blocks = ["red": 1, "wild": 2]
+
+let pattern:[String] = ["red", "red", "red", "red"] // true -> ["red", "wild", "wild"]
+
+// patternDict = ["red":4]
+
+print(isValidPattern(pattern: pattern, blocks: blocks))
+*/
+
+
+/***********************************************************************************/
+
+// folowing solution exceed time on Leetcode. So, there should be better way to solve this problem
+class Solution1_groupAnagrams {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        
+        var resultDict:[String:Set<String>] = [:]
+        
+        for str in strs {
+            // check if the str already belongs to some group
+            var hasGroup = false
+            for item in resultDict {
+                if areAnagrams(sortedKey: item.key, str: str) {
+                    hasGroup = true
+                    resultDict[item.key]?.insert(str)
+                    break
+                }
+            }
+            
+            // if does not have group then create group and reference by sorted str as key
+            if hasGroup == false {
+                var newSet = Set<String>()
+                newSet.insert(str)
+                
+                let newKey = String(str.sorted())
+                resultDict[newKey] = newSet
+            }
+        }
+        
+        var result:[[String]] = []
+        for item in resultDict.values {
+            result.append(Array(item))
+        }
+        return result
+    }
+    
+    private func areAnagrams(sortedKey:String, str:String) -> Bool {
+        return sortedKey == String(str.sorted())
+    }
+}
+
+
+
+// accepted solution
+class Solution_groupAnagrams {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        var resultDict:[String:[String]] = [:]
+        
+        for str in strs {
+            let key = String(str.sorted())
+            if resultDict[key] != nil {
+                resultDict[key]?.append(str)
+            } else {
+                var arr:[String] = []
+                arr.append(str)
+                resultDict[key] = arr
+            }
+        }
+        return Array(resultDict.values)
+    }
+}
+
+/*
+ let input = ["eat", "tea", "tan", "ate", "nat", "bat"]
+ let res = Solution_groupAnagrams().groupAnagrams(input)
+ print(res)
+*/
+
+
+/***********************************************************************************/
+
+// 1051. Height Checker
+
+class Solution_heightChecker {
+    func heightChecker(_ heights: [Int]) -> Int {
+        
+        // prepare sortedHeights using counting sort as there will be only 100 different heights
+        var heightFreqs: [Int] = [Int](repeating: 0, count: 101)
+        
+        // calculate frequencies of height
+        for height in heights {
+            heightFreqs[height] = heightFreqs[height] + 1
+        }
+        
+        var counter = 0
+        var countResult = 0
+        
+        // this is used to check if sorted values are same or not in same index
+        var index = 0
+        
+        while counter <= 100 {
+            if heightFreqs[counter] > 0 {
+                heightFreqs[counter] = heightFreqs[counter] - 1
+                
+                if index < heights.count, counter != heights[index] {
+                    countResult = countResult + 1
+                }
+                
+                index = index + 1
+                
+            } else {
+                counter = counter + 1
+            }
+        }
+        
+        return countResult
+    }
+}
+
+/*
+let heights1 = [1,1,4,2,1,3]
+let heights2 = [2,1,2,1,1,2,2,1]
+let res = Solution_heightChecker().heightChecker(heights2)
+print(res)
+*/
+
+/***********************************************************************************/
+
+class Solution_numUniqueEmails {
+    func numUniqueEmails(_ emails: [String]) -> Int {
+ 
+        var uniqueEmails = Set<String>()
+ 
+        for email in emails {
+            // having @ is guarenteed
+            let arr = email.split(separator: "@")
+            var local  = arr[0]
+            let rest = arr[arr.count - 1]
+ 
+            let arrLocal = local.split(separator: "+")
+ 
+            if arrLocal.count > 0 {
+                local = arrLocal[0]
+            }
+ 
+            let localStr = local.replacingOccurrences(of: ".", with: "")
+ 
+            let resEmail = localStr + "@" + rest
+            uniqueEmails.insert(resEmail)
+            print(resEmail)
+        }
+ 
+        return uniqueEmails.count
+    }
+}
+
+
+/*
+let input = ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+let res = Solution_numUniqueEmails().numUniqueEmails(input)
+print(res)
+*/
+
+/***********************************************************************************/
+
+class Polynomial {
+    class Term {
+        var coefficient:Double
+        var degree:Int
+        
+        init(coefficient:Double, degree:Int) {
+            self.coefficient = coefficient
+            self.degree = degree
+        }
+    }
+    
+    var terms:[Term]
+    
+    init(terms:[Term]) {
+        self.terms = terms
+    }
+    
+    func derivative(){
+        var newTerms:[Term] = []
+        
+        for term in self.terms {
+            let coeff = term.coefficient * Double(term.degree)
+            let degree = term.degree - 1
+            
+            let term = Term(coefficient: coeff, degree: degree)
+            newTerms.append(term)
+        }
+        self.terms = newTerms
+    }
+}
+
+/***********************************************************************************/
+
+class Solution_sortArrayByParityII {
+    func sortArrayByParityII(_ A: [Int]) -> [Int] {
+        
+        var oddArray:[Int] = []
+        var evenArray:[Int] = []
+        
+        for item in A {
+            if item % 2 == 0 {
+                evenArray.append(item)
+            } else {
+                oddArray.append(item)
+            }
+        }
+        
+        var result:[Int] = []
+        for i in 0...A.count-1 {
+            if i % 2 == 0 {
+                result.append(evenArray.removeLast())
+            } else {
+                result.append(oddArray.removeLast())
+            }
+        }
+        return result
+    }
+}
+
+// print(Solution_sortArrayByParityII().sortArrayByParityII([4,2,5,7]))
+
+/***********************************************************************************/

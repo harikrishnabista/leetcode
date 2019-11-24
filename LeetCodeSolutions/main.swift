@@ -3863,12 +3863,12 @@ func fizzBuzz(n: Int) -> [String] {
     return result
 }
 
-
 /***********************************************************************************/
 
 // pair programming interview at Square
 
 /*
+ 
  let blocks = ["red": 2, "blue": 4]
  
  let pattern = ["red", "blue", "red", "blue"]
@@ -3882,7 +3882,6 @@ func fizzBuzz(n: Int) -> [String] {
  patternDict = ["red": 2, "blue": 2]
  
  */
-
 
 func isValidPattern(pattern:[String], blocks:[String:Int]) -> Bool {
     
@@ -4169,3 +4168,1485 @@ class Solution_sortArrayByParityII {
 // print(Solution_sortArrayByParityII().sortArrayByParityII([4,2,5,7]))
 
 /***********************************************************************************/
+
+
+class Solution_fib {
+    func fib(_ N: Int) -> Int {
+        
+        guard N > 1 else {
+            return N
+        }
+        
+        var first = 0
+        var second = 1
+        
+        var counter = 2
+        
+        while counter <= N {
+            let temp = second
+            second = first + second
+            first = temp
+            
+            counter = counter + 1
+        }
+        
+        return second
+    }
+}
+
+// print(Solution_fib().fib(6))
+
+/***********************************************************************************/
+
+/* Postmates question */
+
+// other technical questions
+// 1. what is retain cycle and can you explain one example when retain cycle can happen ?
+// 2. what are difference between NSOperation vs GCD ? when do you choose one vs another
+// 3. what is StringProtocol ?
+// 4. what is difference between UIView and CALayer ?
+// 5. When do you use KVO, NSNotification and Delegate
+// 6. What is clossure ? What is difference between delegate pattern and clossure ?
+
+class Solution_removeInvalidParentheses {
+    
+    struct StackItemTuple {
+        let char:Character
+        let index:Int
+    }
+    
+    func removeInvalidParentheses(_ s: String) -> String {
+        var result = ""
+        
+        var stack:[StackItemTuple] = []
+
+        for (i,ch) in s.enumerated() {
+            if ch == "(" {
+                let tuple = StackItemTuple(char: ch, index: i)
+                stack.append(tuple)
+            } else if ch == ")" {
+               
+                var hasOpenParenthesis = false
+                if stack.count > 0 {
+                    let lastTuple = stack.removeLast()
+                    hasOpenParenthesis = lastTuple.char == "("
+                }
+                
+                if !hasOpenParenthesis {
+                    continue
+                }
+            }
+            
+            result.append(ch)
+        }
+
+        if stack.count > 0 {
+            // now result does not include unbalanced close parenthesis but it can have some unbalanced open parenthesis
+            while stack.isEmpty == false {
+                let tuple = stack.removeLast()
+                let toRemoveIndex = result.index(result.startIndex, offsetBy: tuple.index)
+                result.remove(at: toRemoveIndex)
+            }
+        }
+        
+        return result
+    }
+}
+
+/*
+let input = "(abcd)()hari(ha()))))))"
+let res = Solution_removeInvalidParentheses().removeInvalidParentheses(input)
+print(res)
+*/
+
+
+/***********************************************************************************/
+
+// 542. 01 Matrix
+
+class Solution_updateMatrix {
+    
+    var result:[[Int]] = []
+    
+    func updateMatrix(_ matrix: [[Int]]) -> [[Int]] {
+        for i in 0..<matrix.count {
+            for j in 0..<matrix[0].count {
+                
+            }
+        }
+        
+        return result
+    }
+    
+    struct Cell {
+        var i:Int
+        var j:Int
+    }
+    
+    func updateDistanceToNearestZero(cell:Cell, matrix: [[Int]]) {
+        
+        var queue:[Cell] = []
+        
+        queue.append(cell)
+        
+        var distance = 1
+        while queue.isEmpty == false {
+            
+            let cCell = queue.removeFirst()
+            
+            if matrix[cCell.i][cCell.j] == 0 {
+                return
+            }
+            
+            // explore top
+            var found = false
+            if cCell.i - 1 > 0, matrix[cCell.i - 1][cCell.j] == 0 {
+                found = true
+                
+            } else {
+//                // update result matrix
+//                self.result[][]
+//
+//                let topCell = Cell(i: cell.i, j: cell.j)
+            }
+            
+            // left
+            if cCell.j - 1 > 0, matrix[cCell.i][cCell.j - 1] == 0 {
+                found = true
+            } else {
+                
+            }
+            
+            // right
+            if cCell.j + 1 < matrix[0].count, matrix[cCell.i][cCell.j + 1] == 0 {
+                found = true
+            } else {
+                
+            }
+            
+            // bottom
+            if cCell.i + 1 < matrix.count, matrix[cCell.i + 1][cCell.j] == 0 {
+                found = true
+            }
+            
+//            if found == false
+            
+        }
+        
+    }
+}
+
+/***********************************************************************************/
+
+// 1108. Defanging an IP Address
+class Solution_defangIPaddr {
+    func defangIPaddr(_ address: String) -> String {
+        var result = ""
+        
+        for ch in address {
+            if ch == "." {
+                result.append("[.]")
+            } else {
+                result.append(ch)
+            }
+        }
+        return result
+    }
+}
+
+/*
+let res = Solution_defangIPaddr().defangIPaddr("1.1.1.1")
+print(res)
+*/
+
+/***********************************************************************************/
+
+// 771. Jewels and Stones
+
+class Solution_numJewelsInStones {
+    func numJewelsInStones(_ J: String, _ S: String) -> Int {
+        var resultCount = 0
+        for stone in S {
+            if J.contains(stone) {
+                resultCount = resultCount + 1
+            }
+        }
+        
+        return resultCount
+    }
+}
+
+
+//let J = "z", S = "ZZ"
+//let J = "aA", S = "aAAbbbb"
+//print(Solution_numJewelsInStones().numJewelsInStones(J, S))
+
+
+/***********************************************************************************/
+
+class Solution_rangeSumBST {
+    func rangeSumBST(_ root: TreeNode?, _ L: Int, _ R: Int) -> Int {
+        return self.rangeSum(node: root, min: Int.min, max: Int.max, L: L, R: R)
+    }
+    
+    func rangeSum(node:TreeNode?, min:Int, max:Int, L:Int, R:Int) -> Int {
+        
+        guard let node = node else { return 0 }
+        
+        if max < L || min > R {
+            return 0
+        }
+        
+        var currVal = node.val
+        if (currVal >= L && currVal <= R) == false {
+           currVal = 0
+        }
+        
+        return currVal + rangeSum(node: node.left, min: min, max: node.val - 1, L: L, R: R) + rangeSum(node: node.right, min: node.val - 1, max: max, L: L, R: R)
+    }
+}
+
+/*
+let bst = createBinaryTree(with: [10,5,15,3,7,nil,18])
+print(Solution_rangeSumBST().rangeSumBST(bst, 7, 15))
+*/
+
+
+/* Apple coding interview
+
+// This is a calculation function that accepts an NSNumber as input, and
+// returns number * 2 as output. To simulate a lengthy calculation, the
+// function blocks for a random time interval from 1 - 5 seconds.
+
+func PerformSlowCalculation(_ i : Int, val:Int, result:inout [Int]) {
+    let timesTwo = val * 2
+    let pause = arc4random_uniform(4) + 1
+    sleep(pause)
+    result[i] = timesTwo
+}
+
+// Perform a calculation on each element of the input array of numbers,
+// returning an array of the results in the same order as the
+// corresponding input array number.
+
+
+
+func ArrayCalculation(_ a : [Int]) -> [Int]
+{
+    // Task: replace this function body with code that performs the
+    // calculation method over the input array a concurrently using
+    // Cocoa concurrency API's: Grand Central Dispatch, NSOperationQueue,
+    // POSIX pthread, whatever.
+    
+    // Replace this single-threaded implementation
+  
+    let queue = DispatchQueue(label: "com.example.queue", attributes: .concurrent)
+  
+    var result:[Int] = [Int](repeating:0, count:a.count)
+  
+     var workItems:[DispatchWorkItem] = []
+    
+    for (i,val) in a.enumerated() {
+        let workItem = DispatchWorkItem(block: {
+            PerformSlowCalculation(i, val:val, result: &result)
+        })
+      
+      workItems.append(workItem)
+      queue.async(execute: workItem)
+    }
+  
+    for workitem in workItems {
+        workitem.wait()
+    }
+
+    return result
+}
+
+let inputArray = [ 2, 4, 6, 8 ]
+print("inputArray = \(inputArray)")
+        
+let start = NSDate()
+let outputArray = ArrayCalculation(inputArray)
+let duration = -start.timeIntervalSinceNow
+print("outputArray = \(outputArray)")
+if outputArray == [ 4, 8, 12, 16] {
+    print("outputArray is correct")
+} else {
+    print("outputArray is incorrect")
+}
+
+print("duration = \(duration)")
+
+ 
+ */
+
+
+/***********************************************************************************/
+
+// Verily life science coding challenge
+
+/*
+// Coins: [25, 10, 5, 1]
+//
+// I need 31. What is the minimum number of coins required to get to 31?
+
+func minimumNumberOfCoins(_ coins: [Int], _ cents: Int) -> Int {
+    
+    var resultCount = 0
+    let sortedCoins = coins.sorted(by: >)
+    
+    var sum = cents
+    for coin in sortedCoins {
+        while sum >= coin {
+            sum = sum - coin
+            resultCount = resultCount + 1
+        }
+    }
+    
+    if sum == 0 {
+        return resultCount
+    } else {
+        return 0
+    }
+}
+
+// 31-25 = 6, 6-5 = 1
+
+func main() {
+    let coins:[Int] = [25, 10, 1]
+    let cents = 31
+    let min = minimumNumberOfCoins(coins, cents)
+    print("Number of coins: \(min)")
+}
+
+main()
+
+*/
+
+
+// 1221. Split a String in Balanced Strings
+
+class Solution_balancedStringSplit {
+    func balancedStringSplit(_ s: String) -> Int {
+        var lCounter = 0
+        var rCounter = 0
+        
+        var resCount = 0
+
+        for ch in s {
+            if ch == "R" {
+                rCounter += 1
+            }
+            
+            if ch == "L" {
+                lCounter += 1
+            }
+            
+            if lCounter == rCounter {
+                resCount += 1
+                rCounter = 0
+                lCounter = 0
+            }
+        }
+        return resCount
+    }
+}
+
+/*
+let input = "RLRRRLLRLL"
+print(Solution_balancedStringSplit().balancedStringSplit(input))
+*/
+
+/***********************************************************************************/
+
+class Solution_toLowerCase {
+    func toLowerCase(_ str: String) -> String {
+        return str.lowercased()
+    }
+}
+
+/***********************************************************************************/
+
+// 1021. Remove Outermost Parenthese
+class Solution_removeOuterParentheses {
+    func removeOuterParentheses(_ S: String) -> String {
+        
+        var balanceCounter = 0
+        
+        var result = ""
+        var tempResult = ""
+        for ch in S {
+
+            tempResult.append(ch)
+            
+            if ch == "(" {
+                balanceCounter += 1
+            }
+            
+            if ch == ")" {
+                balanceCounter -= 1
+            }
+            
+            if balanceCounter == 0 {
+                tempResult.removeFirst()
+                tempResult.removeLast()
+                result.append(tempResult)
+                tempResult = ""
+            }
+        }
+        
+        return result
+    }
+}
+
+/*
+let input = "(()())(())"
+print(Solution().removeOuterParentheses(input))
+*/
+
+/***********************************************************************************/
+
+// 561. Array Partition I
+
+class Solution_arrayPairSum {
+    func arrayPairSum(_ nums: [Int]) -> Int {
+        let sorted = nums.sorted()
+        var i = 0
+        var sum = 0
+        while i <= sorted.count - 1 {
+            sum = sum + min(sorted[i], sorted[i+1])
+            i = i + 2
+        }
+        return sum
+    }
+}
+
+/*
+let input = [1,4,3,2]
+print(Solution().arrayPairSum(input))
+*/
+
+/***********************************************************************************/
+
+// 965. Univalued Binary Tree
+
+class Solution_isUnivalTree {
+    func isUnivalTree(_ root: TreeNode?) -> Bool {
+
+        guard let value = root?.val else {
+            return true
+        }
+        
+        if let leftChild = root?.left, value != leftChild.val {
+            return false
+        }
+        
+        if let rightCHild = root?.right, value != rightCHild.val {
+            return false
+        }
+        
+        return isUnivalTree(root?.left) && isUnivalTree(root?.right)
+    }
+}
+
+/*
+//let input = [1,1,1,1,1,nil,1]
+let input = [2,2,2,5,2]
+let binaryTree = createBinaryTree(with: input)
+print(Solution_isUnivalTree().isUnivalTree(binaryTree))
+*/
+
+
+/***********************************************************************************/
+
+class Solution_countCharacters {
+    func countCharacters(_ words: [String], _ chars: String) -> Int {
+        var count = 0
+
+        // store chars into charsDict dictionary
+        var charsDict:[Character:Int] = [:]
+        for ch in chars {
+            if let val = charsDict[ch] {
+                charsDict[ch] = val + 1
+            } else {
+                charsDict[ch] = 1
+            }
+        }
+
+        // cound valid words
+        for word in words {
+            if self.isValid(word: word, charDict: charsDict) {
+                count += word.count
+            }
+        }
+        
+        return count
+    }
+
+    private func isValid(word:String, charDict:[Character:Int]) -> Bool {
+        
+        // store word into dictionary
+        var wordDict:[Character:Int] = [:]
+        for ch in word {
+            if let val = wordDict[ch] {
+                wordDict[ch] = val + 1
+            } else {
+                wordDict[ch] = 1
+            }
+        }
+        
+        // compare if word dictioinary is same as charsDict
+        let allKeys = wordDict.keys
+        
+        for key in allKeys {
+            if let charCount = wordDict[key] {
+                if let availableCharCount = charDict[key], charCount <= availableCharCount {
+                    // good
+                } else {
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
+}
+
+/*
+let words = ["cat","bt","hat","tree"]
+let chars = "atach"
+print(Solution_countCharacters().countCharacters(words, chars))
+*/
+
+/***********************************************************************************/
+
+// 617. Merge Two Binary Trees
+
+class Solution_mergeTrees {
+    func mergeTrees(_ t1: TreeNode?, _ t2: TreeNode?) -> TreeNode? {
+        if t1 == nil {
+            return t2
+        }
+        
+        if t2 == nil {
+            return t1
+        }
+        
+        if let t1 = t1, let t2 = t2 {
+            let newNode = TreeNode(t1.val + t2.val)
+            newNode.left = mergeTrees(t1.left, t2.left)
+            newNode.right = mergeTrees(t1.right, t2.right)
+            
+            return newNode
+        }
+        
+        return nil
+    }
+}
+
+/***********************************************************************************/
+
+class Solution_longestPalindrome {
+    
+    func longestPalindrome(_ s: String) -> String {
+        
+        var longestPalindrome = ""
+        let input = [Character](s)
+        
+        for (i,_) in input.enumerated() {
+            let palindrome = self.getPalindromeFor(i: i, input: input)
+            if palindrome.count > longestPalindrome.count {
+                longestPalindrome = palindrome
+            }
+        }
+        
+        // if no palindrome then at least return a first character
+        // because single character is itself a palindrome
+        if longestPalindrome.isEmpty, let firstChar = s.first {
+            longestPalindrome.append(firstChar)
+        }
+        return longestPalindrome
+    }
+    
+    private func getPalindromeFor(i:Int, input:[Character]) -> String {
+        
+        var evenPalindrome = ""
+        if i+1 < input.count && input[i] == input[i+1] {
+            evenPalindrome = self.growPalindrome(i: i, j: i + 1, input: input, currChar: nil)
+        }
+        
+        var oddPalindrome = ""
+        if i+1 < input.count && i-1 >= 0 && input[i-1] == input[i+1] {
+            oddPalindrome = self.growPalindrome(i: i - 1, j: i + 1, input: input, currChar: input[i])
+        }
+        
+        return max(evenPalindrome, oddPalindrome)
+    }
+
+    private func growPalindrome(i:Int, j:Int, input:[Character], currChar:Character?) -> String {
+        
+        var palindrome:[Character] = []
+        if let currChar = currChar {
+            palindrome.append(currChar)
+        }
+        
+        var left = i
+        var right = j
+        
+        while left >= 0 && right < input.count && input[left] == input[right] {
+            
+            palindrome.insert(input[left], at: 0)
+            palindrome.append(input[right])
+
+            left = left - 1
+            right = right + 1
+        }
+        
+        return String(palindrome)
+    }
+}
+
+/*
+let input = "babad"
+print(Solution_longestPalindrome().longestPalindrome(input))
+*/
+
+/***********************************************************************************/
+
+// 28. Implement strStr()
+
+// I was not able to solve this on leetcode as this solution exceeds time need to think better solution
+// Wonderring what could be better solution than
+
+class Solution_strStr {
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+        if needle.isEmpty {
+            return 0
+        }
+        if needle.count > haystack.count {
+            return -1
+        }
+        let haystackChars = Array(haystack)
+        let needleChars = Array(needle)
+        
+        var count = 0
+        var i = 0
+        while i < haystackChars.count {
+            if needleChars[count] == haystackChars[i] {
+               count += 1
+               
+               if count == needle.count {
+                   return i - (needleChars.count - 1)
+               }
+           } else {
+               i = i - count
+               count = 0
+           }
+            
+            // if remaining needle items > remaining haystack items then return - 1
+            let remNeedleItems = needleChars.count - count
+            let remHaystackItems = haystackChars.count - i
+            
+            if remHaystackItems < remNeedleItems {
+                return -1
+            }
+            i += 1
+        }
+        return -1
+    }
+}
+
+/*
+let haystack = "mississippi"
+let needle = "issip"
+print(Solution().strStr(haystack, needle))
+*/
+
+/***********************************************************************************/
+
+// this solution assumes all the intervals are inside positive value range
+
+class Solution1_merge {
+    func merge(_ intervals: [[Int]]) -> [[Int]] {
+
+        // 1. get highest value in the intervals
+        var higestVal = 0
+        for arr in intervals {
+            if arr[0] > higestVal {
+                higestVal = arr[0]
+            }
+            if arr[1] > higestVal {
+                higestVal = arr[1]
+            }
+        }
+        
+        var storage:[Int] = [Int](repeating: 0, count: higestVal + 2)
+        
+        // store the intervals inside storage
+        var valueToInsert = 1
+        for arr in intervals {
+            
+            var tempValueToInsert = 1
+            if storage[arr[0]] != 0 {
+                tempValueToInsert = storage[arr[0]]
+            } else if storage[arr[1]] != 0 {
+                tempValueToInsert = storage[arr[1]]
+            } else {
+                tempValueToInsert = valueToInsert
+                valueToInsert += 1
+            }
+            
+            for i in arr[0]...arr[1] {
+                storage[i] = tempValueToInsert
+            }
+        }
+        
+        // collecting results
+        var result:[[Int]] = []
+        
+        // starting value
+        var sIndex = -2
+        // end value
+        var eIndex = -2
+        
+        var i = 0
+        while i < storage.count {
+            if i-1 >= 0 && storage[i-1] == storage[i] {
+                eIndex = i
+            } else {
+                if sIndex != -2 {
+                    var newArr:[Int] = []
+                    newArr.append(sIndex)
+                    newArr.append(eIndex)
+                    result.append(newArr)
+                }
+                
+                if storage[i] != 0 {
+                    sIndex = i
+                    eIndex = i
+                } else {
+                    sIndex = -2
+                    eIndex = -2
+                }
+            }
+            i += 1
+        }
+        return result
+    }
+}
+
+//let input = [[1,3],[2,6],[8,10],[15,18]]
+//let input = [[1,4],[5,6]]
+//let input = [[1,4],[0,0]]
+//let input = [[1,4],[0,1]]
+//print(Solution1_merge().merge(input))
+
+
+/***********************************************************************************/
+
+/// Apple coding interview
+
+/* englishNum should be written to take a single integer (for simplicity's sake, we will limit it to the range [0, 10_000_000]) and return the English words representing that number */
+func englishNum(_ num: Int) -> String {
+  
+  // preparing unique mappings for unique numbers
+  
+  var numberMappings:[Int:String] = [
+    0:"zero",
+    1:"one",
+    2:"two",
+    3:"three",
+    4:"four",
+    5:"five",
+    6:"six",
+    7:"seven",
+    8:"eight",
+    9:"nine",
+    10:"ten",
+    20:"twenty",
+    30:"thirty",
+    40:"fourty",
+    50:"fivty",
+    60:"sixty",
+    70:"seventy",
+    80:"eighty",
+    90:"ninety",
+    100:"hundred",
+    1000:"thousand"
+  ]
+  
+  
+  // I am going to break down the input and store into array such as
+  // if it is  198
+  // array = [1,9,8]
+  
+  // 879
+  
+  // [8,8,7,9]
+  
+  var inputBreakDowns:[Int] = []
+  
+  var input = num
+
+  while input > 0 {
+    let rem = input % 10
+    inputBreakDowns.insert(rem, at:0)
+    input = input / 10
+  }
+  
+  var result = ""
+  for (i,num) in inputBreakDowns.enumerated() {
+    
+    // this handles between 0 to 99
+    if i >= inputBreakDowns.count - 1 {
+      
+      var result = ""
+      if i == inputBreakDowns.count - 2 {
+          if let tenthVal = numberMappings[num * 10] {
+            result = result + tenthVal
+          }
+      }
+      
+      if let val = numberMappings[num] {
+        result = result + " " + val
+      }
+    } else {
+      // this handles above 99
+      
+      let multiplier = Int(pow(Double(10),Double(inputBreakDowns.count - i - 1)))
+      
+      if let numberVal = numberMappings[num],
+        let multiplerVal = numberMappings[multiplier] {
+        result = result + " " + numberVal + " " + multiplerVal
+      }
+    }
+  }
+  
+  return result
+}
+
+func check<T: Equatable>(_ a: T, _ b: T) {
+  if a == b {
+    print("correct:\t\(a)")
+  } else  {
+    print("incorrect:\t\(a) should be \(b)")
+  }
+}
+
+/*
+check(englishNum(0), "zero")
+check(englishNum(1), "one")
+check(englishNum(42), "forty-two")
+check(englishNum(71), "seventy-one")
+check(englishNum(90), "ninety")
+check(englishNum(127), "one hundred and twenty-seven")
+check(englishNum(72_000), "seventy-two thousand")
+check(englishNum(72_456), "seventy-two thousand four hundred and fifty-six")
+check(englishNum(1_000_000), "one million")
+check(englishNum(1_200_000), "one million two hundred thousand")
+check(englishNum(1_472_221), "one million four hundred seventy-two thousand two hundred and twenty-one")
+
+*/
+
+
+/***********************************************************************************/
+// My better solution for the interview question with Veriely Life Science
+// Coins: [25, 10, 5, 1]
+// I need 31. What is the minimum number of coins required to get to 31?
+
+class Solution_minimumNumberOfCoins {
+    
+    var minCoinCountDict:[Int:Int] = [:]
+    func minimumNumberOfCoins(_ coins: [Int], _ sum: Int) -> Int {
+        return self.minimumNumberOfCoins(coins: coins, minCount: 0, sum: sum)
+    }
+    
+    private func minimumNumberOfCoins(coins:[Int], minCount:Int, sum:Int) -> Int {
+        
+        if sum == 0 {
+            return minCount
+        }
+        
+        var min = Int.max
+        for coinVal in coins {
+            if coinVal <= sum {
+                
+                var localMin = 0
+                if let storedMinCount = self.minCoinCountDict[sum] {
+                    localMin = storedMinCount
+                } else {
+                    localMin = self.minimumNumberOfCoins(coins: coins, minCount: minCount + 1, sum: sum-coinVal)
+                    
+                    // cache in order to use next time for same
+                    self.minCoinCountDict[sum-coinVal] = localMin
+                }
+                
+                if localMin < min {
+                    min = localMin
+                }
+            }
+        }
+
+        return min
+    }
+}
+
+/*
+let coins = [25, 10, 1]
+let sum = 31
+print(Solution_minimumNumberOfCoins().minimumNumberOfCoins(coins, sum))
+*/
+
+/***********************************************************************************/
+
+// practice
+
+/*
+
+var aDict:[String:Int] = [:]
+
+aDict["Krishna"] = 2
+aDict["Hari"] = 1
+
+aDict["Bista"] = 3
+
+//let minuteInterval = 5
+//for tickMark in stride(from: 0, to: 60, by: minuteInterval) {
+//    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)
+//
+//    print(tickMark)
+//}
+//
+////for item in aDict {
+////
+////    let a = type(of: item)
+////
+////    print(item.key)
+////}
+//
+//
+//let animals = ["Antelope", "Butterfly", "Camel", "Dolphin"]
+//
+//var animalIterator = animals.makeIterator()
+//while let animal = animalIterator.next() {
+//    print(animal)
+//}
+
+struct Countdown: Sequence {
+    let start: Int
+    
+    func makeIterator() -> CountdownIterator {
+        return CountdownIterator(self)
+    }
+}
+
+struct CountdownIterator: IteratorProtocol {
+    let countdown: Countdown
+    var times = 0
+    
+    init(_ countdown: Countdown) {
+        self.countdown = countdown
+    }
+    
+    mutating func next() -> Int? {
+        let nextNumber = countdown.start - times
+        
+        guard nextNumber > 0 else {
+            return nil
+        }
+        
+        times += 2
+        return nextNumber
+    }
+}
+
+//let threeTwoOne = Countdown(start: 20)
+//for (i,count) in threeTwoOne.enumerated() {
+//    print("\(count)...")
+//}
+
+struct iPad: Hashable {
+    var serialNumber: String
+    var capacity: Int
+}
+
+let ipad1 = iPad(serialNumber: "1234", capacity: 12)
+let ipad2 = iPad(serialNumber: "1234", capacity: 12)
+
+//print(ipad1 == ipad2)
+
+struct Person: Equatable {
+    var name: String
+    var age: Int
+}
+
+let person1 = Person(name: "hari", age: 12)
+let person2 = Person(name: "hari", age: 12)
+
+print(person1 == person2)
+
+ */
+ 
+/***********************************************************************************/
+
+/* problem with WealthFront
+
+
+/* Here's a helper class that can efficiently return the smallest
+ * object it contains. Assume it magically knows how to sort your
+ * objects correctly – all of these methods run in O(1) times
+ */
+ 
+public class MinHeap<T> {
+  var count = 0
+ 
+  // Adds an object
+  func addObject(_ object: T)
+ 
+  // Returns (but does not remove) the smallest object, or nil if empty
+  func minObject() -> T?
+ 
+  // Removes and returns the smallest object, or nil if empty
+  func popMinObject() -> T?
+ 
+  // Removes all objects
+  func removeAllObjects()
+}
+
+/*
+Sample input:
+let input = [[4, 4],
+             [1, 5, 10],
+             [3, 7, 8, 98, 99],
+             [],
+             [4, 4]]
+m = # of subarrays
+n = length of the longest subarray
+
+worst case:
+runtime: O(m*n)
+space: O(m*n)
+*/
+/*
+Expected output:
+[ 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 10, 98, 99 ]
+
+*/
+
+// my solution
+
+// 1. take only first item of the sub array and put it inside the min heap
+
+// 2. we can use dictionary [Int:[Int]] , first element of array as key and rest as value
+
+// 3. iterate over the min heap, get the minimum item and taking it as a key get the array
+
+// keep appending the araay to the result
+
+
+func mergeArrays(_ arrays: [[Int]]) -> [Int] {
+   
+   // O(m*n)
+   var minHeap = MinHeap<Int>()
+   
+   // O(m*n)
+   for arr in arrays {
+       for number in arr {
+           minHeap.addObject(number)
+       }
+   }
+   
+   // O(m*n)
+   let result:[Int] = []
+   
+   // O(m*n)
+   while minHeap.count > 0 {
+       result.append(minHeap.popMinObject())
+   }
+   
+   return result
+}
+
+*/
+
+
+/* Question asked in the online coding assesment of Caffaine */
+// Need to balance angles to its by adding necessary angles to its ending and beginnings
+
+func solution(angles: String) -> String {
+    
+    var anglesChars = Array(angles)
+    
+    
+    var stack:[Character] = []
+    
+    for ch in anglesChars {
+        if ch == "<" {
+            stack.append(ch)
+        } else if ch == ">" && stack.isEmpty == false {
+            stack.removeLast()
+        }
+    }
+    
+    //  balance all remaining "<"
+    let openAngles:[Character] = [Character](repeating: ">", count: stack.count)
+    anglesChars.append(contentsOf: openAngles)
+    
+    // now try to balance beginninng
+    stack.removeAll()
+    
+    var i = anglesChars.count - 1
+    while i >= 0 {
+        let ch = anglesChars[i]
+        
+        if ch == ">" {
+            stack.append(ch)
+        } else if ch == "<" && stack.isEmpty == false {
+            stack.removeLast()
+        }
+        
+        i = i - 1
+    }
+    
+    let closeAngles:[Character] = [Character](repeating: "<", count: stack.count)
+    anglesChars.insert(contentsOf: closeAngles, at: 0)
+
+    return String(anglesChars)
+}
+
+/*
+let input = "<"
+print(solution(angles: input))
+*/
+
+/***********************************************************************************/
+
+// frequently asked question in facebook interview
+
+class Solution_moveAllNonZeroToBeginning {
+     func moveAllNonZeroToBeginning(numbers:[Int]) -> [Int] {
+        var resultNumbers = [Int](repeating: 0, count: numbers.count)
+        var count = 0
+        
+        for number in numbers {
+            if number != 0 {
+                resultNumbers[count] = number
+                count += 1
+            }
+        }
+        
+        return resultNumbers
+    }
+    
+    func moveAllZeroToBeginning(numbers:[Int]) -> [Int] {
+        var resultNumbers = [Int](repeating: 0, count: numbers.count)
+        
+        var count = numbers.count - 1
+        
+        for number in numbers {
+            if number != 0 {
+                resultNumbers[count] = number
+                count = count - 1
+            }
+        }
+        
+        return resultNumbers
+    }
+}
+
+//let input = [0,1,2,3,40,4,0,4,5,0,2,0]
+//print(Solution_moveAllNonZeroToBeginning().moveAllNonZeroToBeginning(numbers: input))
+//print(Solution_moveAllNonZeroToBeginning().moveAllZeroToBeginning(numbers: input))
+
+/***********************************************************************************/
+
+class Solution_romanToInt {
+    func romanToInt(_ s: String) -> Int {
+        
+        let romanToIntDict:[Character:Int] = [
+            "I":1,
+            "V":5,
+            "X":10,
+            "L":50,
+            "C":100,
+            "D":500,
+            "M":1000
+        ]
+        
+        let roman = Array(s)
+        
+        var i = 0
+        
+        var result = 0
+        while i < roman.count {
+            
+            if let currVal = romanToIntDict[roman[i]] {
+                if i + 1 < roman.count, let nextVal = romanToIntDict[roman[i+1]], currVal < nextVal {
+                    result = result + nextVal - currVal
+                    i = i + 1
+                } else {
+                    result = result + currVal
+                }
+            }
+            
+            i = i + 1
+        }
+        
+        return result
+    }
+}
+
+/*
+let input = "LXXXIX"
+print(Solution_romanToInt().romanToInt(input))
+*/
+
+/***********************************************************************************/
+
+class Solution4_isPalindrome {
+    func isPalindrome(_ x: Int) -> Bool {
+        
+        guard x > -1 else {
+            return false
+        }
+        
+        let inputChars  =  Array("\(x)")
+        
+        var i = 0
+        while inputChars.count - 1 - i > i {
+            if inputChars[i] != inputChars[inputChars.count - 1 - i] {
+                return false
+            }
+            i = i + 1
+        }
+        
+        return true
+    }
+}
+
+// print(Solution4_isPalindrome().isPalindrome(100000001))
+
+/***********************************************************************************/
+
+// below solution is time exceeded in Leetcode
+class Solution1_mergeKLists {
+    
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        
+        var resultList:ListNode?
+        
+        for list in lists {
+            resultList = self.mergeTwoLists(list, resultList)
+        }
+        
+        return resultList
+    }
+    
+    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        var firstRunNode = l1
+        var secondRunNode = l2
+        
+        var resultRunNode:ListNode?
+        if let fRunNode = firstRunNode,
+            let sRunNode = secondRunNode {
+            
+            if fRunNode.val < sRunNode.val {
+                resultRunNode = firstRunNode
+                firstRunNode = firstRunNode?.next
+            } else {
+                resultRunNode = secondRunNode
+                secondRunNode = secondRunNode?.next
+            }
+            
+        } else {
+            if firstRunNode != nil {
+                resultRunNode = firstRunNode
+                firstRunNode = firstRunNode?.next
+            } else if secondRunNode != nil {
+                resultRunNode = secondRunNode
+                secondRunNode = secondRunNode?.next
+            }
+        }
+        
+        let resultHead = resultRunNode
+        
+        // merge here
+        while firstRunNode != nil || secondRunNode != nil {
+            if let fRunNode = firstRunNode,
+                let sRunNode = secondRunNode {
+                
+                if fRunNode.val < sRunNode.val {
+                    resultRunNode?.next = firstRunNode
+                    firstRunNode = firstRunNode?.next
+                } else {
+                    resultRunNode?.next = secondRunNode
+                    secondRunNode = secondRunNode?.next
+                }
+                
+            } else {
+                if firstRunNode != nil {
+                    resultRunNode?.next = firstRunNode
+                    firstRunNode = firstRunNode?.next
+                } else if secondRunNode != nil {
+                    resultRunNode?.next = secondRunNode
+                    secondRunNode = secondRunNode?.next
+                }
+            }
+            
+            resultRunNode = resultRunNode?.next
+        }
+        
+        return resultHead
+    }
+}
+
+
+/*
+var lists:[ListNode] = []
+
+if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
+    lists.append(list1)
+}
+
+if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
+    lists.append(list2)
+}
+
+if let list3 = createLinkedListFromArray(arr: [2,6]) {
+    lists.append(list3)
+}
+
+if let result = Solution1_mergeKLists().mergeKLists(lists) {
+    printLinkedList(head: result)
+}
+*/
+
+
+// below solution is time exceeded in Leetcode
+
+class Solution2_mergeKLists {
+    
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        
+        var runnerNodes = lists
+        
+        var resultNode:ListNode?
+        var lastNode:ListNode?
+        
+        var tempSmallest:ListNode = ListNode(Int.max)
+        var tempSmallIndex = -1
+        
+        var i = 0
+        while runnerNodes.count > i {
+                
+            if let runnerNode = runnerNodes[i], runnerNode.val < tempSmallest.val {
+                tempSmallest = runnerNode
+                tempSmallIndex = i
+            }
+
+            i = i + 1
+            
+            // after getting smallest out of runnerNodes collect the smallest node into result
+            if i == runnerNodes.count {
+                
+                if resultNode == nil {
+                    resultNode = tempSmallest
+                    lastNode = resultNode
+                } else {
+                    lastNode?.next = tempSmallest
+                    lastNode = tempSmallest
+                }
+                
+                if tempSmallIndex > -1 {
+                    if let nextNode = runnerNodes[tempSmallIndex]?.next {
+                        runnerNodes[tempSmallIndex] = nextNode
+                    } else {
+                        // removing the runner nodes if it comes to end
+                        runnerNodes.remove(at: tempSmallIndex)
+                    }
+                }
+                
+                lastNode?.next = nil
+                
+                // reset temp smallest
+                tempSmallest = ListNode(Int.max)
+                i = 0
+            }
+        }
+        
+        return resultNode
+    }
+}
+
+
+// [[1,4,5],[1,3,4],[2,6]]
+
+/*
+var lists:[ListNode] = []
+
+if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
+    lists.append(list1)
+}
+
+if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
+    lists.append(list2)
+}
+
+if let list3 = createLinkedListFromArray(arr: [2,6]) {
+    lists.append(list3)
+}
+
+if let result = Solution2_mergeKLists().mergeKLists(lists) {
+    printLinkedList(head: result)
+}
+
+*/
+
+/***********************************************************************************/
+
+// Practce with Friend: Sujan Shrestha
+class Solution_countLongestConsequtiveIncrement {
+  
+  var longest = 0
+    
+  func countLongestConsequtiveIncrement(root:TreeNode) -> Int {
+    self.countLongest(node: root, count:0)
+    return self.longest
+  }
+
+  private func countLongest(node:TreeNode, count:Int) {
+    
+    if self.longest < count {
+        self.longest = count
+    }
+    
+    if node.right == nil && node.left == nil {
+      return
+    }
+    
+    if let leftNode = node.left {
+      if leftNode.val >= node.val {
+        self.countLongest(node: leftNode, count:count+1)
+      } else {
+        self.countLongest(node: leftNode, count:0)
+      }
+    }
+    
+    if let rightNode = node.right {
+      if rightNode.val >= node.val {
+        self.countLongest(node: rightNode, count:count+1)
+      } else {
+        self.countLongest(node: rightNode, count:0)
+      }
+    }
+  }
+}
+
+/***********************************************************************************/
+
+// 43. Multiply Strings
+
+// let num1 = "498828660196"
+// let num2 = "840477629533"
+
+

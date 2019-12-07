@@ -10,38 +10,86 @@ import Foundation
 
 /***********************************************************************************/
 
-// move non-zero to the beginning of the array
-func moveNonZeroToFront_1(inputArr: [Any]) -> [Any] {
-    var resultArr:[Any] = []
-    for item in inputArr {
-        if let item = item as? Int, item == 0 {
-            // do nothing
-        }else{
-            resultArr.append(item)
+class Solution_moveZeros {
+    // with using swap
+    func moveZeroes(_ arr: inout [Int]) {
+      
+        var lastZeroIndex = -1
+        
+        for (i,item) in arr.enumerated() {
+            if item != 0 {
+                if lastZeroIndex > -1 {
+                    arr.swapAt(i, lastZeroIndex)
+                    lastZeroIndex = lastZeroIndex + 1
+                }
+            } else {
+                if lastZeroIndex == -1 {
+                    lastZeroIndex = i
+                }
+            }
         }
     }
-    return resultArr
-}
-
-func moveNonZeroToFront_2(inputArr:inout [Any]) -> [Any] {
-    for (i,item) in inputArr.enumerated() {
-        if let item = item as? Int, item == 0 {
-            inputArr.remove(at: i)
+    
+    /*
+    // test code
+     
+    var input1:[Any] = [ 4, 1, 3, 2, "X", "Y", "Z", 0, 1, 3, 4 ]
+    let result = moveNonZeroToFront_2(inputArr: &input1)
+    print(result)
+     
+    */
+    
+    // move non-zero to the beginning of the array
+    func moveNonZeroToFront_1(inputArr: [Any]) -> [Any] {
+        var resultArr:[Any] = []
+        for item in inputArr {
+            if let item = item as? Int, item == 0 {
+                // do nothing
+            }else{
+                resultArr.append(item)
+            }
         }
-
-        print(inputArr)
+        return resultArr
     }
-    return inputArr
-}
 
-/*
-// test code
- 
-var input1:[Any] = [ 4, 1, 3, 2, "X", "Y", "Z", 0, 1, 3, 4 ]
-let result = moveNonZeroToFront_2(inputArr: &input1)
-print(result)
- 
-*/
+    func moveNonZeroToFront_2(inputArr:inout [Any]) -> [Any] {
+        for (i,item) in inputArr.enumerated() {
+            if let item = item as? Int, item == 0 {
+                inputArr.remove(at: i)
+            }
+
+            print(inputArr)
+        }
+        return inputArr
+    }
+    
+    func moveZerosToEnd(nums:inout [Int]) {
+      
+      var i = 0
+      for (index,num) in nums.enumerated() {
+        if num != 0 {
+          nums[i] = num
+          
+          if index != i {
+             nums[index] = 0
+          }
+          
+          i = i + 1
+        }
+      }
+    }
+    
+    /*
+    var input = [1, 10, 2, 8, 3, 6, 0, 0, 0, 4, 0, 5, 7, 0]
+    moveZerosToEnd(nums:&input)
+    */
+    
+    /*
+    var input2 = [1, 10, 0, 0, 0, 2, 8, 3, 0, 0, 6, 4, 0, 5, 7, 0]
+    Solution_moveZeros().moveZeroes(&input2)
+    print(input2)
+     */
+}
 
 /***********************************************************************************/
 
@@ -1041,6 +1089,8 @@ print(result)
 
 /***********************************************************************************/
 
+// 43. Multiply Strings
+
 //Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
 class Solution1_multiply {
@@ -1252,31 +1302,28 @@ print(result)
 
 // Permutation
 
-func permutate(arr:[String]) -> [[String]] {
-    let result = permuteMe(arr: arr, l: 0, r: arr.count-1)
-    return result
-}
-
-func permuteMe(arr: [String],l:Int, r:Int) -> [[String]] {
-    var result:[[String]] = []
-    
-    if l == r {
-        result.append(arr)
-    } else {
-        for i in l...r {
-            var tempArr:[String] = arr
-            tempArr.swapAt(l, i)
-            result.append(contentsOf: permuteMe(arr: tempArr, l: l+1, r: r))
-        }
+class Permutation {
+    func permutate(str:String) -> [String] {
+        return permuteMe(str: str, startIndex: 0)
     }
-    return result
+
+    func permuteMe(str: String,startIndex:Int) -> [String] {
+        var result:[String] = []
+        
+        if startIndex == str.count {
+            result.append(str)
+        } else {
+            for i in startIndex..<str.count {
+                var tempStrChars = Array(str)
+                tempStrChars.swapAt(i, startIndex)
+                result.append(contentsOf: permuteMe(str: String(tempStrChars), startIndex: startIndex + 1))
+            }
+        }
+        return result
+    }
 }
 
-/*
-var arr = ["A","B","C","D"]
-let result = permutate(arr: arr)
-print(result)
-*/
+// print(Permutation().permutate(str: "ABCDE"))
 
 /***********************************************************************************/
 
@@ -5644,9 +5691,1030 @@ class Solution_countLongestConsequtiveIncrement {
 
 /***********************************************************************************/
 
-// 43. Multiply Strings
+// on facebook technical coding interview
 
-// let num1 = "498828660196"
-// let num2 = "840477629533"
+// find all possible substraction and addition combinations when given an array of Integer
+
+//class Solution {
+//    func collectArithmaticCombinationResult(arr:[Int]) -> [Int] {
+//
+//        var result:[Int] = []
+//
+//        if arr.count == 0 {
+//            return [Int]()
+//        } else {
+//
+//            var newArr = arr
+//
+//            let firstItem = newArr.removeFirst()
+//            let res1 = firstItem + self.collectArithmaticCombinationResult(arr: newArr)
+//
+//
+//        }
+//
+//        return result
+//    }
+//
+//    func possibleSum(arr:[Int]) -> Int {
+//
+//    }
+//
+//}
 
 
+/*
+Your code is stored in a revision control system (e.g. svn). You see a bug
+in your code, and you know it wasn't there before. Given the start revision (Int) and the end revision (Int) write a function to find the revision that introduced the bug.
+
+For example:
+revision 100
+revision 101
+...
+revision ??? <-- a bug was introduced!
+...
+revision 150
+revision 151
+revision 152
+
+rev 1
+rev 2 False
+rev 3 True <- bug introduced
+rev 4 True
+rev 5
+
+// Assume you have this function, implemented for you to use
+func isBad(revNum: Int) -> Bool
+*/
+
+// n = endRev - startRev
+
+// O(n)
+
+// [f,f,f,t,t,t,t,t,t]
+//  5,6,7,8,9,10,11,12,13
+
+// mid = 9
+
+// 0,0
+
+// check negative inputs
+
+// within the range of big int
+
+// 1,2
+
+// [f,t]
+// [1,2]
+
+// mid = (1 + 2)/2 => 1
+// start = 1
+// end = 2
+
+//
+
+func isBad(revNum: Int) -> Bool {
+    return true
+}
+
+//  my solution there is one problem while conditioning to return right rev
+
+//func findBug(startRev:Int, endRev:Int) -> Int {
+//
+//  if startRev >= endRev {
+//    return -1
+//  }
+//
+//  // get mid revision value
+//  let midRev = (startRev + endRev)/2
+//
+//  if (isBad(revNum: midRev) == true && isBad(revNum: midRev + 1) == false) ||
+//    (isBad(revNum: midRev) == true && isBad(revNum: midRev - 1) == false) {
+//    return midRev
+//  } else {
+//    if isBad(revNum: midRev) {
+//      // search in first half
+//      return findBug(startRev:startRev, endRev:midRev)
+//
+//    } else {
+//      // search in second half
+//      return findBug(startRev:midRev, endRev:endRev)
+//    }
+//  }
+//}
+
+func findBug(startRev:Int, endRev:Int) -> Int {
+  
+  if startRev >= endRev {
+    return -1
+  }
+  
+  // get mid revision value
+  let midRev = (startRev + endRev)/2
+  
+    if (isBad(revNum: midRev) == false && isBad(revNum: midRev + 1) == true) ||
+    (isBad(revNum: midRev) == true && isBad(revNum: midRev - 1) == false) {
+    return midRev
+  } else {
+    if isBad(revNum: midRev) {
+      // search in first half
+      return findBug(startRev:startRev, endRev:midRev)
+      
+    } else {
+      // search in second half
+      return findBug(startRev:midRev, endRev:endRev)
+    }
+  }
+}
+
+
+/***********************************************************************************/
+
+// 33. Search in Rotated Sorted Array
+
+// medium
+
+class Solution_search {
+    func search(_ nums: [Int], _ target: Int) -> Int {
+        
+        guard nums.count > 0 else {
+            return -1
+        }
+        
+        let pivot = self.findPivot(nums: nums, l: 0, r: nums.count-1)
+        
+        // search in right half
+        let leftHalfIndex = self.binSearch(l: 0, u: pivot, nums: nums, target: target)
+        if leftHalfIndex > -1 {
+            return leftHalfIndex
+        }
+        
+        // search in left half
+        let rightHalfIndex = self.binSearch(l: pivot+1, u: nums.count-1, nums: nums, target: target)
+        if rightHalfIndex > -1 {
+            return rightHalfIndex
+        }
+        
+        return -1
+    }
+    
+    private func findPivot(nums:[Int], l:Int, r:Int) -> Int {
+        
+        if l > r { return 0 }
+        
+        let m = (l + r)/2
+        
+        if m-1 >= 0 && nums[m-1] > nums[m] {
+            return m-1
+        } else if m+1 < nums.count && nums[m] > nums[m+1] {
+            return m
+        } else {
+            if nums[m] > nums[r] {
+                // search in right half
+                return self.findPivot(nums: nums, l: m + 1, r: r)
+            } else {
+                // search in left half
+                return self.findPivot(nums: nums, l: l, r: m-1)
+            }
+        }
+    }
+    
+    private func binSearch(l:Int, u:Int, nums:[Int], target:Int) -> Int {
+        
+        if l > u {
+            return -1
+        }
+        
+        let m = (l + u)/2
+        
+        if target == nums[m] {
+            return m
+        }
+        
+        if target > nums[m] {
+            return self.binSearch(l: m + 1, u: u, nums: nums, target: target)
+        } else {
+            return self.binSearch(l: l, u: m - 1, nums: nums, target: target)
+        }
+    }
+}
+
+/*
+//let input = [4,5,6,7,0,1,2]
+//let input:[Int] = []
+
+//let input = [4,5,6,7,8,1,2,3]
+let input = [1,2,3,4,5]
+
+print(Solution_search().search(input, 5))
+*/
+
+/***********************************************************************************/
+
+// 392. Is Subsequence
+
+class Solution_isSubsequence {
+    func isSubsequence(_ s: String, _ t: String) -> Bool {
+        
+        if s.isEmpty {
+            return true
+        }
+        
+        if s.count > t.count {
+            return false
+        }
+        
+        var sChars = Array(s)
+        var i = 0
+        for ch in t {
+            if ch == sChars[i] {
+                i = i + 1
+            }
+            
+            if i > s.count - 1 {
+                return true
+            }
+        }
+        
+        return i >= s.count - 1
+    }
+}
+
+/*
+let s = "ace"
+let t = "abcde"
+print(Solution_isSubsequence().isSubsequence(s, t))
+*/
+
+
+// 287. Find the Duplicate Number
+
+class Solution_findDuplicate {
+    func findDuplicate(_ nums: [Int]) -> Int {
+        
+        var prevNum = -1
+        for n in nums.sorted() {
+            if n == prevNum {
+                return n
+            }
+            prevNum = n
+        }
+        return -1
+    }
+}
+
+/*
+let input = [1,3,4,2,2]
+print(Solution_findDuplicate().findDuplicate(input))
+*/
+
+/***********************************************************************************/
+
+public func solution(_ T : inout [Int]) -> Int {
+    // write your code in Swift 4.2.1 (Linux)
+    
+    var dictOfCandyTypes:[Int:Int] = [:]
+    
+    for item in T {
+        if let val = dictOfCandyTypes[item] {
+            dictOfCandyTypes[item] = val + 1
+        } else {
+            dictOfCandyTypes[item] = 1
+        }
+    }
+    
+    var taken = false
+    var resultCount = 0
+    for (_,count) in dictOfCandyTypes {
+        
+        if count % 2 == 0 {
+            resultCount = resultCount + 1
+        } else {
+            if taken {
+                taken = false
+            } else {
+                resultCount = resultCount + 1
+                taken = true
+            }
+        }
+    }
+    
+    return resultCount
+}
+
+//var input = [3, 4, 7, 7, 6, 6]
+// var input = [80, 80, 1000000000, 80, 80, 80, 80, 80, 80, 123456789]
+//print(solution(&input))
+
+
+/***********************************************************************************/
+
+// pramp practice
+
+class Solution_Sqrt {
+    
+    /*...................*/
+    
+    func floorSqrt(x:Int) -> Int {
+        if x == 0 || x == 1 {
+            return x
+        }
+
+        var i = 1
+        while i * i <= x {
+            i = i + 1
+        }
+        return i-1
+    }
+    
+    /*...................*/
+    
+    func myBinSearchSqrt(n:Int) -> Int {
+        if n == 0 || n == 1 {
+            return n
+        }
+        return self.binSearchSqrt(n: n, low: 0, high: n/2)
+    }
+    
+    private func binSearchSqrt(n:Int, low:Int, high:Int) -> Int {
+        let m = (low + high)/2
+        
+        if m*m <= n && (m+1)*(m+1) > n {
+            return m
+        } else if m*m > n {
+            return self.binSearchSqrt(n: n, low: low, high: m-1)
+        } else {
+            return self.binSearchSqrt(n: n, low: m+1, high: high)
+        }
+    }
+
+    /*...................*/
+    
+    func myDoubleSqrt(n:Double) -> Double {
+        return myDoubleSqrt(n: n, low: 0.0, high: n/2)
+    }
+    
+    private func myDoubleSqrt(n:Double, low:Double, high:Double) -> Double {
+        
+        let m = (low + high)/2
+        
+        if abs(m*m - n) < 0.001 {
+            return m
+        } else {
+            if m*m > n {
+                return self.myDoubleSqrt(n: n, low: low, high: m)
+            } else {
+                return self.myDoubleSqrt(n: n, low: m, high: high)
+            }
+        }
+    }
+    
+    /*...................*/
+    
+    // precision = 0.001
+    func findSqrtNonRecusion(n:Double) -> Double {
+        var low = 0.0
+        var high = n
+        
+        while (high - low) > 0.001 {
+            
+            let mid = (high + low)/2
+            let newSqrt = mid*mid
+            
+            if newSqrt == n {
+                return mid
+            } else if newSqrt < n {
+                low = mid
+            } else {
+                high = mid
+            }
+        }
+        
+        return (high + low)/2
+    }
+    
+    // non recursion
+    func findNthRoot(x:Double, n:Int) -> Double {
+        var low = 0.0
+
+        var high = x
+        
+        while (high - low) > 0.001 {
+            
+            let mid = (high + low)/2
+            let newSqrt = pow(mid,Double(n))
+
+            if newSqrt == x {
+                return mid
+            } else if newSqrt < x {
+                low = mid
+            } else {
+                high = mid
+            }
+        }
+        
+        return (high + low)/2
+    }
+}
+
+//print(Solution_Sqrt().floorSqrt(x: 8))
+//print(Solution_Sqrt().floorSqrt(x: 9))
+//print(Solution_Sqrt().floorSqrt(x: 10))
+
+//print(Solution_Sqrt().myBinSearchSqrt(n: 8))
+//print(Solution_Sqrt().myBinSearchSqrt(n: 9))
+//print(Solution_Sqrt().myBinSearchSqrt(n: 16))
+
+//print(Solution_Sqrt().findSqrtNonRecusion(n: 9))
+// print(Solution_Sqrt().findNthRoot(x: 7, n: 3))
+
+
+/***********************************************************************************/
+
+
+/* Interview questios with Life360
+ 
+ 
+struct Circle : Hashable {
+  let id: UUID
+  let members: Set<Member>
+  
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    return lhs.members == lhs.members
+  }
+}
+
+struct Member: Hashable {
+  let id: UUID
+  let name: String
+}
+
+let members = ["John", "Jane", "Jake", "Jack", "Jenny", "Jessy",
+              "Mike", "Marry", "Michelle", "Mandy", "Michael", "Morty"].map{ Member(id: UUID(), name: $0) }
+
+let circles = [3,2,6,3,1,2].map{ max -> Circle in
+  let membersCount = UInt32(members.count)
+  let people = Set((0...max).map{ _ -> Member in
+                       let i: Int = Int(arc4random_uniform(membersCount))
+                       return members[i]
+                      })
+  return Circle(id: UUID(), members: people)
+}
+
+
+//for c in circles { print(c) }
+
+//let input : [Circle] = circles
+
+ // 2 members are the same iff ids are the same
+ // 2 circles are the same iff their members are the same, using "same" from member's definition.
+
+// Write a function to detect circles with identical members
+
+func question(circles: [Circle]) -> [Circle] {
+    var uniqueCircles = Set<Circle>()
+    for circle in circles {
+        uniqueCircles.insert(circle)
+    }
+    return Array(uniqueCircles)
+}
+
+// Write a function that sorts by circle size
+func question2(circles: [Circle]) -> [Circle] {
+    return circles.sorted { (circle1:Circle, circle2:Circle) in
+      return circle1.members.count > circle2.members.count
+    }
+}
+
+*/
+
+/***********************************************************************************/
+
+/* Practice Hasable */
+
+struct Employee : Hashable {
+    var id:String
+    var name:String
+}
+
+struct Company : Hashable {
+    var address:String
+    var name:String
+    var companyId:String
+    
+    var employees:Set<Employee>
+}
+
+
+/*
+let emp1 = Employee(id: "1", name: "Hari")
+let emp2 = Employee(id: "2", name: "Hari")
+let emp3 = Employee(id: "3", name: "Hari")
+let emp4 = Employee(id: "4", name: "Hari")
+let emp5 = Employee(id: "5", name: "Hari")
+
+print("begin here")
+
+var set1 = Set<Employee>()
+set1.insert(emp1)
+set1.insert(emp2)
+set1.insert(emp3)
+
+var set2 = Set<Employee>()
+set2.insert(emp1)
+set2.insert(emp2)
+set2.insert(emp3)
+
+print(set1 == set2)
+*/
+
+/***********************************************************************************/
+
+// 18. 4Sum
+class Solution_fourSum {
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        
+        var result:Set<[Int]> = []
+        
+        guard nums.count >= 4 else {
+            return []
+        }
+        
+        let sortedArr = nums.sorted()
+        
+        for i in 0..<sortedArr.count {
+            for j in i+1..<sortedArr.count {
+
+                let partialSum = sortedArr[i] + sortedArr[j]
+                          
+                if let twoSumRes = twoSum(arr:sortedArr, target:target - partialSum, start:j + 1) {
+                    for res in twoSumRes {
+                        
+                        var tmpRes:[Int] = []
+                        tmpRes.append(sortedArr[i])
+                        tmpRes.append(sortedArr[j])
+                        tmpRes.append(contentsOf: res)
+                        
+                        result.insert(tmpRes)
+                    }
+                }
+            }
+        }
+        
+        return Array(result)
+    }
+    
+    func twoSum(arr: [Int], target: Int, start:Int) -> [[Int]]? {
+        
+        var i = start
+        var j = arr.count - 1
+        
+        var results:[[Int]] = []
+        while i < j {
+            let sum = arr[i] + arr[j]
+            
+            if sum == target {
+                results.append([arr[i], arr[j]])
+                i = i + 1
+                j = j - 1
+            } else if sum > target {
+                j = j - 1
+            } else {
+                i = i + 1
+            }
+        }
+        
+        return results.count > 0 ? results : nil
+    }
+}
+
+//let input = [-3,-2,-1,0,0,1,2,3]
+//print(Solution_fourSum().fourSum(input, 0))
+
+/***********************************************************************************/
+
+/*
+ An image is represented by a 2-D array of integers, each integer representing the pixel value of the image (from 0 to 65535).
+ 
+ Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+ 
+ To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the newColor.
+ 
+ At the end, return the modified image.
+ 
+ input
+ [[1,1,1],[1,1,0],[1,0,1]]
+ sr = 1, sc = 1, newColor = 2
+ 
+ output
+ [[2,2,2],[2,2,0],[2,0,1]]
+ 
+ 
+ [2, 2, 2]
+ [2, 2, 2]
+ [2, 2, 2]
+ 
+ for (1,1) newColor = 5
+ 
+ [5, 3, 2]
+ [5, 3, 0]
+ [5, 0, 1]
+ 
+ 
+ */
+
+class Solution_floodFill {
+    
+    func floodFill(image:inout [[Int]], color: Int, i:Int, j:Int) {
+        // depth first traversel starting from row, col
+        
+        // get all neibours
+        var currColor = image[i][j]
+        image[i][j] = color
+        
+        // explore top
+        let topI = i - 1
+        
+        if topI >= 0, currColor == image[topI][j] {
+            self.floodFill(image:&image, color:color, i:topI, j:j)
+        }
+        
+        // explore left
+        let leftJ = j - 1
+        if leftJ >= 0, currColor == image[i][leftJ] {
+            self.floodFill(image:&image, color:color, i:i, j:leftJ)
+        }
+        
+        // explore bottom
+        let bottomI = i + 1
+        if bottomI < image.count, currColor == image[bottomI][j] {
+            self.floodFill(image:&image, color:color, i:bottomI, j:j)
+        }
+        
+        // explore right
+        let rightJ = j + 1
+        if rightJ < image[0].count, currColor == image[i][rightJ] {
+            self.floodFill(image:&image, color:color, i:i, j:rightJ)
+        }
+    }
+}
+
+/***********************************************************************************/
+
+
+class Solution_pancakeSort {
+    
+    // 1. find largest elememt
+    // 2. flip from 0th index to largest index to bring that to the 0 index
+    // 3. flip whole unsorted array so that largest item in 0th index would go to sorted section
+
+    func flip(arr:[Int], k:Int) -> [Int] {
+      
+      if k > arr.count {
+        return arr
+      }
+      
+      var i = k - 1
+      
+      var result:[Int] = []
+      
+      while i >= 0 {
+        result.append(arr[i])
+        i = i - 1
+      }
+      
+      i = k
+        
+      while i < arr.count {
+        result.append(arr[i])
+        i = i + 1
+      }
+      
+      return result
+    }
+
+    func pancakeSort(arr: [Int]) -> [Int] {
+      
+      var arrCopy = arr
+
+      var lastSortedIndex = arr.count
+
+      for i in 0..<arrCopy.count {
+        
+        let largestIndex = largestUnsortedIndex(arr:arrCopy, lastSortedIndex:lastSortedIndex)
+        
+        let flippedArr = flip(arr:arrCopy, k: largestIndex+1)
+
+        arrCopy = flip(arr:flippedArr, k:arr.count-i)
+
+        lastSortedIndex = arrCopy.count - 1 - i
+
+      }
+      
+      return arrCopy
+    }
+
+    func largestUnsortedIndex(arr:[Int], lastSortedIndex:Int) -> Int {
+      
+      // serarch within the unsorted range only
+      var largestIndex = 0
+      for i in 0..<lastSortedIndex {
+        if arr[i] > arr[largestIndex] {
+          largestIndex = i
+        }
+      }
+      
+      return largestIndex
+    }
+}
+
+/*
+let input1 = [1, 5, 4, 3, 2]
+let result = Solution_pancakeSort().pancakeSort(arr: input1)
+print(result)
+ */
+
+/***********************************************************************************/
+
+/*
+ 
+ Paypal Interview questions
+ 
+Your previous Plain Text content is preserved below:
+
+Given an array of strings S and two words w1 and w2 that are present in S. The task is to find the minimum distance between w1 and w2. Here distance is the number of steps or words between the first and the second word. S can have duplicate strings
+
+example input:
+S = ["paypal", "ios", "hiring", "swift", "paypal"]
+w1 = "paypal"
+w2 = "swift"
+
+example output:
+minDistance(w1, w2) = 1  // As "swift" & "paypal" are adjacent to each other
+
+*/
+
+class Solution_minDistance {
+    func minDistance(_ S:[String], w1:String, w2:String) -> Int {
+
+      var w1_i = -1
+      var w2_i = -1
+
+      var minDist = S.count
+      
+      for (i,str) in S.enumerated() {
+
+        if w1 == str {
+          w1_i = i
+        }
+
+        if w2 == str {
+          w2_i = i
+        }
+        
+        if (w1 == str || w2 == str) && w1_i > -1 && w2_i > -1 {
+           let dist = abs(w2_i - w1_i)
+           
+           if dist < minDist {
+             minDist = dist
+           }
+        }
+      }
+      
+      return minDist
+    }
+}
+
+/*
+let S = ["paypal","swift", "ios", "hiring", "swift", "abcd", "paypal"]
+let w1 = "paypal"
+let w2 = "swift"
+
+print(Solution_minDistance().minDistance(S,w1:w1,w2:w2))
+*/
+
+/***********************************************************************************/
+
+/*
+[ 'p', 'e', 'r', 'f', 'e', 'c', 't', '  ', 'm', 'a', 'k', 'e', 's', '  ',
+  'p', 'r', 'a', 'c', 't', 'i', 'c', 'e' ]
+
+
+['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', '  ',
+  'm', 'a', 'k', 'e', 's', '  ',
+  'p', 'e', 'r', 'f', 'e', 'c', 't' ]
+
+*/
+
+/*
+o(n)  + o(n)  + .... => O(n)
+
+arrr of string => ["practice", "makes", "perfect"]
+
+revere the array => ["perfect", "makes", "practice"]
+
+['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', ' '
+  'm', 'a', 'k', 'e', 's', ' ' ,
+  'p', 'e', 'r', 'f', 'e', 'c', 't' ]
+
+*/
+
+class Solution1_reverseWords {
+    func reverseWords(arr: [Character]) -> [Character] {
+       
+      var word:[Character] = []
+      
+      var words:[String] = []
+      
+      for ch in arr {
+        if ch == " " {
+          words.insert(String(word), at:0)
+          word.removeAll()
+        } else {
+          word.append(ch)
+        }
+      }
+      
+      words.append(String(word))
+      word.removeAll()
+      
+      var result:[Character] = []
+      
+      for (i,word) in words.enumerated() {
+        
+        var wordChars = Array(word)
+        wordChars.append(" ")
+        
+        if i == words.count - 1 {
+          wordChars.removeLast()
+        }
+        
+        result.append(contentsOf: wordChars)
+      }
+      
+      return result
+      
+    }
+}
+
+// print(Solution1_reverseWords().reverseWords(arr:Array("practice makes perfect")))
+
+/***********************************************************************************/
+
+class Solution_sumNumbers {
+    func sumNumbers(_ root: TreeNode?) -> Int {
+        guard let root = root else {
+            return 0
+        }
+        return self.sumNumbers(root,0)
+    }
+    
+    func sumNumbers(_ node:TreeNode,_ sum:Int) -> Int {
+        
+        let nextSum = sum * 10 + node.val
+        
+        var leftSum = 0
+        if let leftNode = node.left {
+            leftSum = self.sumNumbers(leftNode, nextSum)
+        }
+        
+        var rightSum = 0
+        if let rightNode = node.right {
+            rightSum = self.sumNumbers(rightNode, nextSum)
+        }
+
+        return max(leftSum + rightSum, nextSum)
+    }
+}
+
+//let input = createBinaryTree(with: [])
+//print(Solution_sumNumbers().sumNumbers(input))
+
+class PrampSolution {
+    func arrayOfArrayProducts(arr: [Int]) -> [Int] {
+        
+        guard arr.count > 1 else {
+            return []
+        }
+        
+        // forward
+        var fMulti:[Int] = []
+        var product = 1
+        for val in arr {
+            product = product * val
+            fMulti.append(product)
+        }
+        
+        // backward
+        var bMulti:[Int] = [Int](repeating: 1, count: arr.count)
+        product = 1
+        for (i,val) in arr.enumerated().reversed() {
+            product = product * val
+            bMulti[i] = product
+        }
+        
+        // collect result
+        var result:[Int] = []
+        for (i,_) in arr.enumerated() {
+            
+            if i == 0 {
+                result.append(bMulti[i+1])
+                continue
+            }
+            
+            if i == arr.count - 1 {
+                result.append(fMulti[i-1])
+                continue
+            }
+            
+            result.append(fMulti[i-1] * bMulti[i+1])
+        }
+
+        return result
+    }
+}
+
+//let input = [8, 10, 2]
+//print(PrampSolution().arrayOfArrayProducts(arr:input))
+
+/***********************************************************************************/
+
+// 74. Search a 2D Matrix
+
+class Solution_searchMatrix {
+    func searchMatrix(_ matrix: [[Int]], _ target: Int) -> Bool {
+        if matrix.count > 0 && matrix[0].count > 0 {
+            let count = matrix[0].count * matrix.count - 1
+            return self.binSearch(in: matrix, target: target, start: 0, end: count)
+        } else {
+            return false
+        }
+    }
+    
+    private func binSearch(in matrix:[[Int]], target:Int, start:Int, end:Int) -> Bool {
+        
+        if start > end { // start = 0 , end = 12
+            return false
+        }
+        
+        let count = matrix[0].count // 5
+        let midIndex = (start+end)/2 // 6
+        let midI = midIndex / count // 1
+        let midJ = midIndex % count // 1
+        
+        let midValue = matrix[midI][midJ] // matrix[1][1] = 5
+
+        if midValue == target {
+            print("\(midI),\(midJ)")
+            return true
+        } else if target > midValue { // 5 > 9 , false
+            // search in upper half
+            return self.binSearch(in: matrix, target: target, start: midIndex+1, end: end)
+        } else {
+            // search in lower half
+            return self.binSearch(in: matrix, target: target, start: start, end: midIndex-1) // start = 0, end = 12
+        }
+    }
+}
+
+/*
+let matrix:[[Int]] = [
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+let target = 5
+print(Solution_searchMatrix().searchMatrix(matrix, target))
+*/
+
+
+/***********************************************************************************/
+
+class PrampSolution_isMatchPattern {
+    func isMatch(text: String, pattern: String) -> Bool {
+        
+        let patternChars = Array(pattern)
+        
+        // j is pattern index runner
+        var j = 0
+        for ch in text {
+            if j + 1 > pattern.count && patternChars[j+1] == "*" {
+                if ch != patternChars[j] {
+                    j = j + 2
+                }
+            } else if ch == patternChars[j] || patternChars[j] == "." {
+                j = j + 1
+            } else {
+                return false
+            }
+        }
+        
+        return true
+    }
+}
+
+// "aa", "aa" -> true
+// "a.", "ab" -> true
+// "abc" "ab*c" -> true
+// "abbb" "ab*"  -> true

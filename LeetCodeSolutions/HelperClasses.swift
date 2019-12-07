@@ -77,6 +77,11 @@ func createLinkedListFromArray(arr:[Int]) -> ListNode? {
 }
 
 func createBinaryTree(with arr:[Int?]) -> TreeNode? {
+    
+    if arr.count == 0 {
+        return nil
+    }
+    
     var input = arr
     var queue:[TreeNode] = []
     

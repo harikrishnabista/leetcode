@@ -8,6 +8,239 @@
 
 import Foundation
 
+struct Conversion {
+    let arabic: Int
+    let roman: String
+}
+
+func toRoman(number: Int) -> String {
+    
+    let conversions = ArabicRomanConversion.conversions
+    
+    var romanValue = ""
+    var remaining = number
+    
+    for conversion in conversions {
+        
+        let quotient = remaining / conversion.arabic
+        
+        if quotient > 0 {
+            for _ in 0..<quotient {
+                romanValue += conversion.roman
+            }
+            remaining -= conversion.arabic * quotient
+        }
+    }
+    
+    return romanValue
+}
+
+/*
+ print(toRoman(number: 950) == "CML")
+ print(toRoman(number: 857) == "DCCCLVII")
+ */
+
+public func maximumGain(_ A : inout [Int]) -> Int {
+    
+    var sum = 0
+    
+    if A[0] < A[1] {
+        // buy
+        sum = sum - A[0]
+    }
+    
+    if A[0] > A[1] {
+        // sell
+        sum = sum + A[0]
+    }
+    
+    for (i,price) in A.enumerated() {
+        
+        // don't worry about 1st and last item
+        if i == 0 || i == A.count - 1 {
+            continue
+        }
+        
+        if A[i-1] > A[i] && A[i] < A[i+1] {
+            // low point
+            sum = sum - A[i]
+        }
+        
+        if A[i-1] < A[i] && A[i] > A[i+1] {
+            // high point
+            sum = sum + A[i]
+        }
+    }
+    
+    let lastIndex = A.count - 1
+    
+    if A[lastIndex] > A[lastIndex-1] {
+        sum = sum + A[lastIndex]
+    }
+    
+    return sum
+    
+}
+
+// ["flower","flow","flight"]
+class Solution_longestCommonPrefix {
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        
+        guard strs.count > 0 else { return "" }
+        
+        var commonPrefix = strs[0]
+        
+        for str in strs {
+            
+            if str == "" {
+                commonPrefix = ""
+                break
+            }
+            
+            commonPrefix = getCommonPrefix(str1: commonPrefix, str2: str)
+            
+            if commonPrefix == "" {
+                break
+            }
+            
+        }
+        
+        return commonPrefix
+    }
+    
+    func getCommonPrefix(str1: String, str2: String) -> String {
+        
+        let charArrStr1 = Array(str1)
+        let charArrStr2 = Array(str2)
+        
+        let minCount = min(charArrStr1.count, charArrStr2.count)
+        
+        var charArrResult: [Character] = []
+        
+        for i in 0...(minCount - 1) {
+            if charArrStr1[i] == charArrStr2[i] {
+                charArrResult.append(charArrStr1[i])
+            } else {
+                break
+            }
+        }
+        
+        return String(charArrResult)
+    }
+}
+
+class Solution_searchInsert {
+    func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+        
+        if target > nums[nums.count - 1] {
+            return nums.count
+        }
+        
+        if target < nums[0] {
+            return 0
+        }
+        
+        var l = 0
+        var u = nums.count - 1
+        
+        var m = 0
+        
+        while l <= u {
+            
+            m = (l+u)/2
+            
+            if nums[m] == target {
+                return m
+            }
+            
+            if nums[m] < target {
+                l = m + 1
+            }
+            
+            if target < nums[m] {
+                u = m - 1
+            }
+            
+        }
+        
+        return u+1
+    }
+}
+
+class Solution_lengthOfLastWord {
+    func lengthOfLastWord(_ s: String) -> Int {
+        
+        let trimmedS = s.trimmingCharacters(in: .whitespaces)
+        
+        let charArr = Array(trimmedS)
+        
+        var i = charArr.count - 1
+        
+        var count = 0
+        while i >= 0 {
+            if charArr[i] != " " {
+                count = count + 1
+            } else {
+                break
+            }
+            
+            i = i - 1
+        }
+        
+        return count
+    }
+}
+
+//print(Solution_lengthOfLastWord().lengthOfLastWord("luffy is still joyboy"))
+//print(Solution_lengthOfLastWord().lengthOfLastWord("   fly me   to   the moon  "))
+//print(Solution_lengthOfLastWord().lengthOfLastWord("Hello World"))
+
+class Solution_FirstOccurance {
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+        
+        guard haystack.count >= needle.count else { return -1 }
+        
+        let charArrHaystack = Array(haystack)
+        let charArrNeedle = Array(needle)
+
+        for (i, _) in charArrHaystack.enumerated() {
+            
+            if i > charArrHaystack.count - charArrNeedle.count {
+                return -1
+            }
+            
+            if isNeedleMatch(
+                charArrHaystack: charArrHaystack,
+                currentIndex: i,
+                charArrNeedle: charArrNeedle
+            ) {
+                return i
+            }
+            
+        }
+        
+        return -1
+    }
+    
+    func isNeedleMatch(
+        charArrHaystack: [Character],
+        currentIndex: Int,
+        charArrNeedle: [Character]
+    ) -> Bool {
+        var i = currentIndex
+        for ch in charArrNeedle {
+            if ch != charArrHaystack[i] {
+                return false
+            }
+            i = i + 1
+        }
+        
+        return true
+    }
+}
+
+// print(Solution_FirstOccurance().strStr("a", "a"))
+
 /***********************************************************************************/
 
 class Solution_moveZeros {

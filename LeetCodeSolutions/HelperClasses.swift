@@ -145,5 +145,23 @@ func getArray(from node:TreeNode?) -> [TreeNode] {
     return result
 }
 
+struct ArabicRomanConversion {
+    static let conversions = [
+        Conversion(arabic: 1000, roman: "M"),
+        Conversion(arabic: 900, roman: "CM"),
+        Conversion(arabic: 500, roman: "D"),
+        Conversion(arabic: 400, roman: "CD"),
+        Conversion(arabic: 100, roman: "C"),
+        Conversion(arabic: 90, roman: "XC"),
+        Conversion(arabic: 50, roman: "L"),
+        Conversion(arabic: 40, roman: "XL"),
+        Conversion(arabic: 10, roman: "X"),
+        Conversion(arabic: 9, roman: "IX"),
+        Conversion(arabic: 5, roman: "V"),
+        Conversion(arabic: 4, roman: "IV"),
+        Conversion(arabic: 1, roman: "I")
+    ]
+}
+
 
 

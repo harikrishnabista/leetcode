@@ -163,5 +163,13 @@ struct ArabicRomanConversion {
     ]
 }
 
+struct Conversion {
+    let arabic: Int
+    let roman: String
+}
 
-
+extension Int {
+    var absVal: Int {
+        self > 0 ? self: -self
+    }
+}

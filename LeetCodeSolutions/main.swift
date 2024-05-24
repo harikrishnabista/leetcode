@@ -8,36 +8,33 @@
 
 import Foundation
 
-struct Conversion {
-    let arabic: Int
-    let roman: String
-}
-
-func toRoman(number: Int) -> String {
-    
-    let conversions = ArabicRomanConversion.conversions
-    
-    var romanValue = ""
-    var remaining = number
-    
-    for conversion in conversions {
+class Solution_toRoman_old {
+    func toRoman(number: Int) -> String {
         
-        let quotient = remaining / conversion.arabic
+        let conversions = ArabicRomanConversion.conversions
         
-        if quotient > 0 {
-            for _ in 0..<quotient {
-                romanValue += conversion.roman
+        var romanValue = ""
+        var remaining = number
+        
+        for conversion in conversions {
+            
+            let quotient = remaining / conversion.arabic
+            
+            if quotient > 0 {
+                for _ in 0..<quotient {
+                    romanValue += conversion.roman
+                }
+                remaining -= conversion.arabic * quotient
             }
-            remaining -= conversion.arabic * quotient
         }
+        
+        return romanValue
     }
-    
-    return romanValue
 }
 
 /*
- print(toRoman(number: 950) == "CML")
- print(toRoman(number: 857) == "DCCCLVII")
+ print(Solution_toRoman_old().toRoman(number: 950) == "CML")
+ print(Solution_toRoman_old().toRoman(number: 857) == "DCCCLVII")
  */
 
 public func maximumGain(_ A : inout [Int]) -> Int {
@@ -790,7 +787,7 @@ Longest Common Prefix
 https://leetcode.com/problems/longest-common-prefix/
 */
 
-class Solution_longestCommonPrefix {
+class Solution_longestCommonPrefix2 {
     func longestCommonPrefix(_ strs: [String]) -> String {
 
         guard strs.count > 1 else {
@@ -830,7 +827,7 @@ class Solution_longestCommonPrefix {
 }
 
 //let input = ["ow", "flower", "flow"]
-//print(Solution_longestCommonPrefix().longestCommonPrefix(input))
+//print(Solution_longestCommonPrefix2().longestCommonPrefix(input))
 
 /***********************************************************************************/
 
@@ -1963,7 +1960,7 @@ print(res)
 
 /***********************************************************************************/
 
-class Solution_lengthOfLastWord {
+class Solution_lengthOfLastWord1 {
     func lengthOfLastWord(_ s: String) -> Int {
         let arr = s.split(separator: " ")
         
@@ -1976,7 +1973,7 @@ class Solution_lengthOfLastWord {
 }
 
 /*
-let res = Solution_lengthOfLastWord().lengthOfLastWord("")
+let res = Solution_lengthOfLastWord1().lengthOfLastWord("")
 print(res)
 */
 
@@ -6951,3 +6948,2248 @@ class PrampSolution_isMatchPattern {
 // "a.", "ab" -> true
 // "abc" "ab*c" -> true
 // "abbb" "ab*"  -> true
+
+class LongRunningTask {
+    
+    func performBackgroundTask(id: Int, completion: @escaping (String) -> Void) {
+        DispatchQueue.global().async {
+            let range = 1...5
+            let randomInt = Int.random(in: range)
+            
+            sleep(UInt32(randomInt))
+            
+            let result = " id: \(id) ran for \(randomInt) seconds"
+            completion(result)
+        }
+    }
+}
+
+class BucketSort {
+    func sortSequential(inputArr: [Int]) -> [Int] {
+        sortBucketsSequential(buckets: collectIntsIntoBucket(arr: inputArr))
+    }
+    
+    func sortParallell(inputArr: [Int]) -> [Int] {
+        sortBucketsInParallel(buckets: collectIntsIntoBucket(arr: inputArr))
+    }
+    
+    private func collectIntsIntoBucket(arr: [Int]) -> [Int: [Int]] {
+        var buckets: [Int: [Int]] = [:]
+        
+        for item in arr {
+            
+            let bucketIndex = item / 10
+            
+            if var existingArr = buckets[bucketIndex] {
+                existingArr.append(item)
+                buckets[bucketIndex] = existingArr
+            } else {
+                buckets[bucketIndex] = [item]
+            }
+            
+        }
+        
+        return buckets
+    }
+    
+    private func getTwoDArray(size: Int) -> [[Int]] {
+        var arr:[[Int]] = [[Int]]()
+        
+        for _ in 0...size-1 {
+            arr.append([Int]())
+        }
+        
+        return arr
+    }
+    
+    private func sortBucketsInParallel(buckets: [Int: [Int]]) -> [Int] {
+        
+        let concurrentQueue = DispatchQueue.global()
+        let dg = DispatchGroup()
+        
+        var twoDArray = getTwoDArray(size: 10)
+        
+        for i in 0...9 {
+            if let items = buckets[i] {
+                
+                dg.enter()
+                
+                concurrentQueue.async {
+                    twoDArray[i] = items.sorted()
+                    dg.leave()
+                }
+            }
+        }
+        
+        
+        var result: [Int] = []
+        
+        dg.notify(queue: .main) {
+            for arr in twoDArray {
+                result.append(contentsOf: arr)
+            }
+        }
+        
+        return result
+    }
+    
+    private func sortBucketsSequential(buckets: [Int: [Int]]) -> [Int] {
+        var result: [Int] = []
+        
+        for i in 0...9 {
+            if let sorted = buckets[i]?.sorted() {
+                result.append(contentsOf: sorted)
+            }
+        }
+        
+        return result
+    }
+}
+
+/*
+ let imppp = RandomIntFactory().getRandomInts(size: 1000000, min: 0, max: 99)
+ 
+ let (ress, timeTakenSequential) = measureTime {
+ BucketSort().sortSequential(inputArr: imppp)
+ }
+ 
+ print("timeTakenSequential : \(timeTakenSequential)")
+ 
+ let (resParallel, timeTakenParallel) = measureTime {
+ radixSort(imppp)
+ }
+ 
+ print("timeTakenParallel : \(timeTakenParallel)")
+ 
+ */
+
+/*
+ let queue = DispatchQueue(label: "com.example.queue")
+ 
+ queue.async {
+ for i in 1...5 {
+ print("A - \(i)")
+ }
+ }
+ 
+ queue.async {
+ for i in 6...10 {
+ print("B - \(i)")
+ }
+ }
+ 
+ print("end of it")
+ 
+ */
+
+/*
+ let startDate = Date.now
+ aBusyFunc()
+ let endData = Date.now
+ 
+ DateDiffLogger.secondsDifferenceBetweenDates(startDate: startDate, endDate: endData)
+ */
+
+//struct First {
+//    let second: Second
+//
+//    init(second: Second) {
+//        self.second = second
+//    }
+//}
+//
+//struct Second {
+//    let first: First
+//
+//    init(first: First) {
+//        self.first = first
+//    }
+//}
+
+
+//let first = First(second: Second(first: <#T##First#>))
+
+/*
+ 
+ let hashedPassword = hashPassword("Fisker01!")
+ 
+ print("Hashed password: \(hashedPassword)")
+ 
+ if authenticateUser(
+ username: "exampleUser",
+ password: "Fisker01!",
+ hashedPassword: hashedPassword
+ ) {
+ print("Authentication successful")
+ } else {
+ print("Authentication failed")
+ }
+ 
+ print("")
+ 
+ print(hashPassword("1"))
+ print(hashPassword("1"))
+ */
+
+/*
+ class DataImporter {
+ var filename = "data.txt"
+ }
+ 
+ struct Point: Hashable {
+ var x: Int
+ var y: Int
+ 
+ lazy var importer = DataImporter()
+ }
+ 
+ let aPoint = Point(x: 1, y: 2)
+ print(aPoint.hashValue)
+ */
+
+
+/*
+ let result = await fetchData()
+ print("Fetched data: \(result)")
+ */
+
+// 1 3 0 1 0 1 0 12 0 0 0 1
+
+// glider test 1. move zero items to end without modifying the order of non-zero items, also
+// do all this in place array(without using extra storage)
+
+func moveZeroes(_ arr: inout [Int]) {
+    
+    var lastZeroIndex = -1
+    
+    for (i,item) in arr.enumerated() {
+        if item != 0 {
+            if lastZeroIndex > -1 {
+                arr.swapAt(i, lastZeroIndex)
+                lastZeroIndex = lastZeroIndex + 1
+            }
+        } else {
+            if lastZeroIndex == -1 {
+                lastZeroIndex = i
+            }
+        }
+    }
+}
+
+func moveNonZeroToLastInPlace(items: inout [Int]) {
+    
+    var zeroPosToSwap = -1
+    
+    for (i,item) in items.enumerated() {
+        
+        if item == 0 && zeroPosToSwap == -1 {
+            zeroPosToSwap = i
+            continue
+        }
+        
+        if item != 0 && zeroPosToSwap > -1  {
+            
+            items[zeroPosToSwap] = item
+            items[i] = 0
+            zeroPosToSwap += 1
+            
+        }
+    }
+    
+}
+
+
+// glider test 2 find total number of prime number under some number
+
+/*
+var input = [1, 3, 0, 5, 0, 7, 0, 12, 0, 0, 0, 14]
+moveNonZeroToLastInPlace(items: &input)
+*/
+
+struct Player: Equatable {
+    let playerName: String
+    let rank: Int
+    let score: Double
+    let rating: Int
+}
+
+// priority rank, score, rating
+func sortPlayersLong(_ players: [Player]) -> [Player] {
+    
+    let sortedRank = players.sorted { $0.rank < $1.rank }
+    
+    let sortedScore = sortedRank.sorted {
+        if $0.rank == $1.rank {
+            return $0.score > $1.score
+        } else {
+            return false
+        }
+    }
+    
+    return sortedScore.sorted {
+        if $0.rank == $1.rank && $0.score == $0.score {
+            return $0.rating > $1.rating
+        } else {
+            return false
+        }
+    }
+}
+
+func sortPlayers(_ players: [Player]) -> [Player] {
+    players.sorted {
+        if $0.rank != $1.rank {
+            return $0.rank < $1.rank
+        } else if $0.score != $1.score {
+            return $0.score > $1.score
+        } else {
+            return $0.rating > $1.rating
+        }
+    }
+}
+
+/*
+ let a = Player(playerName: "Hari", rank: 1, score: 10.5, rating: 1)
+ let b = Player(playerName: "Krishna", rank: 2, score: 10.5, rating: 2)
+ let c = Player(playerName: "Bista", rank: 1, score: 11, rating: 3)
+ let d = Player(playerName: "H", rank: 2, score: 10.5, rating: 6)
+ 
+ let res1 = sortPlayers([a,b,c,d])
+ let res2 = sortPlayersLong([a,b,c,d])
+ 
+ print(res1 == res2)
+ */
+
+/*
+ fibonaci series
+ 0 1
+ 0 1 1 2 3 5 8
+*/
+
+func fibonaci(limit: Int) -> [Int] {
+    
+    var fibSeries: [Int] = []
+    
+    var first = 0
+    var second = 1
+    
+    var tempSum = first + second
+    
+    fibSeries.append(first)
+    fibSeries.append(second)
+    
+    while first + second < limit {
+        tempSum = first + second
+        
+        fibSeries.append(tempSum)
+        
+        first = second
+        second = tempSum
+    }
+    
+    return fibSeries
+}
+
+/*
+ let fibSeries = fibonaci(limit: 30)
+ for item in fibSeries {
+    print(item)
+}
+ */
+
+// abcdef -> fedcba
+
+// Hari -> irah
+// exchange 0 and (count-1)
+// exchange 1 and (count-2)
+
+// ...
+// ...
+// exchange i'th and (count-i)'th item
+
+// loop runs 0 to (count/2-1)
+
+// Harik
+//
+
+func stringResersal1(str: String) -> String {
+    
+    var charArr = Array(str)
+    
+    var result = charArr
+    result.removeAll()
+    
+    while charArr.isEmpty == false {
+        result.append(charArr.removeLast())
+    }
+    
+    return String(result)
+}
+
+func stringResersal2(str: String) -> String {
+    
+    var charArr = Array(str)
+    
+    var i = 0
+    
+    while i < charArr.count/2 {
+        
+        let temp = charArr[i]
+        charArr[i] = charArr[charArr.count-1-i]
+        charArr[charArr.count-1-i] = temp
+        
+        i = i + 1
+    }
+    
+    return String(charArr)
+}
+
+
+/*
+ print(stringResersal1(str: "abcdef"))
+ print(stringResersal2(str: "abcdef"))
+ */
+
+
+// Integer to Roman on leetcode question
+
+/*
+ Symbol    Value
+ I         1
+ V         5
+ X         10
+ L         50
+ C         100
+ D         500
+ M         1000
+ */
+
+/*
+ 
+ 3 = iii
+ 4 = iv
+ 5 = v
+ 6 = vi
+ 7 = viii
+ 
+ 8 = viii
+ 9 = ix
+ 
+ */
+
+/*
+ Input: nums = [8,7,11,15,1], target = 9
+ Output: [0,1]
+ Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+ */
+
+/*
+ 
+ dict
+ [
+ 1:0,
+ 2:1,
+ -2:2,
+ -6:3
+ ]
+ 
+
+ */
+
+class Solution_twoSum1 {
+    
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        
+        var dict: [Int : Int] = [:]
+        
+        for (i,num) in nums.enumerated() {
+            
+            let diff = target - num
+            
+            if let index = dict[num] {
+                return [index, i]
+            }
+            
+            dict[diff] = i
+        }
+        
+        return []
+    }
+    
+}
+
+/*
+print(Solution_twoSum().twoSum([8,1,1,15,1,7], 9))
+
+ https://leetcode.com/problems/rotate-array/description/
+ 
+ Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+ 
+*/
+
+/*
+ 
+ Input: nums = [1,2,3,4,5,6,7], k = 3
+ Output: [5,6,7,1,2,3,4]
+ Explanation:
+ rotate 1 steps to the right: [7,1,2,3,4,5,6]
+ rotate 2 steps to the right: [6,7,1,2,3,4,5]
+ rotate 3 steps to the right: [5,6,7,1,2,3,4]
+ 
+ */
+
+/*
+ 
+ temp = 6
+ [7,1,2,3,4,5,6]
+ 
+ [7,7,1,2,3,4,5]
+ [7,7,1,2,3,4,5]
+ 
+ */
+
+class Solution_rotate1 {
+    
+    func rotate(_ nums: inout [Int], _ k: Int) {
+        for _ in 0...(k-1) {
+            shift(arr: &nums)
+        }
+    }
+    
+    private func shift(arr: inout [Int]) {
+        
+        guard arr.count > 0 else { return }
+        
+        let temp = arr[arr.count-1]
+        
+        var index = arr.count-1
+        
+        while index > 0 {
+            arr[index] = arr[index-1]
+            index = index - 1
+        }
+        
+        arr[0] = temp
+    }
+}
+
+/*
+ [1,2,3,4,5,6,7]
+  0 1 2 ..
+
+ "Hari", "Krishna", "Bista"
+*/
+
+class Solution_rotate2 {
+    func rotate(_ nums: inout [Int], _ k: Int) {
+        
+        var newArr = [Int](repeating: 0, count: nums.count)
+        
+        for (i, num) in nums.enumerated() {
+            
+            var newIndex = i + k
+            if newIndex > (nums.count-1) {
+                newIndex = newIndex - nums.count
+            }
+            
+            newArr[newIndex] = num
+        }
+        
+        nums = newArr
+    }
+}
+
+/*
+ var input_nums1 = [1,2,3,4,5,6,7]
+ Solution_rotate1().rotate(&input_nums, 3)
+ print(input_nums)
+ */
+
+// [1,2,3,4,5,6,7], 3
+// [_,_,_,1,2,3,4], 5,6,7
+
+/*
+ var input_nums1 = [1,2,3,4,5,6,7]
+ Solution_rotate2().rotate(&input_nums1, 3)
+ print(input_nums1)
+ */
+
+class Solution_powerSet1 {
+    // non recursive solution
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        var result:[[Int]] = []
+        result.append([])
+        
+        for item in nums {
+            product(item: item, result: &result)
+        }
+        
+        return result
+    }
+    
+    private func product(item:Int, result: inout [[Int]]) {
+        
+        print(item, result)
+        
+        for items in result {
+            var newItems = items
+            newItems.append(item)
+            result.append(newItems)
+        }
+    }
+}
+
+// let res = Solution_powerSet1().subsets([1,2,3])
+
+
+/*
+ Write a program that prints the numbers from 1 to n. But for multiples of three, print "Fizz" instead of the number,
+ and for the multiples of five, print "Buzz". For numbers that are multiples of both three and five, print "FizzBuzz".
+ */
+
+func fizzBuzz(n: Int) {
+    
+    for number in 1...n {
+        
+        if number % (3*5) == 0 {
+            print("FizzBuzz")
+        } else if number % 3 == 0 {
+            print("Fizz")
+        } else if number % 5 == 0 {
+            print("Buzz")
+        }
+    }
+    
+}
+
+//fizzBuzz(n: 100)
+
+// "listen" and "silent" are anagrams
+func areAnagrams(_ str1: String, _ str2: String) -> Bool {
+    str1.sorted() == str2.sorted()
+}
+
+
+class Solution_findAnagrams {
+    func findAnagrams(_ s: String, _ p: String) -> [Int] {
+        
+        guard s.count >= p.count else { return [] }
+        
+        let strings = getAllSubStrings(str: s, subStringSize: p.count)
+        
+        let key = p.sorted()
+        
+        var result: [Int] = []
+        
+        for (i,str) in strings.enumerated() {
+            if str.sorted() == key {
+                result.append(i)
+            }
+        }
+        
+        return result
+    }
+    
+    private func getAllSubStrings(str: String, subStringSize: Int) -> [String] {
+        var result: [String] = []
+        
+        for i in 0...(str.count - subStringSize) {
+            let subStr = getSubString(fromStr: str, startIndex: i, length: subStringSize)
+            result.append(subStr)
+        }
+        
+        return result
+    }
+    
+    private func getSubString(fromStr: String, startIndex: Int, length: Int) -> String {
+        
+        var result: [Character] = []
+        
+        let charArr = Array(fromStr)
+        
+        for i in startIndex...(startIndex + length - 1) {
+            result.append(charArr[i])
+        }
+        
+        return String(result)
+    }
+}
+
+//print(Solution_findAnagrams().findAnagrams("cbaebabacd", "abc"))
+//print(Solution_findAnagrams().findAnagrams("abab", "ab"))
+
+//print(getSubString(fromStr: "Harik", startIndex: 0, length: 3) == "Har")
+//print(getSubString(fromStr: "Harik", startIndex: 1, length: 4) == "arik")
+
+func solution(
+    _ start: [Int],
+    _ dest: [Int],
+    _ limit: [Int]
+) -> Int {
+    var maxStation = 0
+    var totalFee = 0
+    
+    for i in 0..<start.count {
+        let startStation = min(start[i], dest[i])
+        let endStation = max(start[i], dest[i])
+        
+        totalFee = totalFee + (endStation - startStation) * 2
+        
+        maxStation = max(maxStation, endStation)
+    }
+    
+    totalFee = totalFee + start.count * 1
+    
+    return min(totalFee, limit[maxStation])
+}
+
+/*
+ let start = [1, 0, 2, 4]
+ let dest = [2, 2, 0, 5]
+ 
+ let limit = [3, 17, 7, 4, 5, 17]
+ 
+ print(solution(start, dest, limit))
+ */
+
+
+/*
+ 
+ 
+ let T = [3,1,2]
+ 
+ doneCounter = 3
+ 
+ var workRecord = [2,0,1,1,0,0]
+ 
+ while doneCounter > 3 {
+ T = process(T)
+ }
+ 
+ func process(T) -> T {
+ 
+ }
+ 
+ let result = scan(workRecord)
+ 
+ h  h  h
+ T = [3, 1, 2]
+ 2  0  1 -> [2,1]
+ 1     0 -> [1]
+ 0       -> []
+ 
+ 2 0 1 1 0 0
+ 
+ */
+
+
+class SolutionT {
+    
+    func calculateTotalWaitHours(hours: [Int]) -> Int {
+        
+        var remHours: [Int] = hours
+        
+        var completedRecords: [Int] = []
+        
+        while !remHours.isEmpty {
+            
+            var nextHours: [Int] = []
+            
+            for hr in remHours {
+                let remHour = hr - 1
+                
+                if remHour > 0 {
+                    nextHours.append(remHour)
+                }
+                
+                completedRecords.append(remHour)
+            }
+            
+            remHours = nextHours
+        }
+        
+        return getTotalHours(record: completedRecords)
+    }
+    
+    // [2,0,1,1,0,0]
+    func getTotalHours(record: [Int]) -> Int {
+        var totalHours = 0
+        for (i,number) in record.enumerated() {
+            if number == 0 {
+                totalHours += (i + 1)
+            }
+        }
+        return totalHours
+    }
+}
+
+/*
+ let res = SolutionT().calculateTotalWaitHours(hours: [3,1,2])
+ print(res)
+ */
+
+class Solution_isValidSudoku {
+    
+    func isValidSudoku(_ board: [[Character]]) -> Bool {
+        isRowsValid(board: board) && isColumnsValid(board: board)
+    }
+    
+    func isRowsValid(board: [[Character]]) -> Bool {
+        for row in board {
+            if isItemsUnique(items: row) == false {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func isColumnsValid(board: [[Character]]) -> Bool {
+        var col = 0
+        let size = board.count
+        
+        while col < size {
+            
+            var tempItems: [Character] = []
+            
+            for row in 0..<size {
+                let item = board[row][col]
+                tempItems.append(item)
+            }
+            
+            if isItemsUnique(items: tempItems) == false {
+                return false
+            }
+            
+            col = col + 1
+            
+        }
+        
+        return true
+    }
+    
+    
+    
+    func isItemsUnique (items: [Character]) -> Bool {
+        
+        var seen = Set<Character>()
+        
+        for item in items {
+            if seen.contains(item) {
+                return false
+            }
+            
+            if item != "." {
+                seen.insert(item)
+            }
+        }
+        
+        return true
+    }
+}
+
+
+//print(Solution_isValidSudoku().isValidSudoku(sodukuGrid))
+
+import Darwin
+
+func isValidSudoku(_ board: [[Character]]) -> Bool {
+    
+    let boardSize = board.count
+    
+    var rows = Array(repeating: Set<Character>(), count: boardSize)
+    var columns = Array(repeating: Set<Character>(), count: boardSize)
+    
+    var boxes = Array(repeating: Set<Character>(), count: boardSize)
+    var boxCounter = 0
+    
+    let miniBoardSize = Int(sqrt(Double(boardSize)))
+    
+    for i in 0..<boardSize {
+        for j in 0..<boardSize {
+            let char = board[i][j]
+            
+            if char != "." {
+                if rows[i].contains(char) || columns[j].contains(char) || boxes[j / miniBoardSize].contains(char) {
+                    return false
+                }
+                
+                rows[i].insert(char)
+                columns[j].insert(char)
+                
+                boxes[j / miniBoardSize].insert(char)
+            }
+            
+            boxCounter = boxCounter + 1
+            
+            if boxCounter == boardSize * miniBoardSize {
+                boxCounter = 0
+                boxes = Array(repeating: Set<Character>(), count: 3)
+            }
+        }
+    }
+    
+    return true
+}
+
+let sodukuGrid:[[Character]] =
+[
+    ["5","3",".",".","7",".",".",".","."],
+    ["6",".",".","1","9","5",".",".","."],
+    [".","9","8",".",".",".",".","6","."],
+    ["8",".",".",".","6",".",".",".","3"],
+    ["4",".",".","8",".","3",".",".","1"],
+    ["7",".",".",".","2",".",".",".","6"],
+    [".","6",".",".",".",".","2","8","."],
+    [".",".",".","4","1","9",".",".","5"],
+    [".",".",".",".","8",".",".","7","9"]
+]
+
+func characterMatrix(_ matrix: [[Character]]) {
+    
+    for i in 0..<matrix.count {
+        
+        for j in 0..<matrix[i].count {
+            if i % 3 == 0 && j % 3 == 0 {
+                print("🟢 [\(i),\(j)] - \(matrix[i][j])", terminator: "  ")
+            } else {
+                print("💜 (\(i),\(j)) - \(matrix[i][j])", terminator: "  ")
+            }
+        }
+        print("")
+        print("")
+    }
+    
+}
+
+/*
+ characterMatrix(sodukuGrid)
+ print(isValidSudoku(sodukuGrid))
+ */
+
+
+// 1 -> 2 -> 3 -> 4 -> 5 -> 6
+// tempNext
+// 1 <- 2     3 -> 4 -> 5 -> 6
+
+// c    n
+// 1 -> 2 -> 3 -> 4 -> 5 -> 6
+//      c  n    nn
+// 1 <- 2  3 -> 4 -> 5 -> 6
+//      c    n  nn
+// 1 <- 2 <- 3  4 -> 5 -> 6
+//           c  n
+// 1 <- 2 <- 3  4
+
+func revLinkedList(linkedList: ListNode?) -> ListNode? {
+    
+    if linkedList == nil || linkedList?.next == nil {
+        return linkedList
+    }
+    
+    var c = linkedList
+    var n = c?.next
+    
+    linkedList?.next = nil
+    
+    while n?.next != nil {
+        
+        let futureN = n?.next
+        n?.next = c
+        
+        c = n
+        c?.next = n?.next
+        
+        n = futureN
+        
+    }
+    
+    n?.next = c
+    
+    return n
+}
+
+/*
+ let inputLinkedList = LinkedListFactory.convertArrayToLinkedList(arr: [1,2,3,4,5,6,7,8])
+ 
+ if let revLinkedList = revLinkedList(linkedList: inputLinkedList) {
+ let arr = LinkedListFactory.convertLinkedListToArray(list: revLinkedList)
+ print(arr)
+ }
+ */
+
+class Solution_FindHighCountZerosInBinString {
+    func findHighCount1(_ N: Int) -> Int {
+        let binStr = convertIntoBinary(N)
+        
+        var highCount = 0
+        var tempCount = 0
+        
+        for char in binStr {
+            
+            if char == "0" {
+                tempCount = tempCount + 1
+            } else if char == "1" {
+                if tempCount > highCount {
+                    highCount = tempCount
+                }
+                tempCount = 0
+            }
+            
+        }
+        
+        return highCount
+    }
+    
+    private func convertIntoBinary(_ N: Int) -> String {
+        
+        guard N > 0 else { return "0" }
+        
+        var result = ""
+        
+        var val = N
+        
+        while val > 0 {
+            
+            result = "\(val % 2)" + result
+            
+            val = val / 2
+            
+        }
+        
+        return result
+        
+    }
+    
+    private func findHighCount2(_ N: Int) -> Int {
+        var highCount = 0
+        
+        guard N > 0 else { return highCount }
+        
+        var val = N
+        
+        var tempCount = 0
+        
+        var initial1Found = false
+        
+        while val > 0 {
+            
+            let rem = val % 2
+            
+            val = val / 2
+            
+            if initial1Found == false {
+                if rem == 1 {
+                    initial1Found = true
+                }
+                continue
+            }
+            
+            if rem == 0 {
+                tempCount = tempCount + 1
+            } else {
+                
+                if highCount < tempCount {
+                    highCount = tempCount
+                }
+                tempCount = 0
+            }
+        }
+        
+        return highCount
+    }
+}
+
+
+/*
+ 
+ print(Solution_FindHighCountZerosInBinString().findHighCount1(32))
+ print(solutionMe(32))
+ 
+ */
+
+class Solution_toRoman {
+    func toRoman(number: Int) -> String {
+        
+        let conversions = ArabicRomanConversion.conversions
+        
+        var romanValue = ""
+        var remaining = number
+        
+        for conversion in conversions {
+            
+            let quotient = remaining / conversion.arabic
+            
+            if quotient > 0 {
+                for _ in 0..<quotient {
+                    romanValue += conversion.roman
+                }
+                remaining -= conversion.arabic * quotient
+            }
+        }
+        
+        return romanValue
+    }
+}
+
+
+/*
+ print(Solution_toRoman(number: 950) == "CML")
+ print(Solution_toRoman(number: 857) == "DCCCLVII")
+ */
+
+/*
+ let romanValues = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+ let arabicValues = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+ 
+ for (i,item) in arabicValues.enumerated() {
+ print("Conversion(arabic: \(item), roman: \"\(romanValues[i])\"),")
+ }
+ */
+
+
+
+
+import Foundation
+
+// 1 product
+// sell on high , buy on each low
+// max([ 1, 2, 3, 3, 2, 1, 5, 6, 5 ])
+//          i, i, i, d, d,
+
+// [1, 2, 3, 4, 2]
+
+class Solution_maximumGain {
+    public func maximumGain(_ A : inout [Int]) -> Int {
+        
+        var sum = 0
+        
+        if A[0] < A[1] {
+            // buy
+            sum = sum - A[0]
+        }
+        
+        if A[0] > A[1] {
+            // sell
+            sum = sum + A[0]
+        }
+        
+        for (i,price) in A.enumerated() {
+            
+            // don't worry about 1st and last item
+            if i == 0 || i == A.count - 1 {
+                continue
+            }
+            
+            if A[i-1] > A[i] && A[i] < A[i+1] {
+                // low point
+                sum = sum - A[i]
+            }
+            
+            if A[i-1] < A[i] && A[i] > A[i+1] {
+                // high point
+                sum = sum + A[i]
+            }
+        }
+        
+        let lastIndex = A.count - 1
+        
+        if A[lastIndex] > A[lastIndex-1] {
+            sum = sum + A[lastIndex]
+        }
+        
+        return sum
+        
+    }
+}
+
+
+
+/*
+ var prices = [5,3,3,2,1]
+ print(Solution_maximumGain().maximumGain(&prices))
+ */
+
+// ["flower","flow","flight"]
+class Solution_longestCommonPrefix3 {
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        
+        guard strs.count > 0 else { return "" }
+        
+        var commonPrefix = strs[0]
+        
+        for str in strs {
+            
+            if str == "" {
+                commonPrefix = ""
+                break
+            }
+            
+            commonPrefix = getCommonPrefix(str1: commonPrefix, str2: str)
+            
+            if commonPrefix == "" {
+                break
+            }
+            
+        }
+        
+        return commonPrefix
+    }
+    
+    func getCommonPrefix(str1: String, str2: String) -> String {
+        
+        let charArrStr1 = Array(str1)
+        let charArrStr2 = Array(str2)
+        
+        let minCount = min(charArrStr1.count, charArrStr2.count)
+        
+        var charArrResult: [Character] = []
+        
+        for i in 0...(minCount - 1) {
+            if charArrStr1[i] == charArrStr2[i] {
+                charArrResult.append(charArrStr1[i])
+            } else {
+                break
+            }
+        }
+        
+        return String(charArrResult)
+    }
+}
+
+//print(Solution_longestCommonPrefix3().longestCommonPrefix([""]))
+
+class Solution_searchInsert1 {
+    func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+        
+        if target > nums[nums.count - 1] {
+            return nums.count
+        }
+        
+        if target < nums[0] {
+            return 0
+        }
+        
+        var l = 0
+        var u = nums.count - 1
+        
+        var m = 0
+        
+        while l <= u {
+            
+            m = (l+u)/2
+            
+            if nums[m] == target {
+                return m
+            }
+            
+            if nums[m] < target {
+                l = m + 1
+            }
+            
+            if target < nums[m] {
+                u = m - 1
+            }
+            
+        }
+        
+        return u+1
+    }
+}
+
+/*
+ print(Solution_searchInsert1().searchInsert([1,3,5,6], 5))
+ print(Solution_searchInsert1().searchInsert([1,3,5,6], 2))
+ print(Solution_searchInsert1().searchInsert([1,3], 2))
+ */
+
+protocol Queue {
+    
+    associatedtype T
+    
+    func add(item: T)
+    var maxSize: Int { get }
+    
+}
+
+extension Queue {
+    var maxSize: Int {
+        return 0
+    }
+}
+
+struct MyQueue: Queue {
+    typealias T = Int
+    
+    func add(item: T) {
+        
+    }
+}
+
+//let mQueue = MyQueue()
+
+func swap(_ first: inout Any,_ second: inout Any) {
+    let temp = first
+    first = second
+    second = temp
+}
+
+//var a = "1"
+//var b = "2"
+//
+//swap(&a, &b)
+
+// "luffy is still joyboy"
+
+class Solution_lengthOfLastWord2 {
+    func lengthOfLastWord(_ s: String) -> Int {
+        
+        let trimmedS = s.trimmingCharacters(in: .whitespaces)
+        
+        let charArr = Array(trimmedS)
+        
+        var i = charArr.count - 1
+        
+        var count = 0
+        while i >= 0 {
+            if charArr[i] != " " {
+                count = count + 1
+            } else {
+                break
+            }
+            
+            i = i - 1
+        }
+        
+        return count
+    }
+}
+
+//print(Solution_lengthOfLastWord2().lengthOfLastWord("luffy is still joyboy"))
+//print(Solution_lengthOfLastWord2().lengthOfLastWord("   fly me   to   the moon  "))
+//print(Solution_lengthOfLastWord2().lengthOfLastWord("Hello World"))
+
+// https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+
+class Solution_FirstOccurance1 {
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+        
+        guard haystack.count >= needle.count else { return -1 }
+        
+        let charArrHaystack = Array(haystack)
+        let charArrNeedle = Array(needle)
+
+        for (i, _) in charArrHaystack.enumerated() {
+            
+            if i > charArrHaystack.count - charArrNeedle.count {
+                return -1
+            }
+            
+            if isNeedleMatch(
+                charArrHaystack: charArrHaystack,
+                currentIndex: i,
+                charArrNeedle: charArrNeedle
+            ) {
+                return i
+            }
+            
+        }
+        
+        return -1
+    }
+    
+    func isNeedleMatch(
+        charArrHaystack: [Character],
+        currentIndex: Int,
+        charArrNeedle: [Character]
+    ) -> Bool {
+        var i = currentIndex
+        for ch in charArrNeedle {
+            if ch != charArrHaystack[i] {
+                return false
+            }
+            i = i + 1
+        }
+        
+        return true
+    }
+}
+
+// print(Solution_FirstOccurance1().strStr("a", "a"))
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+
+//
+// list1 = [1,2,4, 5, 6, 7, 8, 9, 10, 11], list2 = [1,3,4, 20, 24]
+//          0 1 2 ...        0 1 2 ...
+//  1 1 2 3 4 4 5 6
+
+// list1 = [1->2->4],
+// list2 = 1->3->4
+// result = 1->1->2
+//
+//
+
+class Solution_lengthOfLongestSubstring {
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        
+        var highCount = 0
+        
+        let charArr = Array(s)
+        
+        for (i,_) in charArr.enumerated() {
+            let newCount = getNonRepeatedCount(from: i, ofCharArr: charArr)
+            
+            if newCount > highCount {
+                highCount = newCount
+            }
+        }
+        
+        return highCount
+    }
+    
+    private func getNonRepeatedCount(from: Int, ofCharArr: [Character]) -> Int {
+        
+        var aSet: Set<Character> = Set<Character>()
+        
+        for i in from...(ofCharArr.count-1) {
+            
+            let ch = ofCharArr[i]
+            
+            if aSet.contains(ch) {
+                return aSet.count
+            }
+            
+            aSet.insert(ch)
+        }
+        
+        return aSet.count
+    }
+}
+
+/*
+print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("abcabcbb"))
+print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("bbbbb"))
+print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("pwwkew"))
+*/
+
+// 121
+/*
+ 
+ 121 / 100 -> 1
+ 121 % 10 -> 1
+ 
+ 12321 / 10000 -> 1
+ 12321 % 10 -> 1
+ 
+ 3443 / 1000 -> 3
+ 
+ 3443 - 1000*3 = 443
+ 
+ 443 / 10 = 44
+ 
+ 3445 / 10 -> 5
+ 
+ 
+ nope
+ 
+ */
+
+// 1221
+// 12321
+//
+
+func evaluateExpression(_ s: String) -> Int {
+    func operate(_ a: Int, _ b: Int, _ op: Character) -> Int {
+        switch op {
+        case "+":
+            return a + b
+        case "-":
+            return a - b
+        case "*":
+            return a * b
+        case "/":
+            return a / b
+        default:
+            return 0
+        }
+    }
+
+    var stack = [Int]()
+    var currentNum = 0
+    var currentOp: Character = "+"
+    let expression = s + "+"
+    
+    for char in expression {
+        if let digit = char.wholeNumberValue {
+            currentNum = currentNum * 10 + digit
+        } else if char == "+" || char == "-" || char == "*" || char == "/" {
+            switch currentOp {
+            case "+":
+                stack.append(currentNum)
+            case "-":
+                stack.append(-currentNum)
+            case "*", "/":
+                let lastNum = stack.removeLast()
+                stack.append(operate(lastNum, currentNum, currentOp))
+            default:
+                break
+            }
+            currentNum = 0
+            currentOp = char
+        }
+    }
+
+    return stack.reduce(0, +)
+}
+
+//let expression = "5+3-1*6/2+1-4"
+//let result = evaluateExpression(expression)
+//print("\(expression) -> \(result)")
+
+
+// 1 + 1*2*3*4/4 - 4
+
+func evalUnit(a:Int, op: String, b:Int) -> Int {
+    
+    var result = 0
+    
+    switch op {
+    case "-":
+        result = a - b
+    case "+":
+        result = a + b
+    case "*":
+        result = a * b
+    case "/":
+        result = a / b
+    default:
+        result = 0
+    }
+    
+    return result
+}
+
+func calculate(_ s: String) -> Int {
+    
+    var stack: [Int] = []
+    var lastRes = 0
+    var lastOp = "+"
+    for ch in s {
+        
+        if ch == "+" || ch == "-" || ch == "*" || ch == "/" {
+            if ch == "+" || ch == "-" {
+                if lastRes > 0 {
+                    stack.append(lastRes)
+                }
+                
+                lastRes = 0
+            }
+            
+            lastOp = String(ch)
+            
+        } else if let chInt = Int(String(ch)) {
+            
+            if lastOp == "/" || lastOp == "*" {
+                if lastRes == 0 {
+                    lastRes = stack.removeLast()
+                }
+                lastRes = evalUnit(a: lastRes, op: lastOp, b: chInt)
+            }
+
+            if lastOp == "-" {
+                stack.append(-chInt)
+            } else if lastOp == "+" {
+                stack.append(chInt)
+            }
+        }
+        
+    }
+    
+    if lastRes > 0 {
+        stack.append(lastRes)
+    }
+    
+    return stack.reduce(0, +)
+}
+
+//print(evalExpression(s: "5+1-2*2/2-2"))
+//print(evalExpression(s: "5+1"))
+//print(calculate("32"))
+
+
+/*
+"""
+Absolute Value Sort
+
+Given an array of integers arr, write a function absSort(arr), that sorts the array according to the absolute values of the numbers in arr.
+If two numbers have the same absolute value, sort them according to sign, where the negative numbers come before the positive numbers.
+
+Examples:
+
+input:  arr = [2, -7, -2, -2, 0]
+ 
+ i = 0, [2, -7, -2, -2, 0]
+ smallest = 0, swapPos(0, i) -> [0, -7, -2, -2, 2]
+ 
+ i = 1, [0, -2, -7, -2, 2]
+ smallest = -2,
+ 
+ i = 2, [0, -2, -2, -7, 2]
+ smallest = -2,
+ 
+ i = 3, [0, -2, -2, 2, -7]
+ smallest = -2,
+ 
+output: [0, -2, -2, 2, -7]
+"""
+*/
+
+class Solution_sortAbs {
+    func sortAbs(_ input: [Int]) -> [Int] {
+        var inputEquivalent = input
+
+        for (i,_) in inputEquivalent.enumerated() {
+            let smallestPos = getPositionForAbsSmallest(fromIndex: i, arr: inputEquivalent)
+            swapPos(&inputEquivalent, i: i, j: smallestPos)
+        }
+        
+        return inputEquivalent
+    }
+    
+    func swapPos(_ input: inout [Int], i: Int, j: Int) {
+        let temp = input[i]
+        input[i] = input[j]
+        input[j] = temp
+    }
+
+    func getPositionForAbsSmallest(fromIndex: Int, arr: [Int]) -> Int {
+        
+        var smallest = arr[fromIndex]
+        var smallestPos = fromIndex
+
+        for i in fromIndex...(arr.count - 1) {
+
+            if smallest.absVal > arr[i].absVal {
+                smallest = arr[i]
+                smallestPos = i
+            }
+        }
+        
+        return smallestPos
+    }
+}
+
+// print(Solution_sortAbs().sortAbs([2, -7, -2, -2, 0, 29, -66]))
+
+/*
+ 
+ https://leetcode.com/problems/valid-parentheses/description/
+ 
+ Example 1:
+
+ Input: s = "()"
+ Output: true
+ Example 2:
+
+ Input: s = "()[]{}"
+ Output: true
+ Example 3:
+
+ Input: s = "(]"
+ Output: false
+
+ */
+
+// ()[({})]{}
+class Solution_isValidParenthesis {
+    
+    func isValid(_ s: String) -> Bool {
+        
+        var stack: [Character] = []
+        
+        for ch in s {
+            if ch == "(" || ch == "{" || ch == "[" {
+                stack.append(ch)
+            } else {
+                // ch is ")" or "}" or "]"
+                if stack.count > 0 {
+                    if checkBalance(open: stack.removeLast(), close: ch) {
+                        
+                    } else {
+                        return false
+                    }
+                } else {
+                    return false
+                }
+            }
+        }
+
+        return stack.count == 0
+    }
+    
+    func checkBalance(open: Character, close: Character) -> Bool {
+        
+        var result = false
+        
+        if open == "(" && close == ")" {
+            result = true
+        }
+        
+        if open == "{" && close == "}" {
+            result = true
+        }
+        
+        if open == "[" && close == "]" {
+            result = true
+        }
+        
+        return result
+    }
+}
+
+/*
+print(Solution_isValidParenthesis().isValid("{{((()))}}({})"))
+print(Solution_isValidParenthesis().isValid("()"))
+print(Solution_isValidParenthesis().isValid("([])"))
+*/
+
+/*
+""
+Find The Duplicates
+
+Given two sorted arrays arr1 and arr2 of passport numbers, implement a function findDuplicates that returns an array of all passport numbers
+that are both in arr1 and arr2. Note that the output array should be sorted in an ascending order.
+
+Let N and M be the lengths of arr1 and arr2, respectively. Solve for two cases and analyze the time & space complexities of your solutions:
+  M ≈ N - the array lengths are approximately the same
+  M ≫ N - arr2 is much bigger than arr1.
+ 
+input:  arr1 = [1, 2, 3, 5, 6, 7], arr2 = [3, 6, 7, 8, 20]
+output: [3, 6, 7]
+
+""
+*/
+
+/*
+ result [3, 6, 7]
+ 
+ [1, 2, 3, 5, 6, 7]
+  i
+ 
+ [3, 6, 7, 8, 20]
+  j
+ 
+ */
+
+func findDups(_ arr1: [Int],_ arr2: [Int]) -> [Int] {
+    
+    var i = 0
+    var j = 0
+    var result: [Int] = []
+    
+    while i < arr1.count && j < arr2.count {
+        
+        let first = arr1[i]
+        let second = arr2[j]
+        
+        if first > second {
+            i = i + 1
+        } else if second > first {
+            j = j + 1
+        } else {
+            i = i + 1
+            j = j + 1
+            result.append(first)
+        }
+    }
+    
+    return result
+}
+
+class Solution_pruneTree {
+    
+    func pruneTree(_ root: TreeNode?) -> TreeNode? {
+
+        guard let root = root else { return nil }
+        
+        if root.val == 0 && root.left == nil && root.right == nil {
+            return nil
+        }
+
+        if root.left == nil && root.right == nil && root.val == 1 {
+            return root
+        }
+
+        root.left = pruneTree(root.left)
+        root.right = pruneTree(root.right)
+
+        if root.left == nil && root.right == nil && root.val == 0 {
+            return nil
+        } else {
+            return root
+        }
+        
+    }
+    
+}
+
+func singleBinSearch(arr: [Int], target: Int) -> Int? {
+
+  var l = 0
+  var u = arr.count - 1
+
+  while l != u {
+
+    let m = (l + u)/2
+    let mItem = arr[m]
+
+    if mItem == target {
+      return m
+    } else {
+      // find out if target is in sorted half or not
+      
+      // upper fully sorted
+      if mItem < arr[u] {
+
+        if mItem < target && target < arr[u] {
+          l = m + 1
+        } else {
+          u = m - 1
+        }
+        
+      } else {
+        // lower fully sorted
+        if arr[l] < target && target < mItem {
+          u = m - 1
+        } else {
+          l = m + 1
+        }
+      }
+      
+    }
+    
+  }
+
+  return nil
+}
+
+func binSearch(arr: [Int], target: Int) -> Int? {
+
+    var l: Int = 0
+    var u: Int = 0
+  
+    if let pivotIndex = searchPivot(arr: arr) {
+
+      if target > arr[u] {
+        // 1st sorted arr
+        l = 0
+        u = pivotIndex - 1
+      } else {
+        l = pivotIndex
+        u = arr.count-1
+        // second sorted arr
+      }
+      
+    } else {
+      l = 0
+      u = arr.count-1
+    }
+
+    // write binary logic to search
+    while l != u {
+      let m = (l + u)/2
+
+      if arr[m] == target {
+        return m
+      } else if target < arr[m] {
+        u = m - 1
+      } else {
+        l = m + 1
+      }
+    }
+
+    return nil
+}
+
+func searchPivot(arr: [Int]) -> Int? {
+
+  var l = 0
+  var u = arr.count-1
+
+  while l != u {
+
+    let m = (l + u)/2
+
+    if arr[m-1] > arr[m] || arr[m] < arr[m+1] {
+
+      if arr[m-1] > arr[m] {
+        return m
+      } else {
+        return m+1
+      }
+      
+    } else if arr[m] > arr[u] {
+      // pivot is in upper half
+      l = m
+    } else {
+      // pivot is in lower half
+      u = m
+    }
+  }
+
+  return nil
+}
+
+
+/*
+let concurrentQ = DispatchQueue(label: "dq-concurrent", attributes: .concurrent)
+
+concurrentQ.sync {
+    for i in 0...100 {
+        print("A")
+    }
+}
+
+concurrentQ.sync {
+    for i in 0...100 {
+        print("A")
+    }
+}
+
+try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * 3))
+
+print("done")
+
+*/
+
+class Solution_binSearch {
+    func binSearch(arr: [Int], target: Int) -> Int {
+        binSearchRec(arr: arr, target: target, l: 0, u: arr.count - 1)
+    }
+
+    func binSearchRec(arr: [Int], target: Int, l: Int, u: Int) -> Int {
+        
+        let m = (l + u)/2
+        
+        if l > u {
+            return -1
+        } else if target == arr[m] {
+            return m
+        } else if  arr[m] < target {
+            return binSearchRec(arr: arr, target: target, l: m+1, u: u)
+        } else {
+            return binSearchRec(arr: arr, target: target, l: l, u: m-1)
+        }
+    }
+}
+
+/*
+ https://leetcode.com/problems/maximum-subarray/description/
+ 
+ Given an integer array nums, find the subarray with the largest sum, and return its sum.
+ nums = [-2,1,-3,4,-1,2,1,-5,4]
+ 
+
+ The subarray [4,-1,2,1] has the largest sum 6.
+ 
+ */
+
+/*
+ 
+ nums =
+
+
+ 3, m = 3, mh = 3
+ 1, mh = mh + item = 4, m = 4
+-1, mh = 3, m = 4
+ 2, mh = 5, m = 5
+ 3, mh = 8, m = 8
+ 
+ ..................
+ 
+-1, mh = -1, m = -1
+-7, mh = -8, m = -1
+-1, mh = -9, m = -1
+ 2, mh = -7, m = -1
+ 3, mh = -4, m = -1
+ 
+ max = Int.min
+ maxHere = Int.min
+ 
+ i = 0, max = 3, maxTillHere =
+ i = 1, sum = max(-1,1) = 1
+ i = 2,
+ 
+ */
+
+class Solution_maxSubArray1 {
+    func maxSubArray(_ nums: [Int]) -> Int {
+        var max = Int.min
+        var max_end_here = 0
+        
+        for num in nums {
+            max_end_here = max_end_here + num
+            
+            if max_end_here > max {
+                max = max_end_here
+            }
+            
+            if max_end_here < 0 {
+                max_end_here = 0
+            }
+            
+            print("\(num), mh = \(max_end_here), m = \(max)")
+            
+//            -1, mh = -1, m = -1
+//            -7, mh = -8, m = -1
+//            -1, mh = -9, m = -1
+//             2, mh = -7, m = -1
+//             3, mh = -4, m = -1
+        }
+        return max
+    }
+}
+
+// print(Solution_maxSubArray1().maxSubArray([-8,-7,-1,-2,-3]))
+
+// eg: 5-3-(1-10) -> 2 + 9 -> 11
+
+// eg: 5+3+(1-10)
+
+// 5 + 3 + 1 - 10
+
+// eg: 5+3-(1-10)
+// 5 + 3 - 1 + 10
+
+// if inside bracket and lastOp before bracket is - then
+
+// 5-3-(1-1+2) ......
+
+class Solution_calcExp {
+    func calcExpRec(exp: [Character], i: inout Int) -> Int {
+        
+        var result: [Int] = []
+        
+        var lastOp = "+"
+        var lastChar = ""
+        
+        while i < exp.count {
+            let chStr = String(exp[i])
+            
+             if lastChar == "(" {
+                 
+                let val = getVal(lastOp: lastOp,val: calcExpRec(exp: exp, i: &i))
+                result.append(val)
+                
+            } else if chStr == ")" {
+                break
+            } else if let chInt = Int(chStr) {
+                
+                let item = getVal(lastOp: lastOp, val: chInt)
+                result.append(item)
+                
+            }
+            
+            if chStr == "+" || chStr == "-" {
+                lastOp = chStr
+            }
+            
+            lastChar = chStr
+            
+            i = i + 1
+        }
+        
+        return result.reduce(0,+)
+    }
+
+    func calcExp(exp: String) -> Int {
+        let charArr = Array(exp)
+        var i = 0
+        return calcExpRec(exp: charArr, i: &i)
+    }
+
+    func getVal(lastOp: String, val: Int) -> Int {
+        if lastOp == "-" {
+            return -val
+        } else if lastOp == "+" {
+            return val
+        }
+        return 0
+    }
+}
+
+// print(Solution_calcExp().calcExp(exp: "1+2-(3-4+(4-2)+4)"))
+
+/*
+let a: Int = Int.max
+let b: Int = 1
+let resultAPlusB = a &+ b
+let aLargeNum = Int.max
+let sum = aLargeNum.addingReportingOverflow(45)
+print(sum)
+*/
+
+
+func calculate(exp: String) -> Int {
+    
+    var result:[Int] = []
+    
+    let charArr = Array(exp)
+    
+    var lastOp = "+"
+    
+    var isInsideBracket = false
+    var lastOpBeforeOpenBracket = ""
+    
+    var wholeNumber = ""
+    
+    for ch in charArr {
+        
+        if ch == "(" {
+            
+            isInsideBracket = true
+            lastOpBeforeOpenBracket = lastOp
+            
+        } else if ch == ")" {
+            isInsideBracket = false
+            lastOpBeforeOpenBracket = ""
+        }
+        
+        if ch == "+" || ch == "-" {
+            
+            var val = Int(wholeNumber) ?? 0
+            if lastOp == "-"  {
+                val = -val
+            }
+            
+            if isInsideBracket && lastOpBeforeOpenBracket == "-" {
+                val = -val
+            }
+
+            result.append(val)
+            
+            wholeNumber = ""
+            
+            lastOp = String(ch)
+        }
+        
+        if Int(String(ch)) != nil {
+            wholeNumber.append(ch)
+        }
+        
+    }
+    
+    return result.reduce(0, +)
+}
+
+//print(calculate(exp: "5-5-(1-1+10)+10"))
+
+class Solution_longestSubstring {
+    func getLastOccuranceOf(
+        ch: Character,
+        currI: Int,
+        charArr: [Character]
+    ) -> Int {
+        
+        var i = currI-1
+
+        while i >= 0 {
+
+            if charArr[i] == ch {
+                return i
+            }
+
+            i = i - 1
+        }
+
+        return 0
+    }
+
+    func longestSubstring(input: String) -> Int {
+
+        let charArr = Array(input)
+        
+        var highestCount = 0
+        var tempCount = 0
+
+        var i = 0
+        
+        var aSet: Set<Character> = Set()
+
+        while i < charArr.count {
+            
+            let ch = charArr[i]
+            
+            if aSet.contains(ch) {
+                
+                highestCount = max(highestCount, tempCount)
+                
+                tempCount = 0
+
+                // reset the i back to previous occurance of of charArr[i]
+                i = getLastOccuranceOf(ch: charArr[i], currI: i, charArr: charArr)
+
+            } else {
+                aSet.insert(ch)
+            }
+
+            i = i + 1
+        }
+
+        return highestCount
+    }
+    
+    func longestSubstringUsingDict(input: String) -> Int {
+
+        let charArr = Array(input)
+        
+        var lastOccuranceDict: [Character: Int] = [:]
+        
+        var tempResultSet = Set<Character>()
+        
+        var highestCount = 0
+        
+        var i = 0
+
+        while i < charArr.count {
+            
+            let ch = charArr[i]
+            
+            if tempResultSet.contains(ch) {
+                
+                highestCount = max(highestCount, tempResultSet.count)
+                
+                tempResultSet = Set<Character>()
+
+                i = lastOccuranceDict[ch] ?? 0
+                
+            } else {
+                tempResultSet.insert(ch)
+            }
+            
+            lastOccuranceDict[ch] = i
+
+            i = i + 1
+        }
+
+        return max(highestCount, tempResultSet.count)
+    }
+}
+
+/*
+print(Solution_longestSubstring().longestSubstringUsingDict(input: "") == 0)
+print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcabcbc") == 3)
+print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe") == 5)
+print(Solution_longestSubstring().longestSubstringUsingDict(input: "bbbbbbbbbb") == 1)
+print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe"))
+*/

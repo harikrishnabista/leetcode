@@ -199,7 +199,7 @@ class Solution_FirstOccurance {
         
         let charArrHaystack = Array(haystack)
         let charArrNeedle = Array(needle)
-
+        
         for (i, _) in charArrHaystack.enumerated() {
             
             if i > charArrHaystack.count - charArrNeedle.count {
@@ -243,7 +243,7 @@ class Solution_FirstOccurance {
 class Solution_moveZeros {
     // with using swap
     func moveZeroes(_ arr: inout [Int]) {
-      
+        
         var lastZeroIndex = -1
         
         for (i,item) in arr.enumerated() {
@@ -261,13 +261,13 @@ class Solution_moveZeros {
     }
     
     /*
-    // test code
+     // test code
      
-    var input1:[Any] = [ 4, 1, 3, 2, "X", "Y", "Z", 0, 1, 3, 4 ]
-    let result = moveNonZeroToFront_2(inputArr: &input1)
-    print(result)
+     var input1:[Any] = [ 4, 1, 3, 2, "X", "Y", "Z", 0, 1, 3, 4 ]
+     let result = moveNonZeroToFront_2(inputArr: &input1)
+     print(result)
      
-    */
+     */
     
     // move non-zero to the beginning of the array
     func moveNonZeroToFront_1(inputArr: [Any]) -> [Any] {
@@ -281,43 +281,43 @@ class Solution_moveZeros {
         }
         return resultArr
     }
-
+    
     func moveNonZeroToFront_2(inputArr:inout [Any]) -> [Any] {
         for (i,item) in inputArr.enumerated() {
             if let item = item as? Int, item == 0 {
                 inputArr.remove(at: i)
             }
-
+            
             print(inputArr)
         }
         return inputArr
     }
     
     func moveZerosToEnd(nums:inout [Int]) {
-      
-      var i = 0
-      for (index,num) in nums.enumerated() {
-        if num != 0 {
-          nums[i] = num
-          
-          if index != i {
-             nums[index] = 0
-          }
-          
-          i = i + 1
+        
+        var i = 0
+        for (index,num) in nums.enumerated() {
+            if num != 0 {
+                nums[i] = num
+                
+                if index != i {
+                    nums[index] = 0
+                }
+                
+                i = i + 1
+            }
         }
-      }
     }
     
     /*
-    var input = [1, 10, 2, 8, 3, 6, 0, 0, 0, 4, 0, 5, 7, 0]
-    moveZerosToEnd(nums:&input)
-    */
+     var input = [1, 10, 2, 8, 3, 6, 0, 0, 0, 4, 0, 5, 7, 0]
+     moveZerosToEnd(nums:&input)
+     */
     
     /*
-    var input2 = [1, 10, 0, 0, 0, 2, 8, 3, 0, 0, 6, 4, 0, 5, 7, 0]
-    Solution_moveZeros().moveZeroes(&input2)
-    print(input2)
+     var input2 = [1, 10, 0, 0, 0, 2, 8, 3, 0, 0, 6, 4, 0, 5, 7, 0]
+     Solution_moveZeros().moveZeroes(&input2)
+     print(input2)
      */
 }
 
@@ -329,18 +329,18 @@ func fib(n:Int) -> Int {
     if n == 0 {
         return 0
     }
-
+    
     if n == 1 {
         return 1
     }
-
+    
     return fib(n: n-1) + fib(n: n-2)
 }
 
 /*
-let n = 5
-print(fib(n: n))
-*/
+ let n = 5
+ print(fib(n: n))
+ */
 
 /***********************************************************************************/
 
@@ -359,24 +359,24 @@ func flatMe(arr:[Any]) -> [Int] {
 }
 
 /*
-let input: [Any] = [1,[4,3],6,[5,[1,0]]]
-print(flatMe(arr: input))
-*/
+ let input: [Any] = [1,[4,3],6,[5,[1,0]]]
+ print(flatMe(arr: input))
+ */
 
 /***********************************************************************************/
 // check if string is palindrome or not recursively
 
 func isPalindrome(input: String) -> Bool {
-
+    
     var tempInput = input
-
+    
     if tempInput.count == 0 || tempInput.count == 1 {
         return true
     }
-
+    
     let firstChar = tempInput.removeFirst()
     let lastChar = tempInput.removeLast()
-
+    
     if firstChar != lastChar {
         return false
     }else{
@@ -385,8 +385,8 @@ func isPalindrome(input: String) -> Bool {
 }
 
 /*
-print(isPalindrome(input: "2001002"))
-*/
+ print(isPalindrome(input: "2001002"))
+ */
 
 /***********************************************************************************/
 
@@ -401,104 +401,104 @@ func removeDuplicateWords(input:[String]) -> Set<String> {
 }
 
 func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-
+    
     var result: ListNode? = ListNode(-1)
     var previousNode: ListNode? = result
-
+    
     var firstCurrent: ListNode? = l1
     var secondCurrent: ListNode? = l2
-
+    
     var carry = 0
     while (firstCurrent != nil || secondCurrent != nil) {
-
+        
         // if both not nil
         var tempSum = 0
         if let firstCurrent = firstCurrent,
-            let secondCurrent = secondCurrent {
+           let secondCurrent = secondCurrent {
             tempSum = firstCurrent.val + secondCurrent.val + carry
         }
-
+        
         // if firstCurrent nil and secondCurrent not nil
         if let firstCurrent = firstCurrent,
-            secondCurrent == nil {
+           secondCurrent == nil {
             tempSum = firstCurrent.val + carry
         }
-
+        
         // if firstCurrent not nil and secondCurrent nil
         if let secondCurrent = secondCurrent,
-            firstCurrent == nil {
+           firstCurrent == nil {
             tempSum = secondCurrent.val + carry
         }
-
+        
         if tempSum > 9 {
             carry = tempSum / 10
             tempSum = tempSum % 10
         }else {
             carry = tempSum / 10
         }
-
+        
         previousNode?.next = ListNode(tempSum)
         previousNode = previousNode?.next
-
+        
         firstCurrent = firstCurrent?.next
         secondCurrent = secondCurrent?.next
     }
-
+    
     if carry > 0 {
         previousNode?.next = ListNode(carry)
         previousNode = previousNode?.next
     }
-
+    
     // removing first Node that is: -1
     if result != nil {
         result = result?.next
     }
-
+    
     return result
 }
 
 /*
-let num11 = ListNode(9)
-let num12 = ListNode(9)
-let num13 = ListNode(9)
-
-num11.next = num12
-num12.next = num13
-
-let number1 = num11
-let num21 = ListNode(5)
-let num22 = ListNode(6)
-let num23 = ListNode(4)
-
-num21.next = num22
-num22.next = num23
-
-let number2 = num21
-
-if let ret = Solution().addTwoNumbers(number1, number2) {
-    var currNode: ListNode? = ret
-    repeat {
-        print(currNode?.val ?? "nil")
-        currNode = currNode?.next
-
-    } while(currNode != nil)
-}
-*/
+ let num11 = ListNode(9)
+ let num12 = ListNode(9)
+ let num13 = ListNode(9)
+ 
+ num11.next = num12
+ num12.next = num13
+ 
+ let number1 = num11
+ let num21 = ListNode(5)
+ let num22 = ListNode(6)
+ let num23 = ListNode(4)
+ 
+ num21.next = num22
+ num22.next = num23
+ 
+ let number2 = num21
+ 
+ if let ret = Solution().addTwoNumbers(number1, number2) {
+ var currNode: ListNode? = ret
+ repeat {
+ print(currNode?.val ?? "nil")
+ currNode = currNode?.next
+ 
+ } while(currNode != nil)
+ }
+ */
 
 
 /***********************************************************************************/
 
 /*
-Given a 32-bit signed integer, reverse digits of an integer.
-
-Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
-
-*/
+ Given a 32-bit signed integer, reverse digits of an integer.
+ 
+ Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
+ 
+ */
 
 func getMultiplyer( _ x: Int) -> Int {
     var multiplyer = 1
     var n = x
-
+    
     while (n >= 10){
         multiplyer = multiplyer * 10
         n = n / 10
@@ -507,29 +507,29 @@ func getMultiplyer( _ x: Int) -> Int {
 }
 
 func reverse(_ x: Int) -> Int {
-
+    
     var n = x > 0 ? x : -x
     var result = 0
     var multiplyer = getMultiplyer(n)
-
+    
     while (n > 0) {
         let rem = n % 10
-
+        
         result = result + multiplyer * rem
-
+        
         // next multiplyer
         multiplyer = multiplyer / 10
-
+        
         // next number
         n = n / 10
     }
-
+    
     result = x > 0 ? result : -result
-
+    
     if result < Int32.min || result > Int32.max {
         return 0
     }
-
+    
     return result
 }
 
@@ -540,14 +540,14 @@ func reverse(_ x: Int) -> Int {
 /***********************************************************************************/
 
 /*
-leet code
-https://leetcode.com/problems/string-to-integer-atoi/
-*/
+ leet code
+ https://leetcode.com/problems/string-to-integer-atoi/
+ */
 
 class SolutionMyAtoi {
     func myAtoi(_ str: String) -> Int {
         var result = 0
-
+        
         if let inputStr = self.validateAtoi(str){
             if let res = Int(inputStr){
                 result = res
@@ -562,29 +562,29 @@ class SolutionMyAtoi {
         } else{
             result = 0
         }
-
+        
         if result < Int32.min {
             result = Int(Int32.min)
         }
-
+        
         if result > Int32.max {
             result = Int(Int32.max)
         }
-
+        
         return result
     }
-
+    
     func validateAtoi(_ str: String) -> String? {
-
+        
         var input = str
-
+        
         // trim white spaces
         input = input.trimmingCharacters(in: .whitespaces)
-
+        
         // remove post non-digit characters
         var validInput = ""
         for (i,digitChar) in input.enumerated() {
-
+            
             // for the first char it should be either valid sign or valid digit
             if  i == 0 {
                 if self.intSigns.contains(digitChar) || self.digits.contains(digitChar){
@@ -600,77 +600,77 @@ class SolutionMyAtoi {
                 }
             }
         }
-
+        
         if validInput == "+" || validInput == "-" {
             return nil
         }
-
+        
         if validInput.count > 0 {
             return validInput
         }else{
             return nil
         }
     }
-
+    
     var digits:[Character] = ["0","1","2","3","4","5","6","7","8","9"]
     var intSigns:[Character] = ["+","-"]
 }
 
 
 /*
-let result = SolutionMyAtoi().myAtoi("2147483648")
-print(result)
+ let result = SolutionMyAtoi().myAtoi("2147483648")
+ print(result)
  */
 
 /***********************************************************************************/
 
 /*
-https://leetcode.com/problems/palindrome-number/
-Leet code
-Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
-*/
+ https://leetcode.com/problems/palindrome-number/
+ Leet code
+ Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
+ */
 
 class Solution1_isPalindrome3 {
     func isPalindrome(_ x: Int) -> Bool {
         let strX = String(x)
-
+        
         var leadCounter = strX.startIndex
         var trailCounter = strX.index(before: strX.endIndex)
-
+        
         var result = true
         while leadCounter < trailCounter {
             let leadChar = strX[leadCounter]
             let trailChar = strX[trailCounter]
-
+            
             if leadChar == trailChar {
-
+                
             }else{
                 result = false
                 break;
             }
-
+            
             leadCounter = strX.index(after: leadCounter)
             trailCounter = strX.index(before: trailCounter)
         }
-
+        
         return result
     }
 }
 
 /*
-let result = Solution1_isPalindrome3().isPalindrome(0)
-print(result)
+ let result = Solution1_isPalindrome3().isPalindrome(0)
+ print(result)
  */
 
 /***********************************************************************************/
 
 /*
-Integer to Roman : LeetCode
-https://leetcode.com/problems/integer-to-roman/
-*/
+ Integer to Roman : LeetCode
+ https://leetcode.com/problems/integer-to-roman/
+ */
 
 class Solution_intToRoman {
-
+    
     let arabicsToRoman : [Int:String] = [
         1 : "I",
         5 : "V",
@@ -680,12 +680,12 @@ class Solution_intToRoman {
         500 : "D",
         1000 : "M"
     ]
-
+    
     func intToRoman(_ num: Int) -> String {
         var n = num
-
+        
         var result = ""
-
+        
         var range = 1
         while n > 0 {
             let rem = n % 10
@@ -693,10 +693,10 @@ class Solution_intToRoman {
             n = n / 10
             range = range * 10
         }
-
+        
         return result
     }
-
+    
     private func singleDigitIntToRoman(num: Int, range: Int) -> String {
         switch num {
         case 1...3:
@@ -710,10 +710,10 @@ class Solution_intToRoman {
         case 4:
             var roman = ""
             if let leadingVal = self.arabicsToRoman[range],
-                let trailingVal = self.arabicsToRoman[range * 5] {
+               let trailingVal = self.arabicsToRoman[range * 5] {
                 roman = leadingVal + trailingVal
             }
-
+            
             if range >= 1000 {
                 for _ in 1...num {
                     if let romanVal = self.arabicsToRoman[range] {
@@ -721,9 +721,9 @@ class Solution_intToRoman {
                     }
                 }
             }
-
+            
             return roman
-
+            
         case 5:
             if let roman = self.arabicsToRoman[range * 5] {
                 return roman
@@ -737,7 +737,7 @@ class Solution_intToRoman {
         case 9:
             var roman = ""
             if let leadingVal = self.arabicsToRoman[range],
-                let trailingVal = self.arabicsToRoman[range * 10] {
+               let trailingVal = self.arabicsToRoman[range * 10] {
                 roman = leadingVal + trailingVal
             }
             return roman
@@ -755,15 +755,15 @@ class Solution_intToRoman {
 func toRoman(number: Int) -> String {
     let romanValues = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
     let arabicValues = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
-
+    
     var romanValue = ""
     var startingValue = number
-
+    
     for (index, romanChar) in romanValues.enumerated() {
         let arabicValue = arabicValues[index]
-
+        
         let div = startingValue / arabicValue
-
+        
         if (div > 0){
             for _ in 0..<div {
                 romanValue += romanChar
@@ -771,7 +771,7 @@ func toRoman(number: Int) -> String {
             startingValue -= arabicValue * div
         }
     }
-
+    
     return romanValue
 }
 
@@ -783,35 +783,35 @@ func toRoman(number: Int) -> String {
 /***********************************************************************************/
 
 /*
-Longest Common Prefix
-https://leetcode.com/problems/longest-common-prefix/
-*/
+ Longest Common Prefix
+ https://leetcode.com/problems/longest-common-prefix/
+ */
 
 class Solution_longestCommonPrefix2 {
     func longestCommonPrefix(_ strs: [String]) -> String {
-
+        
         guard strs.count > 1 else {
-
+            
             if strs.count == 1 {
                 return strs[0]
             }
-
+            
             return ""
         }
-
+        
         var result = commonPrefix(firstStr: strs[0], secondStr: strs[1])
-
+        
         for str in strs {
             result = commonPrefix(firstStr: result, secondStr: str)
         }
-
+        
         return result
     }
-
+    
     private func commonPrefix(firstStr:String, secondStr:String) -> String {
         var result = ""
         let count = min(firstStr.count, secondStr.count)
-
+        
         for i in 0..<count {
             let firstChar = firstStr[firstStr.index(firstStr.startIndex, offsetBy: i)]
             let secondChar = secondStr[secondStr.index(secondStr.startIndex, offsetBy: i)]
@@ -821,7 +821,7 @@ class Solution_longestCommonPrefix2 {
                 break
             }
         }
-
+        
         return result
     }
 }
@@ -832,12 +832,12 @@ class Solution_longestCommonPrefix2 {
 /***********************************************************************************/
 
 /*
-Leet Code
-letterCombinations
-*/
+ Leet Code
+ letterCombinations
+ */
 
 class Solution_letterCombinations {
-
+    
     private var kvp:[String:String] = [
         "2":"abc",
         "3":"def",
@@ -848,7 +848,7 @@ class Solution_letterCombinations {
         "8":"tuv",
         "9":"wxyz"
     ]
-
+    
     private func getArrayOfChars(str:String) -> [String] {
         var result:[String] = []
         for ch in str {
@@ -856,42 +856,42 @@ class Solution_letterCombinations {
         }
         return result
     }
-
+    
     func letterCombinations(_ digits: String) -> [String] {
-
+        
         var result :[String] = []
-
+        
         for digit in digits {
             if let keys = kvp[String(digit)] {
                 let keyArr = self.getArrayOfChars(str: keys)
                 result = multiply(firstArr: result, secondArr: keyArr)
             }
         }
-
+        
         return result
     }
-
+    
     private func multiply(firstArr: [String], secondArr:[String]) -> [String] {
-
+        
         guard firstArr.count > 0 && secondArr.count > 0 else {
             if firstArr.count == 0 {
                 return secondArr
             }
-
+            
             if secondArr.count == 0 {
                 return firstArr
             }
-
+            
             return [String]()
         }
-
+        
         var result:[String] = []
         for firstStr in firstArr {
             for secondStr in secondArr {
                 result.append(firstStr + secondStr)
             }
         }
-
+        
         return result
     }
 }
@@ -904,7 +904,7 @@ class Solution_letterCombinations {
 
 class Solution1_threeSum {
     func threeSum(_ nums: [Int]) -> [[Int]] {
-
+        
         var result = Set<Array<Int>>()
         for i in 0..<nums.count {
             for j in (i + 1)..<nums.count {
@@ -925,50 +925,50 @@ class Solution1_threeSum {
 // O(n*n) solution
 class Solution2_threeSum {
     func threeSum(_ nums: [Int]) -> [[Int]] {
-
+        
         let sortedNums = nums.sorted()
-
+        
         if let firstNum = sortedNums.first,
-            let lastNum = sortedNums.last,
-                firstNum == lastNum {
-
+           let lastNum = sortedNums.last,
+           firstNum == lastNum {
+            
             if sortedNums.count > 2, firstNum == 0 {
                 return [[0, 0, 0]]
             }else{
                 return []
             }
         }
-
+        
         var result = Set<Array<Int>>()
-
+        
         for (index,num) in sortedNums.enumerated() {
-
+            
             // remove num itself from the array input
             var tempSortedInput:[Int] = sortedNums
             tempSortedInput.remove(at: index)
-
+            
             let twoSumResult = twoSum(nums: tempSortedInput, k: num)
-
+            
             for arr in twoSumResult {
                 result.insert(arr.sorted())
             }
         }
-
+        
         return Array(result)
     }
-
+    
     func twoSum(nums:[Int], k:Int) -> [[Int]] {
-
+        
         // leading counter
         var i = 0
-
+        
         // trailing counter
         var j = nums.count - 1
-
+        
         var result :[[Int]] = []
         while j > i {
             let sum = nums[i] + nums[j] + k
-
+            
             if sum > 0 {
                 j = j - 1
             } else if sum < 0 {
@@ -977,10 +977,10 @@ class Solution2_threeSum {
                 result.append([nums[i], nums[j], k])
                 i = i + 1
                 j = j - 1
-
+                
             }
         }
-
+        
         return result
     }
 }
@@ -994,10 +994,10 @@ class Solution2_threeSum {
 // write program to generate binary numbers
 
 func generateBinary(n:Int){
-
+    
     let size = Decimal(n)
     let totalCount:Int = (pow(size, 2) as NSDecimalNumber).intValue
-
+    
     for i in 0...(totalCount-1) {
         var binNumber = ""
         for j in 0...(n-1) {
@@ -1022,9 +1022,9 @@ func generateBinary(n:Int){
 //[@2, @1, @3, @1, @2] --&gt [@2, @1, @3]
 
 func removeDupAndGetUnique(input:[Int]) -> [Int] {
-
+    
     var dict:[Int:Int] = [:]
-
+    
     for number in input {
         if let val = dict[number] {
             dict[number] = val + 1
@@ -1032,9 +1032,9 @@ func removeDupAndGetUnique(input:[Int]) -> [Int] {
             dict[number] = 1
         }
     }
-
+    
     var result:[Int] = []
-
+    
     for (key,val) in dict {
         if val > 1 {
             result.insert(key, at: 0)
@@ -1042,7 +1042,7 @@ func removeDupAndGetUnique(input:[Int]) -> [Int] {
             result.append(key)
         }
     }
-
+    
     return result
 }
 
@@ -1075,27 +1075,27 @@ func removeDupAndGetUnique(input:[Int]) -> [Int] {
 //}
 
 /*
-let linkedList = LinkedList<Int>()
-
-linkedList.append(1)
-linkedList.append(2)
-linkedList.append(3)
-linkedList.append(4)
-linkedList.append(5)
-linkedList.append(6)
-linkedList.append(7)
-linkedList.append(8)
-
-print("Input")
-print(linkedList)
-
-print("")
-print("Output")
-reverseAlternateNode(ll: linkedList)
-print(linkedList)
-print("")
-
-*/
+ let linkedList = LinkedList<Int>()
+ 
+ linkedList.append(1)
+ linkedList.append(2)
+ linkedList.append(3)
+ linkedList.append(4)
+ linkedList.append(5)
+ linkedList.append(6)
+ linkedList.append(7)
+ linkedList.append(8)
+ 
+ print("Input")
+ print(linkedList)
+ 
+ print("")
+ print("Output")
+ reverseAlternateNode(ll: linkedList)
+ print(linkedList)
+ print("")
+ 
+ */
 
 /***********************************************************************************/
 
@@ -1104,50 +1104,50 @@ class Node {
     var value: Int
     var children: [Node] = []
     weak var parent: Node?
-
+    
     weak var searchNode:Node?
-
+    
     init(name: String, value:Int) {
         self.value = value
         self.name = name
     }
-
+    
     func traverse() {
         self.postOrderTraverse(node: self)
-
+        
         if let node = self.searchNode {
             print("\(node.name) : \(node.value)")
         }
     }
-
+    
     func find() {
         let result = self.findChildHaving1(node: self)
         if let result = result {
             print("\(result.name) : \(result.value)")
         }
     }
-
+    
     func findChildHaving1(node:Node) ->Node?{
         for child in node.children {
             if(child.value>0){
                 return child
             }else{
                 let returnNOde = findChildHaving1(node: child)
-
+                
                 if(returnNOde != nil){
                     return returnNOde
                 }
             }
         }
-
+        
         return nil
     }
-
+    
     func postOrderTraverse(node:Node) {
         for child in node.children {
             if(child.value>0){
                 self.searchNode = child
-//                print("\(child.name) : \(child.value) : childrens: \(child.children.count)")
+                //                print("\(child.name) : \(child.value) : childrens: \(child.children.count)")
             }else{
                 postOrderTraverse(node: child)
             }
@@ -1156,53 +1156,53 @@ class Node {
 }
 
 /*
-let aNode = Node(name: "A", value: 0)
-
-let bNode = Node(name: "B", value: 0)
-let dNode = Node(name: "D", value: 0)
-let eNode = Node(name: "E", value: 0)
-
-let cNode = Node(name: "C", value: 0)
-let fNode = Node(name: "F", value: 1)
-let gNode = Node(name: "G", value: 0)
-
-//let hNode = Node(name: "H", value: 1)
-//let iNode = Node(name: "I", value: 1)
-//let jNode = Node(name: "J", value: 1)
-
-aNode.children.append(bNode)
-aNode.children.append(cNode)
-
-bNode.children.append(dNode)
-bNode.children.append(eNode)
-
-cNode.children.append(fNode)
-cNode.children.append(gNode)
-
-//dNode.children.append(hNode)
-//dNode.children.append(iNode)
-
-aNode.find()
-
-func postOrderTraverse(node:Node)->Node {
-    for child in node.children {
-        if(child.children.count > 0){
-            postOrderTraverse(node: child)
-
-            if(child.value > 0){
-                return child;
-            }
-        }else{
-            if(child.value > 0){
-                return child;
-            }
-        }
-
-    }
-
-    return node;
-}
-*/
+ let aNode = Node(name: "A", value: 0)
+ 
+ let bNode = Node(name: "B", value: 0)
+ let dNode = Node(name: "D", value: 0)
+ let eNode = Node(name: "E", value: 0)
+ 
+ let cNode = Node(name: "C", value: 0)
+ let fNode = Node(name: "F", value: 1)
+ let gNode = Node(name: "G", value: 0)
+ 
+ //let hNode = Node(name: "H", value: 1)
+ //let iNode = Node(name: "I", value: 1)
+ //let jNode = Node(name: "J", value: 1)
+ 
+ aNode.children.append(bNode)
+ aNode.children.append(cNode)
+ 
+ bNode.children.append(dNode)
+ bNode.children.append(eNode)
+ 
+ cNode.children.append(fNode)
+ cNode.children.append(gNode)
+ 
+ //dNode.children.append(hNode)
+ //dNode.children.append(iNode)
+ 
+ aNode.find()
+ 
+ func postOrderTraverse(node:Node)->Node {
+ for child in node.children {
+ if(child.children.count > 0){
+ postOrderTraverse(node: child)
+ 
+ if(child.value > 0){
+ return child;
+ }
+ }else{
+ if(child.value > 0){
+ return child;
+ }
+ }
+ 
+ }
+ 
+ return node;
+ }
+ */
 
 /***********************************************************************************/
 
@@ -1215,17 +1215,17 @@ class solution_zerosCounter {
         var zerosCounter = 0
         
         while(counter < input.count){
-           if input[counter] == 0 {
-               input.remove(at: counter)
-               zerosCounter = zerosCounter + 1
-           } else {
-               counter = counter + 1
-           }
+            if input[counter] == 0 {
+                input.remove(at: counter)
+                zerosCounter = zerosCounter + 1
+            } else {
+                counter = counter + 1
+            }
         }
         
         while(zerosCounter > 0) {
-           input.append(0)
-           zerosCounter = zerosCounter - 1
+            input.append(0)
+            zerosCounter = zerosCounter - 1
         }
     }
 }
@@ -1233,36 +1233,36 @@ class solution_zerosCounter {
 /***********************************************************************************/
 
 /*
-Given a string, find the length of the longest substring without repeating characters.
-
-Example 1:
-
-Input: "abcabcbb"
-Output: 3
-Explanation: The answer is "abc", with the length of 3.
-Example 2:
-
-Input: "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
-
-Input: "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3.
-Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
-
-*/
+ Given a string, find the length of the longest substring without repeating characters.
+ 
+ Example 1:
+ 
+ Input: "abcabcbb"
+ Output: 3
+ Explanation: The answer is "abc", with the length of 3.
+ Example 2:
+ 
+ Input: "bbbbb"
+ Output: 1
+ Explanation: The answer is "b", with the length of 1.
+ Example 3:
+ 
+ Input: "pwwkew"
+ Output: 3
+ Explanation: The answer is "wke", with the length of 3.
+ Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ 
+ */
 
 func lengthOfLongestSubstring(_ s: String) -> Int {
-
+    
     var result = ""
     var tempResult = ""
-
+    
     var index = s.startIndex
-
+    
     while index < s.endIndex {
-
+        
         let char = s[index]
         if tempResult.contains(char){
             if let charIndex = tempResult.lastIndex(of: char){
@@ -1271,17 +1271,17 @@ func lengthOfLongestSubstring(_ s: String) -> Int {
                 index = s.index(after: index)
             }
             tempResult = ""
-
+            
         }else{
             tempResult = tempResult + [char]
             index = s.index(after: index)
         }
-
+        
         if tempResult.count > result.count {
             result = tempResult
         }
     }
-
+    
     return result.count
 }
 
@@ -1312,10 +1312,10 @@ class Solution_firstMissingPositive {
 }
 
 /*
-let input = [7,8,9,11,12]
-let result = Solution_firstMissingPositive().firstMissingPositive(input)
-print(result)
-*/
+ let input = [7,8,9,11,12]
+ let result = Solution_firstMissingPositive().firstMissingPositive(input)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -1358,16 +1358,16 @@ class Solution1_multiply {
         }
         return String(sum)
     }
-
+    
 }
 
 /*
-"498828660196"
-"840477629533"
+ "498828660196"
+ "840477629533"
  this below solution is not effective as it fails for following test case
-let num1 = "498828660196", num2 = "840477629533"
-let result = Solution1_multiply().multiply(num1, num2)
-print(result)
+ let num1 = "498828660196", num2 = "840477629533"
+ let result = Solution1_multiply().multiply(num1, num2)
+ print(result)
  */
 
 
@@ -1438,16 +1438,16 @@ class Solution_multiply {
         }
         return ultimateResultArray.joined()
     }
-
+    
 }
 
 /*
-//let num1 = "54321", num2 = "543"
-//let num1 = "498828660196", num2 = "840477629533"
-let num1 = "9133", num2 = "0"
-let result = Solution_multiply().multiply(num1, num2)
-print(result)
-*/
+ //let num1 = "54321", num2 = "543"
+ //let num1 = "498828660196", num2 = "840477629533"
+ let num1 = "9133", num2 = "0"
+ let result = Solution_multiply().multiply(num1, num2)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -1482,27 +1482,27 @@ class Solution_longestUnivaluePath {
 }
 
 /*
-let node = TreeNode(5)
-
-let node1 = TreeNode(4)
-node.left = node1
-
-let node2 = TreeNode(5)
-node.right = node2
-
-let node3 = TreeNode(1)
-node1.left = node3
-
-let node4 = TreeNode(1)
-node2.right = node4
-
-let node5 = TreeNode(5)
-node2.right = node5
-
-let result = Solution_longestUnivaluePath().longestUnivaluePath(node)
-print(result)
+ let node = TreeNode(5)
  
-*/
+ let node1 = TreeNode(4)
+ node.left = node1
+ 
+ let node2 = TreeNode(5)
+ node.right = node2
+ 
+ let node3 = TreeNode(1)
+ node1.left = node3
+ 
+ let node4 = TreeNode(1)
+ node2.right = node4
+ 
+ let node5 = TreeNode(5)
+ node2.right = node5
+ 
+ let result = Solution_longestUnivaluePath().longestUnivaluePath(node)
+ print(result)
+ 
+ */
 
 /***********************************************************************************/
 
@@ -1518,15 +1518,15 @@ func flatten(arr:[Any]) -> [Int] {
             result.append(contentsOf: flatten(arr: newArr))
         }
     }
-
+    
     return result
 }
 
 /*
-let input:[Any] = [3, 4, [4, [[55]]]]
-let result = flatten(arr: input)
-print(result)
-*/
+ let input:[Any] = [3, 4, [4, [[55]]]]
+ let result = flatten(arr: input)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -1536,7 +1536,7 @@ class Permutation {
     func permutate(str:String) -> [String] {
         return permuteMe(str: str, startIndex: 0)
     }
-
+    
     func permuteMe(str: String,startIndex:Int) -> [String] {
         var result:[String] = []
         
@@ -1588,9 +1588,9 @@ class Solution_mySqrt {
 }
 
 /*
-let result = Solution_mySqrt().mySqrt(101)
-print(result)
-*/
+ let result = Solution_mySqrt().mySqrt(101)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -1623,36 +1623,36 @@ func permutate(input:String) -> [String] {
 }
 
 /*
-let result = permutate(input: "ABCD")
-for str in result {
-    print(str)
-}
-*/
+ let result = permutate(input: "ABCD")
+ for str in result {
+ print(str)
+ }
+ */
 
 /***********************************************************************************/
 
- // NOt efficient solution
- 
- //class Solution1 {
- //    func myPow(_ x: Double, _ n: Int) -> Double {
- //        var counter = 0
- //        var result:Double = 1
- //
- //        while (counter < abs(n) ) {
- //            result = result * x
- //            counter = counter + 1
- //        }
- //
- //        if n < 0 {
- //            return 1/result
- //        }
- //
- //        return result
- //    }
- //}
+// NOt efficient solution
 
- // efficient solution
- 
+//class Solution1 {
+//    func myPow(_ x: Double, _ n: Int) -> Double {
+//        var counter = 0
+//        var result:Double = 1
+//
+//        while (counter < abs(n) ) {
+//            result = result * x
+//            counter = counter + 1
+//        }
+//
+//        if n < 0 {
+//            return 1/result
+//        }
+//
+//        return result
+//    }
+//}
+
+// efficient solution
+
 class Solution_myPow {
     func myPow(_ x: Double, _ n: Int) -> Double {
         
@@ -1709,9 +1709,9 @@ class Solution_generateParenthesis {
 }
 
 /*
-let result = Solution_generateParenthesis().generateParenthesis(5)
-print(result)
-*/
+ let result = Solution_generateParenthesis().generateParenthesis(5)
+ print(result)
+ */
 
 
 /***********************************************************************************/
@@ -1791,29 +1791,29 @@ class Solution2_removeElement {
 }
 
 /*
-let input = "mississippi"
-let result = Solution2_removeElement().strStr(input, "pi")
-*/
+ let input = "mississippi"
+ let result = Solution2_removeElement().strStr(input, "pi")
+ */
 
 /* Seems like efficient solution but leed code does not accept and I gave up on this
-class Solution {
-    func strStr(_ haystack: String, _ needle: String) -> Int {
-        
-        if needle.isEmpty {
-            return 0
-        }
-        
-        if let range = haystack.range(of: needle) {
-            let startPos = haystack.distance(from: haystack.startIndex, to: range.lowerBound)
-            return startPos
-        }
-        return -1
-    }
-}
-
-let input = "mississippi"
-let result = Solution().strStr(input, "mississippio")
-
+ class Solution {
+ func strStr(_ haystack: String, _ needle: String) -> Int {
+ 
+ if needle.isEmpty {
+ return 0
+ }
+ 
+ if let range = haystack.range(of: needle) {
+ let startPos = haystack.distance(from: haystack.startIndex, to: range.lowerBound)
+ return startPos
+ }
+ return -1
+ }
+ }
+ 
+ let input = "mississippi"
+ let result = Solution().strStr(input, "mississippio")
+ 
  */
 
 
@@ -1854,8 +1854,8 @@ class Solution_isValidCondition {
 }
 
 /*
-let result = Solution_isValidCondition().isValid("{}{[]}[{}]()")
-print(result)
+ let result = Solution_isValidCondition().isValid("{}{[]}[{}]()")
+ print(result)
  */
 
 /***********************************************************************************/
@@ -1925,10 +1925,10 @@ class Solution_permutations {
 
 
 /*
-var jpt:[Int] = []
-let result = Solution_permutations().permute(jpt)
-print(result)
-*/
+ var jpt:[Int] = []
+ let result = Solution_permutations().permute(jpt)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -1953,10 +1953,10 @@ class Solution_maxSubArray {
 }
 
 /*
-let input = [-2,1,-3,4,-1,2,1,-5,4]
-let res = Solution_maxSubArray().maxSubArray(input)
-print(res)
-*/
+ let input = [-2,1,-3,4,-1,2,1,-5,4]
+ let res = Solution_maxSubArray().maxSubArray(input)
+ print(res)
+ */
 
 /***********************************************************************************/
 
@@ -1973,9 +1973,9 @@ class Solution_lengthOfLastWord1 {
 }
 
 /*
-let res = Solution_lengthOfLastWord1().lengthOfLastWord("")
-print(res)
-*/
+ let res = Solution_lengthOfLastWord1().lengthOfLastWord("")
+ print(res)
+ */
 
 /***********************************************************************************/
 
@@ -2000,35 +2000,35 @@ class Solution_deleteDuplicates {
 }
 
 /*
-let head = ListNode(1)
-let secondNode = ListNode(2)
-let thirdNode = ListNode(2)
-let fourthNode = ListNode(2)
-let fivthNode = ListNode(3)
-let sixthNode = ListNode(4)
-let seventhNode = ListNode(4)
-let eiththNode = ListNode(4)
-
-head.next = secondNode
-secondNode.next = thirdNode
-thirdNode.next = fourthNode
-fourthNode.next = fivthNode
-fivthNode.next = sixthNode
-sixthNode.next = seventhNode
-seventhNode.next = eiththNode
-
-//let result = Solution_deleteDuplicates().deleteDuplicates(head)
-
-if let result = Solution_deleteDuplicates().deleteDuplicates(head) {
-    var runnerNode:ListNode? = result
-    while runnerNode != nil {
-        if let val = runnerNode?.val {
-            print(val)
-        }
-        runnerNode = runnerNode?.next
-    }
-}
-*/
+ let head = ListNode(1)
+ let secondNode = ListNode(2)
+ let thirdNode = ListNode(2)
+ let fourthNode = ListNode(2)
+ let fivthNode = ListNode(3)
+ let sixthNode = ListNode(4)
+ let seventhNode = ListNode(4)
+ let eiththNode = ListNode(4)
+ 
+ head.next = secondNode
+ secondNode.next = thirdNode
+ thirdNode.next = fourthNode
+ fourthNode.next = fivthNode
+ fivthNode.next = sixthNode
+ sixthNode.next = seventhNode
+ seventhNode.next = eiththNode
+ 
+ //let result = Solution_deleteDuplicates().deleteDuplicates(head)
+ 
+ if let result = Solution_deleteDuplicates().deleteDuplicates(head) {
+ var runnerNode:ListNode? = result
+ while runnerNode != nil {
+ if let val = runnerNode?.val {
+ print(val)
+ }
+ runnerNode = runnerNode?.next
+ }
+ }
+ */
 
 /***********************************************************************************/
 
@@ -2070,9 +2070,9 @@ class Solution_plusOne {
 }
 
 /*
-let result = Solution_plusOne().plusOne([9,9,9])
-print(result)
-*/
+ let result = Solution_plusOne().plusOne([9,9,9])
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -2082,7 +2082,7 @@ class Solution_addBinary {
         
         let longerStr = a.count >= b.count ? a : b
         let shortStr = a.count < b.count ? a : b
-    
+        
         var counter = longerStr.count - 1
         let diff = abs(a.count - b.count)
         
@@ -2097,13 +2097,13 @@ class Solution_addBinary {
                 let idx2 = shortStr.index(shortStr.startIndex, offsetBy: counter - diff)
                 intCh2 = Int("\(shortStr[idx2])") ?? 0
             }
-
+            
             let sum = intCh1 + intCh2 + carry
             var intRes:Character = "0"
-
+            
             carry = sum > 1 ? 1 : 0
             intRes = sum % 2 == 0 ? "0" : "1"
-
+            
             result.insert(intRes, at: result.startIndex)
             
             counter = counter - 1
@@ -2118,9 +2118,9 @@ class Solution_addBinary {
 }
 
 /*
-let result = Solution().addBinary("11", "01")
-print(result)
-*/
+ let result = Solution().addBinary("11", "01")
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -2150,8 +2150,8 @@ class Solution_countedHistory {
 }
 
 /*
-print(Solution_countedHistory().climbStairs(10))
-*/
+ print(Solution_countedHistory().climbStairs(10))
+ */
 
 
 /***********************************************************************************/
@@ -2184,9 +2184,9 @@ class Solution_sortedArrayToBST {
 }
 
 /*
-let result = Solution_sortedArrayToBST().sortedArrayToBST([-10,-3,0,5,9])
-result?.traversePreOrder()
-*/
+ let result = Solution_sortedArrayToBST().sortedArrayToBST([-10,-3,0,5,9])
+ result?.traversePreOrder()
+ */
 
 
 /***********************************************************************************/
@@ -2203,9 +2203,9 @@ class Solution_singleNumber {
 }
 
 /*
-let res = Solution_singleNumber().singleNumber([0,0,1,1,2,2,3,3])
-print(res)
-*/
+ let res = Solution_singleNumber().singleNumber([0,0,1,1,2,2,3,3])
+ print(res)
+ */
 
 /***********************************************************************************/
 
@@ -2219,11 +2219,11 @@ class Solution_maxDepth {
 }
 
 /*
-let binTreeArr = [3,9,20,nil,nil,15,7]
-let binTree = createBinaryTree(with: binTreeArr)
-let height = Solution().maxDepth(binTree)
-print(height)
-*/
+ let binTreeArr = [3,9,20,nil,nil,15,7]
+ let binTree = createBinaryTree(with: binTreeArr)
+ let height = Solution().maxDepth(binTree)
+ print(height)
+ */
 
 /***********************************************************************************/
 
@@ -2268,9 +2268,9 @@ class Solution1_isPalindrome4 {
 }
 
 /*
-let result = Solution1_isPalindrome4().isPalindrome("A man, a plan, a canal: Panama")
-print(result)
-*/
+ let result = Solution1_isPalindrome4().isPalindrome("A man, a plan, a canal: Panama")
+ print(result)
+ */
 
 
 /***********************************************************************************/
@@ -2303,7 +2303,7 @@ class Solution_levelOrderBottom {
                     nextLevelNodes.append(rightNOde)
                 }
             }
-
+            
             result.insert(items, at: 0)
             
             levelNodes = nextLevelNodes
@@ -2314,17 +2314,17 @@ class Solution_levelOrderBottom {
 }
 
 /*
-let binTreeArr = [3,9,20,nil,nil,15,7]
-let binTree = createBinaryTree(with: binTreeArr)
-let result = Solution_levelOrderBottom().levelOrderBottom(binTree)
-print(result)
-*/
+ let binTreeArr = [3,9,20,nil,nil,15,7]
+ let binTree = createBinaryTree(with: binTreeArr)
+ let result = Solution_levelOrderBottom().levelOrderBottom(binTree)
+ print(result)
+ */
 
 
 /***********************************************************************************/
 
 class MinStack {
-
+    
     var storage:[Int] = []
     var minimum:Int = Int.max
     
@@ -2335,7 +2335,7 @@ class MinStack {
     func push(_ x: Int) {
         self.storage.append(x)
         if x < minimum {
-           minimum = x
+            minimum = x
         }
     }
     
@@ -2387,7 +2387,7 @@ class Solution_twoSum {
 
 /***********************************************************************************/
 // https://leetcode.com/problems/rotate-array/submissions/
- 
+
 class Solution_rotate {
     func rotate(_ nums: inout [Int], _ k: Int) {
         var result:[Int] = [Int](repeating: 0, count: nums.count)
@@ -2401,10 +2401,10 @@ class Solution_rotate {
 }
 
 /*
-var input = [1,2,3,4,5,6,7]
-Solution().Solution_rotate(&input, 3)
-print(input)
-*/
+ var input = [1,2,3,4,5,6,7]
+ Solution().Solution_rotate(&input, 3)
+ print(input)
+ */
 
 /***********************************************************************************/
 
@@ -2444,30 +2444,30 @@ class Solution_reverseWords {
         }
         
         // using old style loop
-//        var result = ""
-//        for (i,item) in revWords.enumerated() {
-//            if i == 0 {
-//                result = item
-//            } else {
-//                result = result + " " + item
-//            }
-//        }
-//        using reduce functional approach
-//
-//        return revWords.reduce("") { (x, y) -> String in
-//            x + " " +  y
-//        }
-//
-//      using functional approach with shorter syntax
+        //        var result = ""
+        //        for (i,item) in revWords.enumerated() {
+        //            if i == 0 {
+        //                result = item
+        //            } else {
+        //                result = result + " " + item
+        //            }
+        //        }
+        //        using reduce functional approach
+        //
+        //        return revWords.reduce("") { (x, y) -> String in
+        //            x + " " +  y
+        //        }
+        //
+        //      using functional approach with shorter syntax
         return revWords.joined(separator: " ")
     }
 }
 
 /*
-let input = "the    sky       is blue"
-let result = Solution_reverseWords().reverseWords(input)
-print(result)
-*/
+ let input = "the    sky       is blue"
+ let result = Solution_reverseWords().reverseWords(input)
+ print(result)
+ */
 
 
 /***********************************************************************************/
@@ -2483,7 +2483,7 @@ class BSTIterator {
             self.stack.append(root)
         }
     }
-
+    
     func next() -> Int {
         while self.hasNext() {
             let item = self.stack.removeLast()
@@ -2515,22 +2515,22 @@ class BSTIterator {
 }
 
 /*
-let input = [7,3,15,nil,nil,9,20]
-let bst = createBinaryTree(with: input)
-let obj = BSTIterator(bst)
-
-print(obj.next())
-print(obj.next())
-print(obj.hasNext())
-print(obj.next())
-print(obj.hasNext())
-print(obj.next())
-print(obj.hasNext())
-print(obj.next())
-print(obj.hasNext())
-print(obj.next())
-print(obj.hasNext())
-*/
+ let input = [7,3,15,nil,nil,9,20]
+ let bst = createBinaryTree(with: input)
+ let obj = BSTIterator(bst)
+ 
+ print(obj.next())
+ print(obj.next())
+ print(obj.hasNext())
+ print(obj.next())
+ print(obj.hasNext())
+ print(obj.next())
+ print(obj.hasNext())
+ print(obj.next())
+ print(obj.hasNext())
+ print(obj.next())
+ print(obj.hasNext())
+ */
 
 /***********************************************************************************/
 
@@ -2563,23 +2563,23 @@ class Solution_removeNthFromEnd {
         
         // delete nth node from end
         previousNode?.next = previousNode?.next?.next
-
+        
         return head
     }
 }
 
 
 /*
-let linkedList = createLinkedListFromArray(arr: [1,2,3])
-
-print("Input: ")
-printLinkedList(head: linkedList)
-
-if let newLinkedList = Solution_removeNthFromEnd().removeNthFromEnd(linkedList, 3) {
-    print("output: ")
-    printLinkedList(head: newLinkedList)
-}
-*/
+ let linkedList = createLinkedListFromArray(arr: [1,2,3])
+ 
+ print("Input: ")
+ printLinkedList(head: linkedList)
+ 
+ if let newLinkedList = Solution_removeNthFromEnd().removeNthFromEnd(linkedList, 3) {
+ print("output: ")
+ printLinkedList(head: newLinkedList)
+ }
+ */
 
 
 /***********************************************************************************/
@@ -2591,7 +2591,7 @@ class Solution_mergeTwoLists {
         
         var resultRunNode:ListNode?
         if let fRunNode = firstRunNode,
-            let sRunNode = secondRunNode {
+           let sRunNode = secondRunNode {
             
             if fRunNode.val < sRunNode.val {
                 resultRunNode = firstRunNode
@@ -2616,7 +2616,7 @@ class Solution_mergeTwoLists {
         // merge here
         while firstRunNode != nil || secondRunNode != nil {
             if let fRunNode = firstRunNode,
-                let sRunNode = secondRunNode {
+               let sRunNode = secondRunNode {
                 
                 if fRunNode.val < sRunNode.val {
                     resultRunNode?.next = firstRunNode
@@ -2644,19 +2644,19 @@ class Solution_mergeTwoLists {
 }
 
 /*
-let l1 = createLinkedListFromArray(arr: [1,2,5,7,9,100])
-let l2 = createLinkedListFromArray(arr: [0,1001])
-if let res = Solution_mergeTwoLists().mergeTwoLists(l1, l2) {
-    printLinkedList(head: res)
-}
-*/
+ let l1 = createLinkedListFromArray(arr: [1,2,5,7,9,100])
+ let l2 = createLinkedListFromArray(arr: [0,1001])
+ if let res = Solution_mergeTwoLists().mergeTwoLists(l1, l2) {
+ printLinkedList(head: res)
+ }
+ */
 
 /***********************************************************************************/
 
 /*
-let result1 = permutate1(input: "ABC")
-print(result1)
-*/
+ let result1 = permutate1(input: "ABC")
+ print(result1)
+ */
 
 class Solution_swapPairs {
     func swapPairs(_ head: ListNode?) -> ListNode? {
@@ -2690,37 +2690,37 @@ class Solution_swapPairs {
 }
 
 /*
-let head = ListNode(1)
-let secondNode = ListNode(2)
-let thirdNode = ListNode(3)
-let fourthNode = ListNode(4)
-let fivthNode = ListNode(5)
-let sixthNode = ListNode(6)
-let seventhNode = ListNode(7)
-let eiththNode = ListNode(8)
-
-head.next = secondNode
-secondNode.next = thirdNode
-thirdNode.next = fourthNode
-fourthNode.next = fivthNode
-fivthNode.next = sixthNode
-sixthNode.next = seventhNode
-seventhNode.next = eiththNode
-
-var runnerNode1:ListNode? = head
-
-if let result = Solution_swapPairs().swapPairs(head) {
-    var runnerNode:ListNode? = result
-    while runnerNode != nil {
-        if let val = runnerNode?.val {
-            print(val)
-        }
-        runnerNode = runnerNode?.next
-    }
-} else {
-    print("nothing")
-}
-*/
+ let head = ListNode(1)
+ let secondNode = ListNode(2)
+ let thirdNode = ListNode(3)
+ let fourthNode = ListNode(4)
+ let fivthNode = ListNode(5)
+ let sixthNode = ListNode(6)
+ let seventhNode = ListNode(7)
+ let eiththNode = ListNode(8)
+ 
+ head.next = secondNode
+ secondNode.next = thirdNode
+ thirdNode.next = fourthNode
+ fourthNode.next = fivthNode
+ fivthNode.next = sixthNode
+ sixthNode.next = seventhNode
+ seventhNode.next = eiththNode
+ 
+ var runnerNode1:ListNode? = head
+ 
+ if let result = Solution_swapPairs().swapPairs(head) {
+ var runnerNode:ListNode? = result
+ while runnerNode != nil {
+ if let val = runnerNode?.val {
+ print(val)
+ }
+ runnerNode = runnerNode?.next
+ }
+ } else {
+ print("nothing")
+ }
+ */
 
 /***********************************************************************************/
 
@@ -2745,9 +2745,9 @@ func add(x:Int, y:Int) -> Int {
 }
 
 /*
-var x = 12
-var y = 4
-print(add(x: x, y: y))
+ var x = 12
+ var y = 4
+ print(add(x: x, y: y))
  */
 
 
@@ -2801,7 +2801,7 @@ class Solution_spiralOrder {
         guard matrix[0].count > 0 else {
             return []
         }
-
+        
         var i = 0
         var j = 0
         
@@ -2818,7 +2818,7 @@ class Solution_spiralOrder {
         while result.count != totalCount {
             
             result.append(matrix[i][j])
-
+            
             if dir == .LEFT || dir == .RIGHT {
                 h_counter = h_counter + 1
                 if h_counter == max_h_counter {
@@ -2852,13 +2852,13 @@ class Solution_spiralOrder {
 }
 
 /*
-var input:[[Int]] = []
-let emptyArr:[Int] = []
-input.append(emptyArr)
-
-var res = Solution_spiralOrder().spiralOrder(input)
-print(res)
-*/
+ var input:[[Int]] = []
+ let emptyArr:[Int] = []
+ input.append(emptyArr)
+ 
+ var res = Solution_spiralOrder().spiralOrder(input)
+ print(res)
+ */
 
 /**********************************************************************************/
 
@@ -2883,7 +2883,7 @@ class Solution_getPermutation {
         if counter == k {
             return input.joined()
         }
-
+        
         var lCounter = fixedPivotIndex
         while lCounter != input.count {
             
@@ -2952,10 +2952,10 @@ class Solution_rotateRight {
 }
 
 /*
-let llInput = createLinkedListFromArray(arr: [1,2,3,4,5])
-let result = Solution_rotateRight().rotateRight(nil, 0)
-printLinkedList(head: result)
-*/
+ let llInput = createLinkedListFromArray(arr: [1,2,3,4,5])
+ let result = Solution_rotateRight().rotateRight(nil, 0)
+ printLinkedList(head: result)
+ */
 
 
 class Solution1_sortColors {
@@ -2982,9 +2982,9 @@ class Solution1_sortColors {
     }
 }
 /*
-var input = [2,0,2,1,1,0]
-Solution1_sortColors().sortColors(&input)
-print(input)
+ var input = [2,0,2,1,1,0]
+ Solution1_sortColors().sortColors(&input)
+ print(input)
  */
 
 
@@ -3028,22 +3028,22 @@ class Solution2_sortColors {
 }
 
 /*
-var input = [2,0,0,1,2,1,2,0,2,2,1,2,1,2,0,2,1,1,0]
-//var input = [2,1]
-Solution2_sortColors().sortColors(&input)
-print(input)
-*/
+ var input = [2,0,0,1,2,1,2,0,2,2,1,2,1,2,0,2,1,1,0]
+ //var input = [2,1]
+ Solution2_sortColors().sortColors(&input)
+ print(input)
+ */
 
 class Solution_powerSet {
     // non recursive solution
     func subsets(_ nums: [Int]) -> [[Int]] {
         var result:[[Int]] = []
         result.append([])
-
+        
         for item in nums {
             product(item: item, result: &result)
         }
-
+        
         return result
     }
     
@@ -3057,8 +3057,8 @@ class Solution_powerSet {
 }
 
 /*
-let res = Solution_powerSet().subsets([6,2,3,4,5])
-print(res.count)
+ let res = Solution_powerSet().subsets([6,2,3,4,5])
+ print(res.count)
  */
 
 /***********************************************************************************/
@@ -3145,7 +3145,7 @@ class BSTNode {
         if let leftNode = node.left {
             inorderTraverse(node: leftNode, result: &result)
         }
-    
+        
         result.append(node.key)
         
         if let rightNode = node.right {
@@ -3269,26 +3269,26 @@ class BSTNode {
 }
 
 /*
-let root = BSTNode(key: 12)
-root.insert(key: 5)
-root.insert(key: 14)
-root.insert(key: 3)
-root.insert(key: 7)
-root.insert(key: 13)
-root.insert(key: 17)
-root.insert(key: 20)
-root.insert(key: 1)
-root.insert(key: 9)
-root.insert(key: 8)
-root.insert(key: 11)
-
-root.delete(key: 14)
-root.delete(key: 5)
-root.delete(key: 3)
-
-let sorted = root.sorted()
-print(sorted)
-*/
+ let root = BSTNode(key: 12)
+ root.insert(key: 5)
+ root.insert(key: 14)
+ root.insert(key: 3)
+ root.insert(key: 7)
+ root.insert(key: 13)
+ root.insert(key: 17)
+ root.insert(key: 20)
+ root.insert(key: 1)
+ root.insert(key: 9)
+ root.insert(key: 8)
+ root.insert(key: 11)
+ 
+ root.delete(key: 14)
+ root.delete(key: 5)
+ root.delete(key: 3)
+ 
+ let sorted = root.sorted()
+ print(sorted)
+ */
 
 /***********************************************************************************/
 
@@ -3307,7 +3307,7 @@ class Solution_reverseBetween {
             runnerNode = runnerNode?.next
             counter = counter + 1
         }
-
+        
         var prevMNode:ListNode?
         var prevNode:ListNode?
         if m == 1 {
@@ -3346,9 +3346,9 @@ class Solution_reverseBetween {
 }
 
 /*
-let listInput = createLinkedListFromArray(arr: [1,2,3,4,5])
-let res = Solution_reverseBetween().reverseBetween(listInput, 1, 3)
-printLinkedList(head: res)
+ let listInput = createLinkedListFromArray(arr: [1,2,3,4,5])
+ let res = Solution_reverseBetween().reverseBetween(listInput, 1, 3)
+ printLinkedList(head: res)
  */
 
 /***********************************************************************************/
@@ -3375,10 +3375,10 @@ class Solution_inorderTraversal {
 }
 
 /*
-let tree = createBinaryTree(with: [1,2,3,4,5,6,7,8])
-let result = Solution_inorderTraversal().inorderTraversal(tree)
-print(result)
-*/
+ let tree = createBinaryTree(with: [1,2,3,4,5,6,7,8])
+ let result = Solution_inorderTraversal().inorderTraversal(tree)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -3425,26 +3425,26 @@ class Solution_merge {
 
 
 /*
-//[2,0]
-//1
-//[1]
-//10ta
-
-//[4,0,0,0,0,0]
-//1
-//[1,2,3,5,6]
-//5
-
-//var nums1 = [1,2,3,0,0,0]
-//var nums2:[Int] = [2,5,6]
-
-var nums1 = [-12,0,0,0,0,0]
-var nums2 = [-49,-45,-42,1,2,3]
-
-Solution_merge().merge(&nums1, 1, nums2, nums2.count)
-print(nums1)
-
-*/
+ //[2,0]
+ //1
+ //[1]
+ //10ta
+ 
+ //[4,0,0,0,0,0]
+ //1
+ //[1,2,3,5,6]
+ //5
+ 
+ //var nums1 = [1,2,3,0,0,0]
+ //var nums2:[Int] = [2,5,6]
+ 
+ var nums1 = [-12,0,0,0,0,0]
+ var nums2 = [-49,-45,-42,1,2,3]
+ 
+ Solution_merge().merge(&nums1, 1, nums2, nums2.count)
+ print(nums1)
+ 
+ */
 
 /***********************************************************************************/
 
@@ -3477,11 +3477,11 @@ class Solution_wordSearch {
         
         return false
     }
-
+    
     func initializeVisited(board:[[Character]]){
         self.visited = [[Bool]](repeating: Array<Bool>(repeating: false, count: board[0].count), count: board.count)
     }
-
+    
     // explore all the adjacent of board[i][j] if not visited
     func exploreAdjacent(chPosition:Int, word:String, board:[[Character]], i:Int, j:Int) -> Bool {
         
@@ -3535,19 +3535,19 @@ class Solution_wordSearch {
 }
 
 /*
-let board:[[Character]] =
-[
-    ["C","A","A"],
-    ["A","A","A"],
-    ["B","C","D"]
-]
-var word = "AAB"
-
-let board1:[[Character]] = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
-let word1 = "ABCESEEEFS"
-
-print(Solution_wordSearch().exist(board1, word1))
-*/
+ let board:[[Character]] =
+ [
+ ["C","A","A"],
+ ["A","A","A"],
+ ["B","C","D"]
+ ]
+ var word = "AAB"
+ 
+ let board1:[[Character]] = [["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]]
+ let word1 = "ABCESEEEFS"
+ 
+ print(Solution_wordSearch().exist(board1, word1))
+ */
 
 /***********************************************************************************/
 
@@ -3576,7 +3576,7 @@ class Solution_breakTarget {
     
     private func combinationSum(candidates:[Int], target:Int, tempResult:[Int]) -> [[Int]] {
         var result:[[Int]] = []
-
+        
         if target == 0 {
             result.append(tempResult)
         } else {
@@ -3627,7 +3627,7 @@ class Solution_buildTarget {
                 newResult.append(arr)
             }
         }
-
+        
         return newResult
     }
     
@@ -3637,7 +3637,7 @@ class Solution_buildTarget {
         if let cacheResult = self.cache[target] {
             return cacheResult
         }
-
+        
         if target == 0 {
             let emptyArr:[Int] = []
             result.append(emptyArr)
@@ -3654,7 +3654,7 @@ class Solution_buildTarget {
                 }
             }
         }
-
+        
         self.cache[target] = result
         
         return result
@@ -3662,9 +3662,9 @@ class Solution_buildTarget {
 }
 
 /*
-let result = Solution_buildTarget().combinationSum([2,3,5], 8)
-print(result)
-*/
+ let result = Solution_buildTarget().combinationSum([2,3,5], 8)
+ print(result)
+ */
 
 /***********************************************************************************/
 
@@ -3692,12 +3692,12 @@ class Solution_isSameTree {
 }
 
 /*
-let pTree = createBinaryTree(with: [1,2,3])
-let qTree = createBinaryTree(with: [1,2,3])
-
-let result = Solution_isSameTree().isSameTree(pTree, qTree)
-print(result)
-*/
+ let pTree = createBinaryTree(with: [1,2,3])
+ let qTree = createBinaryTree(with: [1,2,3])
+ 
+ let result = Solution_isSameTree().isSameTree(pTree, qTree)
+ print(result)
+ */
 
 // wrong solution
 class Solution1_isSameTree {
@@ -3764,8 +3764,8 @@ class Solution_maxProfit {
 }
 
 /*
-print(Solution_maxProfit().maxProfit([1,2]))
-*/
+ print(Solution_maxProfit().maxProfit([1,2]))
+ */
 
 /***********************************************************************************/
 
@@ -3774,50 +3774,50 @@ print(Solution_maxProfit().maxProfit([1,2]))
 /* wrong solution */
 
 /*
-class Solution {
-    
-    enum BSTNodeChildType {
-        case LEFT, RIGHT, NONE
-    }
-    
-    func isValidBST(_ root: TreeNode?) -> Bool {
-        return isValidBST(root, childType: .NONE,  parent: nil)
-    }
-    
-    func isValidBST(_ root: TreeNode?, childType:BSTNodeChildType, parent:TreeNode?) -> Bool {
-        
-        guard let root = root else {
-            return true
-        }
-        
-        if let leftChild = root.left {
-            if leftChild.val >= root.val {
-                return false
-            }
-            
-            if childType == .RIGHT {
-                if let parent = parent, leftChild.val < parent.val {
-                    return false
-                }
-            }
-        }
-        
-        if let rightChild = root.right {
-            if rightChild.val <= root.val {
-                return false
-            }
-            
-            if childType == .LEFT {
-                if let parent = parent, rightChild.val > parent.val {
-                    return false
-                }
-            }
-        }
-        
-        return isValidBST(root.left, childType: .LEFT, parent: root) && isValidBST(root.right, childType: .RIGHT, parent: root)
-    }
-}
-*/
+ class Solution {
+ 
+ enum BSTNodeChildType {
+ case LEFT, RIGHT, NONE
+ }
+ 
+ func isValidBST(_ root: TreeNode?) -> Bool {
+ return isValidBST(root, childType: .NONE,  parent: nil)
+ }
+ 
+ func isValidBST(_ root: TreeNode?, childType:BSTNodeChildType, parent:TreeNode?) -> Bool {
+ 
+ guard let root = root else {
+ return true
+ }
+ 
+ if let leftChild = root.left {
+ if leftChild.val >= root.val {
+ return false
+ }
+ 
+ if childType == .RIGHT {
+ if let parent = parent, leftChild.val < parent.val {
+ return false
+ }
+ }
+ }
+ 
+ if let rightChild = root.right {
+ if rightChild.val <= root.val {
+ return false
+ }
+ 
+ if childType == .LEFT {
+ if let parent = parent, rightChild.val > parent.val {
+ return false
+ }
+ }
+ }
+ 
+ return isValidBST(root.left, childType: .LEFT, parent: root) && isValidBST(root.right, childType: .RIGHT, parent: root)
+ }
+ }
+ */
 
 class Solution_isValidBST {
     func isValidBST(_ root: TreeNode?) -> Bool {
@@ -3836,19 +3836,19 @@ class Solution_isValidBST {
 }
 
 /*
-let bst1 = createBinaryTree(with: [2,1,3])
-let bst2 = createBinaryTree(with: [5,1,4,nil,nil,3,6])
-let bst3 =  createBinaryTree(with: [1,nil,1])
-let bst4 = createBinaryTree(with: [10,5,15,nil,nil,6,20])
-
-// true
-let bst5 = createBinaryTree(with: [3,1,5,0,2,4,6])
-
-// false
-let bst6 = createBinaryTree(with: [3,1,5,0,2,4,6,nil,nil,nil,3])
-
-print(Solution_isValidBST().isValidBST(bst4))
-*/
+ let bst1 = createBinaryTree(with: [2,1,3])
+ let bst2 = createBinaryTree(with: [5,1,4,nil,nil,3,6])
+ let bst3 =  createBinaryTree(with: [1,nil,1])
+ let bst4 = createBinaryTree(with: [10,5,15,nil,nil,6,20])
+ 
+ // true
+ let bst5 = createBinaryTree(with: [3,1,5,0,2,4,6])
+ 
+ // false
+ let bst6 = createBinaryTree(with: [3,1,5,0,2,4,6,nil,nil,nil,3])
+ 
+ print(Solution_isValidBST().isValidBST(bst4))
+ */
 
 // not efficient solution O(n2)
 class Solution1_countPrimes {
@@ -3882,7 +3882,7 @@ class Solution_countPrimes {
     func countPrimes(_ n: Int) -> Int {
         
         var primes:[Bool] = [Bool](repeating: true, count: n)
-
+        
         var index = 2
         
         while index <= primes.count/2 {
@@ -3915,7 +3915,7 @@ class Solution_countPrimes {
 }
 
 /*
-print(Solution_countPrimes().countPrimes(5))
+ print(Solution_countPrimes().countPrimes(5))
  */
 
 /***********************************************************************************/
@@ -3945,10 +3945,10 @@ class Solution_reverseList {
 
 //1->2->3->4->5->NULL
 /*
-let inputLinkedList = createLinkedListFromArray(arr: [1,2,3,4,5,6])
-let ll = Solution_reverseList().reverseList(inputLinkedList)
-printLinkedList(head: ll)
-*/
+ let inputLinkedList = createLinkedListFromArray(arr: [1,2,3,4,5,6])
+ let ll = Solution_reverseList().reverseList(inputLinkedList)
+ printLinkedList(head: ll)
+ */
 
 
 // Below solution is O(n) time and O(1) space
@@ -4062,42 +4062,42 @@ class Solution1_isAnagram {
 
 // amazon interview
 /*
-func topNCompetitors(numCompetitors:Int,topNCompetitors:Int,
-                     competitors:[String], numReviews:Int,
-                     reviews:[String])->[String]{
-    var dict:[String:Int] = [:]
-    
-    for competitor in competitors {
-        dict[competitor] = getCount(competitor: competitor, reviews: reviews)
-    }
-    
-    // now sort the dictionary and get top n competitors
-    let topCompetitors = dict.sorted { $0.1 > $1.1 }
-    
-    var result:[String] = []
-    
-    var count = 0
-    for competitor in topCompetitors {
-        if count < topNCompetitors {
-            result.append(competitor.key)
-            count = count + 1
-        }
-    }
-    
-    return result
-}
-
-func getCount(competitor:String, reviews:[String]) -> Int {
-    var count = 0
-    for review in reviews {
-        if review.contains(competitor) {
-            count = count + 1
-        }
-    }
-    
-    return count
-}
-*/
+ func topNCompetitors(numCompetitors:Int,topNCompetitors:Int,
+ competitors:[String], numReviews:Int,
+ reviews:[String])->[String]{
+ var dict:[String:Int] = [:]
+ 
+ for competitor in competitors {
+ dict[competitor] = getCount(competitor: competitor, reviews: reviews)
+ }
+ 
+ // now sort the dictionary and get top n competitors
+ let topCompetitors = dict.sorted { $0.1 > $1.1 }
+ 
+ var result:[String] = []
+ 
+ var count = 0
+ for competitor in topCompetitors {
+ if count < topNCompetitors {
+ result.append(competitor.key)
+ count = count + 1
+ }
+ }
+ 
+ return result
+ }
+ 
+ func getCount(competitor:String, reviews:[String]) -> Int {
+ var count = 0
+ for review in reviews {
+ if review.contains(competitor) {
+ count = count + 1
+ }
+ }
+ 
+ return count
+ }
+ */
 
 /***********************************************************************************/
 
@@ -4152,7 +4152,7 @@ func fizzBuzz(n: Int) -> [String] {
  
  let pattern2 = ["red", "red"]
  
- let invalid_pattern = ["red", "blue", "red", "red"] 
+ let invalid_pattern = ["red", "blue", "red", "red"]
  
  let invalid_pattern2 = ["green"]
  
@@ -4218,14 +4218,14 @@ func isValidPattern(pattern:[String], blocks:[String:Int]) -> Bool {
 }
 
 /*
-let blocks = ["red": 1, "wild": 2]
-
-let pattern:[String] = ["red", "red", "red", "red"] // true -> ["red", "wild", "wild"]
-
-// patternDict = ["red":4]
-
-print(isValidPattern(pattern: pattern, blocks: blocks))
-*/
+ let blocks = ["red": 1, "wild": 2]
+ 
+ let pattern:[String] = ["red", "red", "red", "red"] // true -> ["red", "wild", "wild"]
+ 
+ // patternDict = ["red":4]
+ 
+ print(isValidPattern(pattern: pattern, blocks: blocks))
+ */
 
 
 /***********************************************************************************/
@@ -4294,7 +4294,7 @@ class Solution_groupAnagrams {
  let input = ["eat", "tea", "tan", "ate", "nat", "bat"]
  let res = Solution_groupAnagrams().groupAnagrams(input)
  print(res)
-*/
+ */
 
 
 /***********************************************************************************/
@@ -4338,48 +4338,48 @@ class Solution_heightChecker {
 }
 
 /*
-let heights1 = [1,1,4,2,1,3]
-let heights2 = [2,1,2,1,1,2,2,1]
-let res = Solution_heightChecker().heightChecker(heights2)
-print(res)
-*/
+ let heights1 = [1,1,4,2,1,3]
+ let heights2 = [2,1,2,1,1,2,2,1]
+ let res = Solution_heightChecker().heightChecker(heights2)
+ print(res)
+ */
 
 /***********************************************************************************/
 
 class Solution_numUniqueEmails {
     func numUniqueEmails(_ emails: [String]) -> Int {
- 
+        
         var uniqueEmails = Set<String>()
- 
+        
         for email in emails {
             // having @ is guarenteed
             let arr = email.split(separator: "@")
             var local  = arr[0]
             let rest = arr[arr.count - 1]
- 
+            
             let arrLocal = local.split(separator: "+")
- 
+            
             if arrLocal.count > 0 {
                 local = arrLocal[0]
             }
- 
+            
             let localStr = local.replacingOccurrences(of: ".", with: "")
- 
+            
             let resEmail = localStr + "@" + rest
             uniqueEmails.insert(resEmail)
             print(resEmail)
         }
- 
+        
         return uniqueEmails.count
     }
 }
 
 
 /*
-let input = ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
-let res = Solution_numUniqueEmails().numUniqueEmails(input)
-print(res)
-*/
+ let input = ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+ let res = Solution_numUniqueEmails().numUniqueEmails(input)
+ print(res)
+ */
 
 /***********************************************************************************/
 
@@ -4496,13 +4496,13 @@ class Solution_removeInvalidParentheses {
         var result = ""
         
         var stack:[StackItemTuple] = []
-
+        
         for (i,ch) in s.enumerated() {
             if ch == "(" {
                 let tuple = StackItemTuple(char: ch, index: i)
                 stack.append(tuple)
             } else if ch == ")" {
-               
+                
                 var hasOpenParenthesis = false
                 if stack.count > 0 {
                     let lastTuple = stack.removeLast()
@@ -4516,7 +4516,7 @@ class Solution_removeInvalidParentheses {
             
             result.append(ch)
         }
-
+        
         if stack.count > 0 {
             // now result does not include unbalanced close parenthesis but it can have some unbalanced open parenthesis
             while stack.isEmpty == false {
@@ -4531,10 +4531,10 @@ class Solution_removeInvalidParentheses {
 }
 
 /*
-let input = "(abcd)()hari(ha()))))))"
-let res = Solution_removeInvalidParentheses().removeInvalidParentheses(input)
-print(res)
-*/
+ let input = "(abcd)()hari(ha()))))))"
+ let res = Solution_removeInvalidParentheses().removeInvalidParentheses(input)
+ print(res)
+ */
 
 
 /***********************************************************************************/
@@ -4581,10 +4581,10 @@ class Solution_updateMatrix {
                 found = true
                 
             } else {
-//                // update result matrix
-//                self.result[][]
-//
-//                let topCell = Cell(i: cell.i, j: cell.j)
+                //                // update result matrix
+                //                self.result[][]
+                //
+                //                let topCell = Cell(i: cell.i, j: cell.j)
             }
             
             // left
@@ -4606,7 +4606,7 @@ class Solution_updateMatrix {
                 found = true
             }
             
-//            if found == false
+            //            if found == false
             
         }
         
@@ -4632,9 +4632,9 @@ class Solution_defangIPaddr {
 }
 
 /*
-let res = Solution_defangIPaddr().defangIPaddr("1.1.1.1")
-print(res)
-*/
+ let res = Solution_defangIPaddr().defangIPaddr("1.1.1.1")
+ print(res)
+ */
 
 /***********************************************************************************/
 
@@ -4676,7 +4676,7 @@ class Solution_rangeSumBST {
         
         var currVal = node.val
         if (currVal >= L && currVal <= R) == false {
-           currVal = 0
+            currVal = 0
         }
         
         return currVal + rangeSum(node: node.left, min: min, max: node.val - 1, L: L, R: R) + rangeSum(node: node.right, min: node.val - 1, max: max, L: L, R: R)
@@ -4684,76 +4684,76 @@ class Solution_rangeSumBST {
 }
 
 /*
-let bst = createBinaryTree(with: [10,5,15,3,7,nil,18])
-print(Solution_rangeSumBST().rangeSumBST(bst, 7, 15))
-*/
+ let bst = createBinaryTree(with: [10,5,15,3,7,nil,18])
+ print(Solution_rangeSumBST().rangeSumBST(bst, 7, 15))
+ */
 
 
 /* Apple coding interview
-
-// This is a calculation function that accepts an NSNumber as input, and
-// returns number * 2 as output. To simulate a lengthy calculation, the
-// function blocks for a random time interval from 1 - 5 seconds.
-
-func PerformSlowCalculation(_ i : Int, val:Int, result:inout [Int]) {
-    let timesTwo = val * 2
-    let pause = arc4random_uniform(4) + 1
-    sleep(pause)
-    result[i] = timesTwo
-}
-
-// Perform a calculation on each element of the input array of numbers,
-// returning an array of the results in the same order as the
-// corresponding input array number.
-
-
-
-func ArrayCalculation(_ a : [Int]) -> [Int]
-{
-    // Task: replace this function body with code that performs the
-    // calculation method over the input array a concurrently using
-    // Cocoa concurrency API's: Grand Central Dispatch, NSOperationQueue,
-    // POSIX pthread, whatever.
-    
-    // Replace this single-threaded implementation
-  
-    let queue = DispatchQueue(label: "com.example.queue", attributes: .concurrent)
-  
-    var result:[Int] = [Int](repeating:0, count:a.count)
-  
-     var workItems:[DispatchWorkItem] = []
-    
-    for (i,val) in a.enumerated() {
-        let workItem = DispatchWorkItem(block: {
-            PerformSlowCalculation(i, val:val, result: &result)
-        })
-      
-      workItems.append(workItem)
-      queue.async(execute: workItem)
-    }
-  
-    for workitem in workItems {
-        workitem.wait()
-    }
-
-    return result
-}
-
-let inputArray = [ 2, 4, 6, 8 ]
-print("inputArray = \(inputArray)")
-        
-let start = NSDate()
-let outputArray = ArrayCalculation(inputArray)
-let duration = -start.timeIntervalSinceNow
-print("outputArray = \(outputArray)")
-if outputArray == [ 4, 8, 12, 16] {
-    print("outputArray is correct")
-} else {
-    print("outputArray is incorrect")
-}
-
-print("duration = \(duration)")
-
+ 
+ // This is a calculation function that accepts an NSNumber as input, and
+ // returns number * 2 as output. To simulate a lengthy calculation, the
+ // function blocks for a random time interval from 1 - 5 seconds.
+ 
+ func PerformSlowCalculation(_ i : Int, val:Int, result:inout [Int]) {
+ let timesTwo = val * 2
+ let pause = arc4random_uniform(4) + 1
+ sleep(pause)
+ result[i] = timesTwo
+ }
+ 
+ // Perform a calculation on each element of the input array of numbers,
+ // returning an array of the results in the same order as the
+ // corresponding input array number.
+ 
+ 
+ 
+ func ArrayCalculation(_ a : [Int]) -> [Int]
+ {
+ // Task: replace this function body with code that performs the
+ // calculation method over the input array a concurrently using
+ // Cocoa concurrency API's: Grand Central Dispatch, NSOperationQueue,
+ // POSIX pthread, whatever.
+ 
+ // Replace this single-threaded implementation
+ 
+ let queue = DispatchQueue(label: "com.example.queue", attributes: .concurrent)
+ 
+ var result:[Int] = [Int](repeating:0, count:a.count)
+ 
+ var workItems:[DispatchWorkItem] = []
+ 
+ for (i,val) in a.enumerated() {
+ let workItem = DispatchWorkItem(block: {
+ PerformSlowCalculation(i, val:val, result: &result)
+ })
+ 
+ workItems.append(workItem)
+ queue.async(execute: workItem)
+ }
+ 
+ for workitem in workItems {
+ workitem.wait()
+ }
+ 
+ return result
+ }
+ 
+ let inputArray = [ 2, 4, 6, 8 ]
+ print("inputArray = \(inputArray)")
+ 
+ let start = NSDate()
+ let outputArray = ArrayCalculation(inputArray)
+ let duration = -start.timeIntervalSinceNow
+ print("outputArray = \(outputArray)")
+ if outputArray == [ 4, 8, 12, 16] {
+ print("outputArray is correct")
+ } else {
+ print("outputArray is incorrect")
+ }
+ 
+ print("duration = \(duration)")
+ 
  
  */
 
@@ -4763,42 +4763,42 @@ print("duration = \(duration)")
 // Verily life science coding challenge
 
 /*
-// Coins: [25, 10, 5, 1]
-//
-// I need 31. What is the minimum number of coins required to get to 31?
-
-func minimumNumberOfCoins(_ coins: [Int], _ cents: Int) -> Int {
-    
-    var resultCount = 0
-    let sortedCoins = coins.sorted(by: >)
-    
-    var sum = cents
-    for coin in sortedCoins {
-        while sum >= coin {
-            sum = sum - coin
-            resultCount = resultCount + 1
-        }
-    }
-    
-    if sum == 0 {
-        return resultCount
-    } else {
-        return 0
-    }
-}
-
-// 31-25 = 6, 6-5 = 1
-
-func main() {
-    let coins:[Int] = [25, 10, 1]
-    let cents = 31
-    let min = minimumNumberOfCoins(coins, cents)
-    print("Number of coins: \(min)")
-}
-
-main()
-
-*/
+ // Coins: [25, 10, 5, 1]
+ //
+ // I need 31. What is the minimum number of coins required to get to 31?
+ 
+ func minimumNumberOfCoins(_ coins: [Int], _ cents: Int) -> Int {
+ 
+ var resultCount = 0
+ let sortedCoins = coins.sorted(by: >)
+ 
+ var sum = cents
+ for coin in sortedCoins {
+ while sum >= coin {
+ sum = sum - coin
+ resultCount = resultCount + 1
+ }
+ }
+ 
+ if sum == 0 {
+ return resultCount
+ } else {
+ return 0
+ }
+ }
+ 
+ // 31-25 = 6, 6-5 = 1
+ 
+ func main() {
+ let coins:[Int] = [25, 10, 1]
+ let cents = 31
+ let min = minimumNumberOfCoins(coins, cents)
+ print("Number of coins: \(min)")
+ }
+ 
+ main()
+ 
+ */
 
 
 // 1221. Split a String in Balanced Strings
@@ -4809,7 +4809,7 @@ class Solution_balancedStringSplit {
         var rCounter = 0
         
         var resCount = 0
-
+        
         for ch in s {
             if ch == "R" {
                 rCounter += 1
@@ -4830,9 +4830,9 @@ class Solution_balancedStringSplit {
 }
 
 /*
-let input = "RLRRRLLRLL"
-print(Solution_balancedStringSplit().balancedStringSplit(input))
-*/
+ let input = "RLRRRLLRLL"
+ print(Solution_balancedStringSplit().balancedStringSplit(input))
+ */
 
 /***********************************************************************************/
 
@@ -4853,7 +4853,7 @@ class Solution_removeOuterParentheses {
         var result = ""
         var tempResult = ""
         for ch in S {
-
+            
             tempResult.append(ch)
             
             if ch == "(" {
@@ -4877,9 +4877,9 @@ class Solution_removeOuterParentheses {
 }
 
 /*
-let input = "(()())(())"
-print(Solution().removeOuterParentheses(input))
-*/
+ let input = "(()())(())"
+ print(Solution().removeOuterParentheses(input))
+ */
 
 /***********************************************************************************/
 
@@ -4899,9 +4899,9 @@ class Solution_arrayPairSum {
 }
 
 /*
-let input = [1,4,3,2]
-print(Solution().arrayPairSum(input))
-*/
+ let input = [1,4,3,2]
+ print(Solution().arrayPairSum(input))
+ */
 
 /***********************************************************************************/
 
@@ -4909,7 +4909,7 @@ print(Solution().arrayPairSum(input))
 
 class Solution_isUnivalTree {
     func isUnivalTree(_ root: TreeNode?) -> Bool {
-
+        
         guard let value = root?.val else {
             return true
         }
@@ -4927,11 +4927,11 @@ class Solution_isUnivalTree {
 }
 
 /*
-//let input = [1,1,1,1,1,nil,1]
-let input = [2,2,2,5,2]
-let binaryTree = createBinaryTree(with: input)
-print(Solution_isUnivalTree().isUnivalTree(binaryTree))
-*/
+ //let input = [1,1,1,1,1,nil,1]
+ let input = [2,2,2,5,2]
+ let binaryTree = createBinaryTree(with: input)
+ print(Solution_isUnivalTree().isUnivalTree(binaryTree))
+ */
 
 
 /***********************************************************************************/
@@ -4939,7 +4939,7 @@ print(Solution_isUnivalTree().isUnivalTree(binaryTree))
 class Solution_countCharacters {
     func countCharacters(_ words: [String], _ chars: String) -> Int {
         var count = 0
-
+        
         // store chars into charsDict dictionary
         var charsDict:[Character:Int] = [:]
         for ch in chars {
@@ -4949,7 +4949,7 @@ class Solution_countCharacters {
                 charsDict[ch] = 1
             }
         }
-
+        
         // cound valid words
         for word in words {
             if self.isValid(word: word, charDict: charsDict) {
@@ -4959,7 +4959,7 @@ class Solution_countCharacters {
         
         return count
     }
-
+    
     private func isValid(word:String, charDict:[Character:Int]) -> Bool {
         
         // store word into dictionary
@@ -4990,10 +4990,10 @@ class Solution_countCharacters {
 }
 
 /*
-let words = ["cat","bt","hat","tree"]
-let chars = "atach"
-print(Solution_countCharacters().countCharacters(words, chars))
-*/
+ let words = ["cat","bt","hat","tree"]
+ let chars = "atach"
+ print(Solution_countCharacters().countCharacters(words, chars))
+ */
 
 /***********************************************************************************/
 
@@ -5059,7 +5059,7 @@ class Solution_longestPalindrome {
         
         return max(evenPalindrome, oddPalindrome)
     }
-
+    
     private func growPalindrome(i:Int, j:Int, input:[Character], currChar:Character?) -> String {
         
         var palindrome:[Character] = []
@@ -5074,7 +5074,7 @@ class Solution_longestPalindrome {
             
             palindrome.insert(input[left], at: 0)
             palindrome.append(input[right])
-
+            
             left = left - 1
             right = right + 1
         }
@@ -5084,9 +5084,9 @@ class Solution_longestPalindrome {
 }
 
 /*
-let input = "babad"
-print(Solution_longestPalindrome().longestPalindrome(input))
-*/
+ let input = "babad"
+ print(Solution_longestPalindrome().longestPalindrome(input))
+ */
 
 /***********************************************************************************/
 
@@ -5110,15 +5110,15 @@ class Solution_strStr {
         var i = 0
         while i < haystackChars.count {
             if needleChars[count] == haystackChars[i] {
-               count += 1
-               
-               if count == needle.count {
-                   return i - (needleChars.count - 1)
-               }
-           } else {
-               i = i - count
-               count = 0
-           }
+                count += 1
+                
+                if count == needle.count {
+                    return i - (needleChars.count - 1)
+                }
+            } else {
+                i = i - count
+                count = 0
+            }
             
             // if remaining needle items > remaining haystack items then return - 1
             let remNeedleItems = needleChars.count - count
@@ -5134,10 +5134,10 @@ class Solution_strStr {
 }
 
 /*
-let haystack = "mississippi"
-let needle = "issip"
-print(Solution().strStr(haystack, needle))
-*/
+ let haystack = "mississippi"
+ let needle = "issip"
+ print(Solution().strStr(haystack, needle))
+ */
 
 /***********************************************************************************/
 
@@ -5145,7 +5145,7 @@ print(Solution().strStr(haystack, needle))
 
 class Solution1_merge {
     func merge(_ intervals: [[Int]]) -> [[Int]] {
-
+        
         // 1. get highest value in the intervals
         var higestVal = 0
         for arr in intervals {
@@ -5225,105 +5225,105 @@ class Solution1_merge {
 
 /* englishNum should be written to take a single integer (for simplicity's sake, we will limit it to the range [0, 10_000_000]) and return the English words representing that number */
 func englishNum(_ num: Int) -> String {
-  
-  // preparing unique mappings for unique numbers
-  
-  var numberMappings:[Int:String] = [
-    0:"zero",
-    1:"one",
-    2:"two",
-    3:"three",
-    4:"four",
-    5:"five",
-    6:"six",
-    7:"seven",
-    8:"eight",
-    9:"nine",
-    10:"ten",
-    20:"twenty",
-    30:"thirty",
-    40:"fourty",
-    50:"fivty",
-    60:"sixty",
-    70:"seventy",
-    80:"eighty",
-    90:"ninety",
-    100:"hundred",
-    1000:"thousand"
-  ]
-  
-  
-  // I am going to break down the input and store into array such as
-  // if it is  198
-  // array = [1,9,8]
-  
-  // 879
-  
-  // [8,8,7,9]
-  
-  var inputBreakDowns:[Int] = []
-  
-  var input = num
-
-  while input > 0 {
-    let rem = input % 10
-    inputBreakDowns.insert(rem, at:0)
-    input = input / 10
-  }
-  
-  var result = ""
-  for (i,num) in inputBreakDowns.enumerated() {
     
-    // this handles between 0 to 99
-    if i >= inputBreakDowns.count - 1 {
-      
-      var result = ""
-      if i == inputBreakDowns.count - 2 {
-          if let tenthVal = numberMappings[num * 10] {
-            result = result + tenthVal
-          }
-      }
-      
-      if let val = numberMappings[num] {
-        result = result + " " + val
-      }
-    } else {
-      // this handles above 99
-      
-      let multiplier = Int(pow(Double(10),Double(inputBreakDowns.count - i - 1)))
-      
-      if let numberVal = numberMappings[num],
-        let multiplerVal = numberMappings[multiplier] {
-        result = result + " " + numberVal + " " + multiplerVal
-      }
+    // preparing unique mappings for unique numbers
+    
+    var numberMappings:[Int:String] = [
+        0:"zero",
+        1:"one",
+        2:"two",
+        3:"three",
+        4:"four",
+        5:"five",
+        6:"six",
+        7:"seven",
+        8:"eight",
+        9:"nine",
+        10:"ten",
+        20:"twenty",
+        30:"thirty",
+        40:"fourty",
+        50:"fivty",
+        60:"sixty",
+        70:"seventy",
+        80:"eighty",
+        90:"ninety",
+        100:"hundred",
+        1000:"thousand"
+    ]
+    
+    
+    // I am going to break down the input and store into array such as
+    // if it is  198
+    // array = [1,9,8]
+    
+    // 879
+    
+    // [8,8,7,9]
+    
+    var inputBreakDowns:[Int] = []
+    
+    var input = num
+    
+    while input > 0 {
+        let rem = input % 10
+        inputBreakDowns.insert(rem, at:0)
+        input = input / 10
     }
-  }
-  
-  return result
+    
+    var result = ""
+    for (i,num) in inputBreakDowns.enumerated() {
+        
+        // this handles between 0 to 99
+        if i >= inputBreakDowns.count - 1 {
+            
+            var result = ""
+            if i == inputBreakDowns.count - 2 {
+                if let tenthVal = numberMappings[num * 10] {
+                    result = result + tenthVal
+                }
+            }
+            
+            if let val = numberMappings[num] {
+                result = result + " " + val
+            }
+        } else {
+            // this handles above 99
+            
+            let multiplier = Int(pow(Double(10),Double(inputBreakDowns.count - i - 1)))
+            
+            if let numberVal = numberMappings[num],
+               let multiplerVal = numberMappings[multiplier] {
+                result = result + " " + numberVal + " " + multiplerVal
+            }
+        }
+    }
+    
+    return result
 }
 
 func check<T: Equatable>(_ a: T, _ b: T) {
-  if a == b {
-    print("correct:\t\(a)")
-  } else  {
-    print("incorrect:\t\(a) should be \(b)")
-  }
+    if a == b {
+        print("correct:\t\(a)")
+    } else  {
+        print("incorrect:\t\(a) should be \(b)")
+    }
 }
 
 /*
-check(englishNum(0), "zero")
-check(englishNum(1), "one")
-check(englishNum(42), "forty-two")
-check(englishNum(71), "seventy-one")
-check(englishNum(90), "ninety")
-check(englishNum(127), "one hundred and twenty-seven")
-check(englishNum(72_000), "seventy-two thousand")
-check(englishNum(72_456), "seventy-two thousand four hundred and fifty-six")
-check(englishNum(1_000_000), "one million")
-check(englishNum(1_200_000), "one million two hundred thousand")
-check(englishNum(1_472_221), "one million four hundred seventy-two thousand two hundred and twenty-one")
-
-*/
+ check(englishNum(0), "zero")
+ check(englishNum(1), "one")
+ check(englishNum(42), "forty-two")
+ check(englishNum(71), "seventy-one")
+ check(englishNum(90), "ninety")
+ check(englishNum(127), "one hundred and twenty-seven")
+ check(englishNum(72_000), "seventy-two thousand")
+ check(englishNum(72_456), "seventy-two thousand four hundred and fifty-six")
+ check(englishNum(1_000_000), "one million")
+ check(englishNum(1_200_000), "one million two hundred thousand")
+ check(englishNum(1_472_221), "one million four hundred seventy-two thousand two hundred and twenty-one")
+ 
+ */
 
 
 /***********************************************************************************/
@@ -5363,188 +5363,188 @@ class Solution_minimumNumberOfCoins {
                 }
             }
         }
-
+        
         return min
     }
 }
 
 /*
-let coins = [25, 10, 1]
-let sum = 31
-print(Solution_minimumNumberOfCoins().minimumNumberOfCoins(coins, sum))
-*/
+ let coins = [25, 10, 1]
+ let sum = 31
+ print(Solution_minimumNumberOfCoins().minimumNumberOfCoins(coins, sum))
+ */
 
 /***********************************************************************************/
 
 // practice
 
 /*
-
-var aDict:[String:Int] = [:]
-
-aDict["Krishna"] = 2
-aDict["Hari"] = 1
-
-aDict["Bista"] = 3
-
-//let minuteInterval = 5
-//for tickMark in stride(from: 0, to: 60, by: minuteInterval) {
-//    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)
-//
-//    print(tickMark)
-//}
-//
-////for item in aDict {
-////
-////    let a = type(of: item)
-////
-////    print(item.key)
-////}
-//
-//
-//let animals = ["Antelope", "Butterfly", "Camel", "Dolphin"]
-//
-//var animalIterator = animals.makeIterator()
-//while let animal = animalIterator.next() {
-//    print(animal)
-//}
-
-struct Countdown: Sequence {
-    let start: Int
-    
-    func makeIterator() -> CountdownIterator {
-        return CountdownIterator(self)
-    }
-}
-
-struct CountdownIterator: IteratorProtocol {
-    let countdown: Countdown
-    var times = 0
-    
-    init(_ countdown: Countdown) {
-        self.countdown = countdown
-    }
-    
-    mutating func next() -> Int? {
-        let nextNumber = countdown.start - times
-        
-        guard nextNumber > 0 else {
-            return nil
-        }
-        
-        times += 2
-        return nextNumber
-    }
-}
-
-//let threeTwoOne = Countdown(start: 20)
-//for (i,count) in threeTwoOne.enumerated() {
-//    print("\(count)...")
-//}
-
-struct iPad: Hashable {
-    var serialNumber: String
-    var capacity: Int
-}
-
-let ipad1 = iPad(serialNumber: "1234", capacity: 12)
-let ipad2 = iPad(serialNumber: "1234", capacity: 12)
-
-//print(ipad1 == ipad2)
-
-struct Person: Equatable {
-    var name: String
-    var age: Int
-}
-
-let person1 = Person(name: "hari", age: 12)
-let person2 = Person(name: "hari", age: 12)
-
-print(person1 == person2)
-
- */
  
+ var aDict:[String:Int] = [:]
+ 
+ aDict["Krishna"] = 2
+ aDict["Hari"] = 1
+ 
+ aDict["Bista"] = 3
+ 
+ //let minuteInterval = 5
+ //for tickMark in stride(from: 0, to: 60, by: minuteInterval) {
+ //    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)
+ //
+ //    print(tickMark)
+ //}
+ //
+ ////for item in aDict {
+ ////
+ ////    let a = type(of: item)
+ ////
+ ////    print(item.key)
+ ////}
+ //
+ //
+ //let animals = ["Antelope", "Butterfly", "Camel", "Dolphin"]
+ //
+ //var animalIterator = animals.makeIterator()
+ //while let animal = animalIterator.next() {
+ //    print(animal)
+ //}
+ 
+ struct Countdown: Sequence {
+ let start: Int
+ 
+ func makeIterator() -> CountdownIterator {
+ return CountdownIterator(self)
+ }
+ }
+ 
+ struct CountdownIterator: IteratorProtocol {
+ let countdown: Countdown
+ var times = 0
+ 
+ init(_ countdown: Countdown) {
+ self.countdown = countdown
+ }
+ 
+ mutating func next() -> Int? {
+ let nextNumber = countdown.start - times
+ 
+ guard nextNumber > 0 else {
+ return nil
+ }
+ 
+ times += 2
+ return nextNumber
+ }
+ }
+ 
+ //let threeTwoOne = Countdown(start: 20)
+ //for (i,count) in threeTwoOne.enumerated() {
+ //    print("\(count)...")
+ //}
+ 
+ struct iPad: Hashable {
+ var serialNumber: String
+ var capacity: Int
+ }
+ 
+ let ipad1 = iPad(serialNumber: "1234", capacity: 12)
+ let ipad2 = iPad(serialNumber: "1234", capacity: 12)
+ 
+ //print(ipad1 == ipad2)
+ 
+ struct Person: Equatable {
+ var name: String
+ var age: Int
+ }
+ 
+ let person1 = Person(name: "hari", age: 12)
+ let person2 = Person(name: "hari", age: 12)
+ 
+ print(person1 == person2)
+ 
+ */
+
 /***********************************************************************************/
 
 /* problem with WealthFront
-
-
-/* Here's a helper class that can efficiently return the smallest
- * object it contains. Assume it magically knows how to sort your
- * objects correctly – all of these methods run in O(1) times
+ 
+ 
+ /* Here's a helper class that can efficiently return the smallest
+  * object it contains. Assume it magically knows how to sort your
+  * objects correctly – all of these methods run in O(1) times
+  */
+ 
+ public class MinHeap<T> {
+ var count = 0
+ 
+ // Adds an object
+ func addObject(_ object: T)
+ 
+ // Returns (but does not remove) the smallest object, or nil if empty
+ func minObject() -> T?
+ 
+ // Removes and returns the smallest object, or nil if empty
+ func popMinObject() -> T?
+ 
+ // Removes all objects
+ func removeAllObjects()
+ }
+ 
+ /*
+  Sample input:
+  let input = [[4, 4],
+  [1, 5, 10],
+  [3, 7, 8, 98, 99],
+  [],
+  [4, 4]]
+  m = # of subarrays
+  n = length of the longest subarray
+  
+  worst case:
+  runtime: O(m*n)
+  space: O(m*n)
+  */
+ /*
+  Expected output:
+  [ 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 10, 98, 99 ]
+  
+  */
+ 
+ // my solution
+ 
+ // 1. take only first item of the sub array and put it inside the min heap
+ 
+ // 2. we can use dictionary [Int:[Int]] , first element of array as key and rest as value
+ 
+ // 3. iterate over the min heap, get the minimum item and taking it as a key get the array
+ 
+ // keep appending the araay to the result
+ 
+ 
+ func mergeArrays(_ arrays: [[Int]]) -> [Int] {
+ 
+ // O(m*n)
+ var minHeap = MinHeap<Int>()
+ 
+ // O(m*n)
+ for arr in arrays {
+ for number in arr {
+ minHeap.addObject(number)
+ }
+ }
+ 
+ // O(m*n)
+ let result:[Int] = []
+ 
+ // O(m*n)
+ while minHeap.count > 0 {
+ result.append(minHeap.popMinObject())
+ }
+ 
+ return result
+ }
+ 
  */
- 
-public class MinHeap<T> {
-  var count = 0
- 
-  // Adds an object
-  func addObject(_ object: T)
- 
-  // Returns (but does not remove) the smallest object, or nil if empty
-  func minObject() -> T?
- 
-  // Removes and returns the smallest object, or nil if empty
-  func popMinObject() -> T?
- 
-  // Removes all objects
-  func removeAllObjects()
-}
-
-/*
-Sample input:
-let input = [[4, 4],
-             [1, 5, 10],
-             [3, 7, 8, 98, 99],
-             [],
-             [4, 4]]
-m = # of subarrays
-n = length of the longest subarray
-
-worst case:
-runtime: O(m*n)
-space: O(m*n)
-*/
-/*
-Expected output:
-[ 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 10, 98, 99 ]
-
-*/
-
-// my solution
-
-// 1. take only first item of the sub array and put it inside the min heap
-
-// 2. we can use dictionary [Int:[Int]] , first element of array as key and rest as value
-
-// 3. iterate over the min heap, get the minimum item and taking it as a key get the array
-
-// keep appending the araay to the result
-
-
-func mergeArrays(_ arrays: [[Int]]) -> [Int] {
-   
-   // O(m*n)
-   var minHeap = MinHeap<Int>()
-   
-   // O(m*n)
-   for arr in arrays {
-       for number in arr {
-           minHeap.addObject(number)
-       }
-   }
-   
-   // O(m*n)
-   let result:[Int] = []
-   
-   // O(m*n)
-   while minHeap.count > 0 {
-       result.append(minHeap.popMinObject())
-   }
-   
-   return result
-}
-
-*/
 
 
 /* Question asked in the online coding assesment of Caffaine */
@@ -5587,21 +5587,21 @@ func solution(angles: String) -> String {
     
     let closeAngles:[Character] = [Character](repeating: "<", count: stack.count)
     anglesChars.insert(contentsOf: closeAngles, at: 0)
-
+    
     return String(anglesChars)
 }
 
 /*
-let input = "<"
-print(solution(angles: input))
-*/
+ let input = "<"
+ print(solution(angles: input))
+ */
 
 /***********************************************************************************/
 
 // frequently asked question in facebook interview
 
 class Solution_moveAllNonZeroToBeginning {
-     func moveAllNonZeroToBeginning(numbers:[Int]) -> [Int] {
+    func moveAllNonZeroToBeginning(numbers:[Int]) -> [Int] {
         var resultNumbers = [Int](repeating: 0, count: numbers.count)
         var count = 0
         
@@ -5674,9 +5674,9 @@ class Solution_romanToInt {
 }
 
 /*
-let input = "LXXXIX"
-print(Solution_romanToInt().romanToInt(input))
-*/
+ let input = "LXXXIX"
+ print(Solution_romanToInt().romanToInt(input))
+ */
 
 /***********************************************************************************/
 
@@ -5725,7 +5725,7 @@ class Solution1_mergeKLists {
         
         var resultRunNode:ListNode?
         if let fRunNode = firstRunNode,
-            let sRunNode = secondRunNode {
+           let sRunNode = secondRunNode {
             
             if fRunNode.val < sRunNode.val {
                 resultRunNode = firstRunNode
@@ -5750,7 +5750,7 @@ class Solution1_mergeKLists {
         // merge here
         while firstRunNode != nil || secondRunNode != nil {
             if let fRunNode = firstRunNode,
-                let sRunNode = secondRunNode {
+               let sRunNode = secondRunNode {
                 
                 if fRunNode.val < sRunNode.val {
                     resultRunNode?.next = firstRunNode
@@ -5779,24 +5779,24 @@ class Solution1_mergeKLists {
 
 
 /*
-var lists:[ListNode] = []
-
-if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
-    lists.append(list1)
-}
-
-if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
-    lists.append(list2)
-}
-
-if let list3 = createLinkedListFromArray(arr: [2,6]) {
-    lists.append(list3)
-}
-
-if let result = Solution1_mergeKLists().mergeKLists(lists) {
-    printLinkedList(head: result)
-}
-*/
+ var lists:[ListNode] = []
+ 
+ if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
+ lists.append(list1)
+ }
+ 
+ if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
+ lists.append(list2)
+ }
+ 
+ if let list3 = createLinkedListFromArray(arr: [2,6]) {
+ lists.append(list3)
+ }
+ 
+ if let result = Solution1_mergeKLists().mergeKLists(lists) {
+ printLinkedList(head: result)
+ }
+ */
 
 
 // below solution is time exceeded in Leetcode
@@ -5815,12 +5815,12 @@ class Solution2_mergeKLists {
         
         var i = 0
         while runnerNodes.count > i {
-                
+            
             if let runnerNode = runnerNodes[i], runnerNode.val < tempSmallest.val {
                 tempSmallest = runnerNode
                 tempSmallIndex = i
             }
-
+            
             i = i + 1
             
             // after getting smallest out of runnerNodes collect the smallest node into result
@@ -5859,64 +5859,64 @@ class Solution2_mergeKLists {
 // [[1,4,5],[1,3,4],[2,6]]
 
 /*
-var lists:[ListNode] = []
-
-if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
-    lists.append(list1)
-}
-
-if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
-    lists.append(list2)
-}
-
-if let list3 = createLinkedListFromArray(arr: [2,6]) {
-    lists.append(list3)
-}
-
-if let result = Solution2_mergeKLists().mergeKLists(lists) {
-    printLinkedList(head: result)
-}
-
-*/
+ var lists:[ListNode] = []
+ 
+ if let list1 = createLinkedListFromArray(arr: [1,4,5]) {
+ lists.append(list1)
+ }
+ 
+ if let list2 = createLinkedListFromArray(arr: [1,3,4]) {
+ lists.append(list2)
+ }
+ 
+ if let list3 = createLinkedListFromArray(arr: [2,6]) {
+ lists.append(list3)
+ }
+ 
+ if let result = Solution2_mergeKLists().mergeKLists(lists) {
+ printLinkedList(head: result)
+ }
+ 
+ */
 
 /***********************************************************************************/
 
 // Practce with Friend: Sujan Shrestha
 class Solution_countLongestConsequtiveIncrement {
-  
-  var longest = 0
     
-  func countLongestConsequtiveIncrement(root:TreeNode) -> Int {
-    self.countLongest(node: root, count:0)
-    return self.longest
-  }
-
-  private func countLongest(node:TreeNode, count:Int) {
+    var longest = 0
     
-    if self.longest < count {
-        self.longest = count
+    func countLongestConsequtiveIncrement(root:TreeNode) -> Int {
+        self.countLongest(node: root, count:0)
+        return self.longest
     }
     
-    if node.right == nil && node.left == nil {
-      return
+    private func countLongest(node:TreeNode, count:Int) {
+        
+        if self.longest < count {
+            self.longest = count
+        }
+        
+        if node.right == nil && node.left == nil {
+            return
+        }
+        
+        if let leftNode = node.left {
+            if leftNode.val >= node.val {
+                self.countLongest(node: leftNode, count:count+1)
+            } else {
+                self.countLongest(node: leftNode, count:0)
+            }
+        }
+        
+        if let rightNode = node.right {
+            if rightNode.val >= node.val {
+                self.countLongest(node: rightNode, count:count+1)
+            } else {
+                self.countLongest(node: rightNode, count:0)
+            }
+        }
     }
-    
-    if let leftNode = node.left {
-      if leftNode.val >= node.val {
-        self.countLongest(node: leftNode, count:count+1)
-      } else {
-        self.countLongest(node: leftNode, count:0)
-      }
-    }
-    
-    if let rightNode = node.right {
-      if rightNode.val >= node.val {
-        self.countLongest(node: rightNode, count:count+1)
-      } else {
-        self.countLongest(node: rightNode, count:0)
-      }
-    }
-  }
 }
 
 /***********************************************************************************/
@@ -5953,28 +5953,28 @@ class Solution_countLongestConsequtiveIncrement {
 
 
 /*
-Your code is stored in a revision control system (e.g. svn). You see a bug
-in your code, and you know it wasn't there before. Given the start revision (Int) and the end revision (Int) write a function to find the revision that introduced the bug.
-
-For example:
-revision 100
-revision 101
-...
-revision ??? <-- a bug was introduced!
-...
-revision 150
-revision 151
-revision 152
-
-rev 1
-rev 2 False
-rev 3 True <- bug introduced
-rev 4 True
-rev 5
-
-// Assume you have this function, implemented for you to use
-func isBad(revNum: Int) -> Bool
-*/
+ Your code is stored in a revision control system (e.g. svn). You see a bug
+ in your code, and you know it wasn't there before. Given the start revision (Int) and the end revision (Int) write a function to find the revision that introduced the bug.
+ 
+ For example:
+ revision 100
+ revision 101
+ ...
+ revision ??? <-- a bug was introduced!
+ ...
+ revision 150
+ revision 151
+ revision 152
+ 
+ rev 1
+ rev 2 False
+ rev 3 True <- bug introduced
+ rev 4 True
+ rev 5
+ 
+ // Assume you have this function, implemented for you to use
+ func isBad(revNum: Int) -> Bool
+ */
 
 // n = endRev - startRev
 
@@ -6033,27 +6033,27 @@ func isBad(revNum: Int) -> Bool {
 //}
 
 func findBug(startRev:Int, endRev:Int) -> Int {
-  
-  if startRev >= endRev {
-    return -1
-  }
-  
-  // get mid revision value
-  let midRev = (startRev + endRev)/2
-  
-    if (isBad(revNum: midRev) == false && isBad(revNum: midRev + 1) == true) ||
-    (isBad(revNum: midRev) == true && isBad(revNum: midRev - 1) == false) {
-    return midRev
-  } else {
-    if isBad(revNum: midRev) {
-      // search in first half
-      return findBug(startRev:startRev, endRev:midRev)
-      
-    } else {
-      // search in second half
-      return findBug(startRev:midRev, endRev:endRev)
+    
+    if startRev >= endRev {
+        return -1
     }
-  }
+    
+    // get mid revision value
+    let midRev = (startRev + endRev)/2
+    
+    if (isBad(revNum: midRev) == false && isBad(revNum: midRev + 1) == true) ||
+        (isBad(revNum: midRev) == true && isBad(revNum: midRev - 1) == false) {
+        return midRev
+    } else {
+        if isBad(revNum: midRev) {
+            // search in first half
+            return findBug(startRev:startRev, endRev:midRev)
+            
+        } else {
+            // search in second half
+            return findBug(startRev:midRev, endRev:endRev)
+        }
+    }
 }
 
 
@@ -6129,14 +6129,14 @@ class Solution_search {
 }
 
 /*
-//let input = [4,5,6,7,0,1,2]
-//let input:[Int] = []
-
-//let input = [4,5,6,7,8,1,2,3]
-let input = [1,2,3,4,5]
-
-print(Solution_search().search(input, 5))
-*/
+ //let input = [4,5,6,7,0,1,2]
+ //let input:[Int] = []
+ 
+ //let input = [4,5,6,7,8,1,2,3]
+ let input = [1,2,3,4,5]
+ 
+ print(Solution_search().search(input, 5))
+ */
 
 /***********************************************************************************/
 
@@ -6170,10 +6170,10 @@ class Solution_isSubsequence {
 }
 
 /*
-let s = "ace"
-let t = "abcde"
-print(Solution_isSubsequence().isSubsequence(s, t))
-*/
+ let s = "ace"
+ let t = "abcde"
+ print(Solution_isSubsequence().isSubsequence(s, t))
+ */
 
 
 // 287. Find the Duplicate Number
@@ -6193,9 +6193,9 @@ class Solution_findDuplicate {
 }
 
 /*
-let input = [1,3,4,2,2]
-print(Solution_findDuplicate().findDuplicate(input))
-*/
+ let input = [1,3,4,2,2]
+ print(Solution_findDuplicate().findDuplicate(input))
+ */
 
 /***********************************************************************************/
 
@@ -6248,7 +6248,7 @@ class Solution_Sqrt {
         if x == 0 || x == 1 {
             return x
         }
-
+        
         var i = 1
         while i * i <= x {
             i = i + 1
@@ -6276,7 +6276,7 @@ class Solution_Sqrt {
             return self.binSearchSqrt(n: n, low: m+1, high: high)
         }
     }
-
+    
     /*...................*/
     
     func myDoubleSqrt(n:Double) -> Double {
@@ -6325,14 +6325,14 @@ class Solution_Sqrt {
     // non recursion
     func findNthRoot(x:Double, n:Int) -> Double {
         var low = 0.0
-
+        
         var high = x
         
         while (high - low) > 0.001 {
             
             let mid = (high + low)/2
             let newSqrt = pow(mid,Double(n))
-
+            
             if newSqrt == x {
                 return mid
             } else if newSqrt < x {
@@ -6364,58 +6364,58 @@ class Solution_Sqrt {
 /* Interview questios with Life360
  
  
-struct Circle : Hashable {
-  let id: UUID
-  let members: Set<Member>
-  
-  static func == (lhs: Self, rhs: Self) -> Bool {
-    return lhs.members == lhs.members
-  }
-}
-
-struct Member: Hashable {
-  let id: UUID
-  let name: String
-}
-
-let members = ["John", "Jane", "Jake", "Jack", "Jenny", "Jessy",
-              "Mike", "Marry", "Michelle", "Mandy", "Michael", "Morty"].map{ Member(id: UUID(), name: $0) }
-
-let circles = [3,2,6,3,1,2].map{ max -> Circle in
-  let membersCount = UInt32(members.count)
-  let people = Set((0...max).map{ _ -> Member in
-                       let i: Int = Int(arc4random_uniform(membersCount))
-                       return members[i]
-                      })
-  return Circle(id: UUID(), members: people)
-}
-
-
-//for c in circles { print(c) }
-
-//let input : [Circle] = circles
-
+ struct Circle : Hashable {
+ let id: UUID
+ let members: Set<Member>
+ 
+ static func == (lhs: Self, rhs: Self) -> Bool {
+ return lhs.members == lhs.members
+ }
+ }
+ 
+ struct Member: Hashable {
+ let id: UUID
+ let name: String
+ }
+ 
+ let members = ["John", "Jane", "Jake", "Jack", "Jenny", "Jessy",
+ "Mike", "Marry", "Michelle", "Mandy", "Michael", "Morty"].map{ Member(id: UUID(), name: $0) }
+ 
+ let circles = [3,2,6,3,1,2].map{ max -> Circle in
+ let membersCount = UInt32(members.count)
+ let people = Set((0...max).map{ _ -> Member in
+ let i: Int = Int(arc4random_uniform(membersCount))
+ return members[i]
+ })
+ return Circle(id: UUID(), members: people)
+ }
+ 
+ 
+ //for c in circles { print(c) }
+ 
+ //let input : [Circle] = circles
+ 
  // 2 members are the same iff ids are the same
  // 2 circles are the same iff their members are the same, using "same" from member's definition.
-
-// Write a function to detect circles with identical members
-
-func question(circles: [Circle]) -> [Circle] {
-    var uniqueCircles = Set<Circle>()
-    for circle in circles {
-        uniqueCircles.insert(circle)
-    }
-    return Array(uniqueCircles)
-}
-
-// Write a function that sorts by circle size
-func question2(circles: [Circle]) -> [Circle] {
-    return circles.sorted { (circle1:Circle, circle2:Circle) in
-      return circle1.members.count > circle2.members.count
-    }
-}
-
-*/
+ 
+ // Write a function to detect circles with identical members
+ 
+ func question(circles: [Circle]) -> [Circle] {
+ var uniqueCircles = Set<Circle>()
+ for circle in circles {
+ uniqueCircles.insert(circle)
+ }
+ return Array(uniqueCircles)
+ }
+ 
+ // Write a function that sorts by circle size
+ func question2(circles: [Circle]) -> [Circle] {
+ return circles.sorted { (circle1:Circle, circle2:Circle) in
+ return circle1.members.count > circle2.members.count
+ }
+ }
+ 
+ */
 
 /***********************************************************************************/
 
@@ -6436,26 +6436,26 @@ struct Company : Hashable {
 
 
 /*
-let emp1 = Employee(id: "1", name: "Hari")
-let emp2 = Employee(id: "2", name: "Hari")
-let emp3 = Employee(id: "3", name: "Hari")
-let emp4 = Employee(id: "4", name: "Hari")
-let emp5 = Employee(id: "5", name: "Hari")
-
-print("begin here")
-
-var set1 = Set<Employee>()
-set1.insert(emp1)
-set1.insert(emp2)
-set1.insert(emp3)
-
-var set2 = Set<Employee>()
-set2.insert(emp1)
-set2.insert(emp2)
-set2.insert(emp3)
-
-print(set1 == set2)
-*/
+ let emp1 = Employee(id: "1", name: "Hari")
+ let emp2 = Employee(id: "2", name: "Hari")
+ let emp3 = Employee(id: "3", name: "Hari")
+ let emp4 = Employee(id: "4", name: "Hari")
+ let emp5 = Employee(id: "5", name: "Hari")
+ 
+ print("begin here")
+ 
+ var set1 = Set<Employee>()
+ set1.insert(emp1)
+ set1.insert(emp2)
+ set1.insert(emp3)
+ 
+ var set2 = Set<Employee>()
+ set2.insert(emp1)
+ set2.insert(emp2)
+ set2.insert(emp3)
+ 
+ print(set1 == set2)
+ */
 
 /***********************************************************************************/
 
@@ -6473,9 +6473,9 @@ class Solution_fourSum {
         
         for i in 0..<sortedArr.count {
             for j in i+1..<sortedArr.count {
-
+                
                 let partialSum = sortedArr[i] + sortedArr[j]
-                          
+                
                 if let twoSumRes = twoSum(arr:sortedArr, target:target - partialSum, start:j + 1) {
                     for res in twoSumRes {
                         
@@ -6596,71 +6596,71 @@ class Solution_pancakeSort {
     // 1. find largest elememt
     // 2. flip from 0th index to largest index to bring that to the 0 index
     // 3. flip whole unsorted array so that largest item in 0th index would go to sorted section
-
+    
     func flip(arr:[Int], k:Int) -> [Int] {
-      
-      if k > arr.count {
-        return arr
-      }
-      
-      var i = k - 1
-      
-      var result:[Int] = []
-      
-      while i >= 0 {
-        result.append(arr[i])
-        i = i - 1
-      }
-      
-      i = k
         
-      while i < arr.count {
-        result.append(arr[i])
-        i = i + 1
-      }
-      
-      return result
-    }
-
-    func pancakeSort(arr: [Int]) -> [Int] {
-      
-      var arrCopy = arr
-
-      var lastSortedIndex = arr.count
-
-      for i in 0..<arrCopy.count {
-        
-        let largestIndex = largestUnsortedIndex(arr:arrCopy, lastSortedIndex:lastSortedIndex)
-        
-        let flippedArr = flip(arr:arrCopy, k: largestIndex+1)
-
-        arrCopy = flip(arr:flippedArr, k:arr.count-i)
-
-        lastSortedIndex = arrCopy.count - 1 - i
-
-      }
-      
-      return arrCopy
-    }
-
-    func largestUnsortedIndex(arr:[Int], lastSortedIndex:Int) -> Int {
-      
-      // serarch within the unsorted range only
-      var largestIndex = 0
-      for i in 0..<lastSortedIndex {
-        if arr[i] > arr[largestIndex] {
-          largestIndex = i
+        if k > arr.count {
+            return arr
         }
-      }
-      
-      return largestIndex
+        
+        var i = k - 1
+        
+        var result:[Int] = []
+        
+        while i >= 0 {
+            result.append(arr[i])
+            i = i - 1
+        }
+        
+        i = k
+        
+        while i < arr.count {
+            result.append(arr[i])
+            i = i + 1
+        }
+        
+        return result
+    }
+    
+    func pancakeSort(arr: [Int]) -> [Int] {
+        
+        var arrCopy = arr
+        
+        var lastSortedIndex = arr.count
+        
+        for i in 0..<arrCopy.count {
+            
+            let largestIndex = largestUnsortedIndex(arr:arrCopy, lastSortedIndex:lastSortedIndex)
+            
+            let flippedArr = flip(arr:arrCopy, k: largestIndex+1)
+            
+            arrCopy = flip(arr:flippedArr, k:arr.count-i)
+            
+            lastSortedIndex = arrCopy.count - 1 - i
+            
+        }
+        
+        return arrCopy
+    }
+    
+    func largestUnsortedIndex(arr:[Int], lastSortedIndex:Int) -> Int {
+        
+        // serarch within the unsorted range only
+        var largestIndex = 0
+        for i in 0..<lastSortedIndex {
+            if arr[i] > arr[largestIndex] {
+                largestIndex = i
+            }
+        }
+        
+        return largestIndex
     }
 }
 
 /*
-let input1 = [1, 5, 4, 3, 2]
-let result = Solution_pancakeSort().pancakeSort(arr: input1)
-print(result)
+ let input1 = [1, 5, 4, 3, 2]
+ let result = Solution_pancakeSort().pancakeSort(arr: input1)
+ print(result)
  */
 
 /***********************************************************************************/
@@ -6669,120 +6669,120 @@ print(result)
  
  Paypal Interview questions
  
-Your previous Plain Text content is preserved below:
-
-Given an array of strings S and two words w1 and w2 that are present in S. The task is to find the minimum distance between w1 and w2. Here distance is the number of steps or words between the first and the second word. S can have duplicate strings
-
-example input:
-S = ["paypal", "ios", "hiring", "swift", "paypal"]
-w1 = "paypal"
-w2 = "swift"
-
-example output:
-minDistance(w1, w2) = 1  // As "swift" & "paypal" are adjacent to each other
-
-*/
+ Your previous Plain Text content is preserved below:
+ 
+ Given an array of strings S and two words w1 and w2 that are present in S. The task is to find the minimum distance between w1 and w2. Here distance is the number of steps or words between the first and the second word. S can have duplicate strings
+ 
+ example input:
+ S = ["paypal", "ios", "hiring", "swift", "paypal"]
+ w1 = "paypal"
+ w2 = "swift"
+ 
+ example output:
+ minDistance(w1, w2) = 1  // As "swift" & "paypal" are adjacent to each other
+ 
+ */
 
 class Solution_minDistance {
     func minDistance(_ S:[String], w1:String, w2:String) -> Int {
-
-      var w1_i = -1
-      var w2_i = -1
-
-      var minDist = S.count
-      
-      for (i,str) in S.enumerated() {
-
-        if w1 == str {
-          w1_i = i
-        }
-
-        if w2 == str {
-          w2_i = i
+        
+        var w1_i = -1
+        var w2_i = -1
+        
+        var minDist = S.count
+        
+        for (i,str) in S.enumerated() {
+            
+            if w1 == str {
+                w1_i = i
+            }
+            
+            if w2 == str {
+                w2_i = i
+            }
+            
+            if (w1 == str || w2 == str) && w1_i > -1 && w2_i > -1 {
+                let dist = abs(w2_i - w1_i)
+                
+                if dist < minDist {
+                    minDist = dist
+                }
+            }
         }
         
-        if (w1 == str || w2 == str) && w1_i > -1 && w2_i > -1 {
-           let dist = abs(w2_i - w1_i)
-           
-           if dist < minDist {
-             minDist = dist
-           }
-        }
-      }
-      
-      return minDist
+        return minDist
     }
 }
 
 /*
-let S = ["paypal","swift", "ios", "hiring", "swift", "abcd", "paypal"]
-let w1 = "paypal"
-let w2 = "swift"
-
-print(Solution_minDistance().minDistance(S,w1:w1,w2:w2))
-*/
+ let S = ["paypal","swift", "ios", "hiring", "swift", "abcd", "paypal"]
+ let w1 = "paypal"
+ let w2 = "swift"
+ 
+ print(Solution_minDistance().minDistance(S,w1:w1,w2:w2))
+ */
 
 /***********************************************************************************/
 
 /*
-[ 'p', 'e', 'r', 'f', 'e', 'c', 't', '  ', 'm', 'a', 'k', 'e', 's', '  ',
-  'p', 'r', 'a', 'c', 't', 'i', 'c', 'e' ]
-
-
-['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', '  ',
-  'm', 'a', 'k', 'e', 's', '  ',
-  'p', 'e', 'r', 'f', 'e', 'c', 't' ]
-
-*/
+ [ 'p', 'e', 'r', 'f', 'e', 'c', 't', '  ', 'm', 'a', 'k', 'e', 's', '  ',
+ 'p', 'r', 'a', 'c', 't', 'i', 'c', 'e' ]
+ 
+ 
+ ['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', '  ',
+ 'm', 'a', 'k', 'e', 's', '  ',
+ 'p', 'e', 'r', 'f', 'e', 'c', 't' ]
+ 
+ */
 
 /*
-o(n)  + o(n)  + .... => O(n)
-
-arrr of string => ["practice", "makes", "perfect"]
-
-revere the array => ["perfect", "makes", "practice"]
-
-['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', ' '
-  'm', 'a', 'k', 'e', 's', ' ' ,
-  'p', 'e', 'r', 'f', 'e', 'c', 't' ]
-
-*/
+ o(n)  + o(n)  + .... => O(n)
+ 
+ arrr of string => ["practice", "makes", "perfect"]
+ 
+ revere the array => ["perfect", "makes", "practice"]
+ 
+ ['p', 'r', 'a', 'c', 't', 'i', 'c', 'e', ' '
+ 'm', 'a', 'k', 'e', 's', ' ' ,
+ 'p', 'e', 'r', 'f', 'e', 'c', 't' ]
+ 
+ */
 
 class Solution1_reverseWords {
     func reverseWords(arr: [Character]) -> [Character] {
-       
-      var word:[Character] = []
-      
-      var words:[String] = []
-      
-      for ch in arr {
-        if ch == " " {
-          words.insert(String(word), at:0)
-          word.removeAll()
-        } else {
-          word.append(ch)
-        }
-      }
-      
-      words.append(String(word))
-      word.removeAll()
-      
-      var result:[Character] = []
-      
-      for (i,word) in words.enumerated() {
         
-        var wordChars = Array(word)
-        wordChars.append(" ")
+        var word:[Character] = []
         
-        if i == words.count - 1 {
-          wordChars.removeLast()
+        var words:[String] = []
+        
+        for ch in arr {
+            if ch == " " {
+                words.insert(String(word), at:0)
+                word.removeAll()
+            } else {
+                word.append(ch)
+            }
         }
         
-        result.append(contentsOf: wordChars)
-      }
-      
-      return result
-      
+        words.append(String(word))
+        word.removeAll()
+        
+        var result:[Character] = []
+        
+        for (i,word) in words.enumerated() {
+            
+            var wordChars = Array(word)
+            wordChars.append(" ")
+            
+            if i == words.count - 1 {
+                wordChars.removeLast()
+            }
+            
+            result.append(contentsOf: wordChars)
+        }
+        
+        return result
+        
     }
 }
 
@@ -6811,7 +6811,7 @@ class Solution_sumNumbers {
         if let rightNode = node.right {
             rightSum = self.sumNumbers(rightNode, nextSum)
         }
-
+        
         return max(leftSum + rightSum, nextSum)
     }
 }
@@ -6858,7 +6858,7 @@ class PrampSolution {
             
             result.append(fMulti[i-1] * bMulti[i+1])
         }
-
+        
         return result
     }
 }
@@ -6892,7 +6892,7 @@ class Solution_searchMatrix {
         let midJ = midIndex % count // 1
         
         let midValue = matrix[midI][midJ] // matrix[1][1] = 5
-
+        
         if midValue == target {
             print("\(midI),\(midJ)")
             return true
@@ -6907,16 +6907,16 @@ class Solution_searchMatrix {
 }
 
 /*
-let matrix:[[Int]] = [
-  [1,   4,  7, 11, 15],
-  [2,   5,  8, 12, 19],
-  [3,   6,  9, 16, 22],
-  [10, 13, 14, 17, 24],
-  [18, 21, 23, 26, 30]
-]
-let target = 5
-print(Solution_searchMatrix().searchMatrix(matrix, target))
-*/
+ let matrix:[[Int]] = [
+ [1,   4,  7, 11, 15],
+ [2,   5,  8, 12, 19],
+ [3,   6,  9, 16, 22],
+ [10, 13, 14, 17, 24],
+ [18, 21, 23, 26, 30]
+ ]
+ let target = 5
+ print(Solution_searchMatrix().searchMatrix(matrix, target))
+ */
 
 
 /***********************************************************************************/
@@ -7202,9 +7202,9 @@ func moveNonZeroToLastInPlace(items: inout [Int]) {
 // glider test 2 find total number of prime number under some number
 
 /*
-var input = [1, 3, 0, 5, 0, 7, 0, 12, 0, 0, 0, 14]
-moveNonZeroToLastInPlace(items: &input)
-*/
+ var input = [1, 3, 0, 5, 0, 7, 0, 12, 0, 0, 0, 14]
+ moveNonZeroToLastInPlace(items: &input)
+ */
 
 struct Player: Equatable {
     let playerName: String
@@ -7263,7 +7263,7 @@ func sortPlayers(_ players: [Player]) -> [Player] {
  fibonaci series
  0 1
  0 1 1 2 3 5 8
-*/
+ */
 
 func fibonaci(limit: Int) -> [Int] {
     
@@ -7292,8 +7292,8 @@ func fibonaci(limit: Int) -> [Int] {
 /*
  let fibSeries = fibonaci(limit: 30)
  for item in fibSeries {
-    print(item)
-}
+ print(item)
+ }
  */
 
 // abcdef -> fedcba
@@ -7392,7 +7392,7 @@ func stringResersal2(str: String) -> String {
  -6:3
  ]
  
-
+ 
  */
 
 class Solution_twoSum1 {
@@ -7418,13 +7418,13 @@ class Solution_twoSum1 {
 }
 
 /*
-print(Solution_twoSum().twoSum([8,1,1,15,1,7], 9))
-
+ print(Solution_twoSum().twoSum([8,1,1,15,1,7], 9))
+ 
  https://leetcode.com/problems/rotate-array/description/
  
  Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
  
-*/
+ */
 
 /*
  
@@ -7474,10 +7474,10 @@ class Solution_rotate1 {
 
 /*
  [1,2,3,4,5,6,7]
-  0 1 2 ..
-
+ 0 1 2 ..
+ 
  "Hari", "Krishna", "Bista"
-*/
+ */
 
 class Solution_rotate2 {
     func rotate(_ nums: inout [Int], _ k: Int) {
@@ -8276,7 +8276,7 @@ class Solution_FirstOccurance1 {
         
         let charArrHaystack = Array(haystack)
         let charArrNeedle = Array(needle)
-
+        
         for (i, _) in charArrHaystack.enumerated() {
             
             if i > charArrHaystack.count - charArrNeedle.count {
@@ -8377,10 +8377,10 @@ class Solution_lengthOfLongestSubstring {
 }
 
 /*
-print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("abcabcbb"))
-print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("bbbbb"))
-print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("pwwkew"))
-*/
+ print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("abcabcbb"))
+ print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("bbbbb"))
+ print(Solution_lengthOfLongestSubstring().lengthOfLongestSubstring("pwwkew"))
+ */
 
 // 121
 /*
@@ -8423,7 +8423,7 @@ func evaluateExpression(_ s: String) -> Int {
             return 0
         }
     }
-
+    
     var stack = [Int]()
     var currentNum = 0
     var currentOp: Character = "+"
@@ -8448,7 +8448,7 @@ func evaluateExpression(_ s: String) -> Int {
             currentOp = char
         }
     }
-
+    
     return stack.reduce(0, +)
 }
 
@@ -8505,7 +8505,7 @@ func calculate(_ s: String) -> Int {
                 }
                 lastRes = evalUnit(a: lastRes, op: lastOp, b: chInt)
             }
-
+            
             if lastOp == "-" {
                 stack.append(-chInt)
             } else if lastOp == "+" {
@@ -8528,15 +8528,15 @@ func calculate(_ s: String) -> Int {
 
 
 /*
-"""
-Absolute Value Sort
-
-Given an array of integers arr, write a function absSort(arr), that sorts the array according to the absolute values of the numbers in arr.
-If two numbers have the same absolute value, sort them according to sign, where the negative numbers come before the positive numbers.
-
-Examples:
-
-input:  arr = [2, -7, -2, -2, 0]
+ """
+ Absolute Value Sort
+ 
+ Given an array of integers arr, write a function absSort(arr), that sorts the array according to the absolute values of the numbers in arr.
+ If two numbers have the same absolute value, sort them according to sign, where the negative numbers come before the positive numbers.
+ 
+ Examples:
+ 
+ input:  arr = [2, -7, -2, -2, 0]
  
  i = 0, [2, -7, -2, -2, 0]
  smallest = 0, swapPos(0, i) -> [0, -7, -2, -2, 2]
@@ -8550,14 +8550,14 @@ input:  arr = [2, -7, -2, -2, 0]
  i = 3, [0, -2, -2, 2, -7]
  smallest = -2,
  
-output: [0, -2, -2, 2, -7]
-"""
-*/
+ output: [0, -2, -2, 2, -7]
+ """
+ */
 
 class Solution_sortAbs {
     func sortAbs(_ input: [Int]) -> [Int] {
         var inputEquivalent = input
-
+        
         for (i,_) in inputEquivalent.enumerated() {
             let smallestPos = getPositionForAbsSmallest(fromIndex: i, arr: inputEquivalent)
             swapPos(&inputEquivalent, i: i, j: smallestPos)
@@ -8571,14 +8571,14 @@ class Solution_sortAbs {
         input[i] = input[j]
         input[j] = temp
     }
-
+    
     func getPositionForAbsSmallest(fromIndex: Int, arr: [Int]) -> Int {
         
         var smallest = arr[fromIndex]
         var smallestPos = fromIndex
-
+        
         for i in fromIndex...(arr.count - 1) {
-
+            
             if smallest.absVal > arr[i].absVal {
                 smallest = arr[i]
                 smallestPos = i
@@ -8596,18 +8596,18 @@ class Solution_sortAbs {
  https://leetcode.com/problems/valid-parentheses/description/
  
  Example 1:
-
+ 
  Input: s = "()"
  Output: true
  Example 2:
-
+ 
  Input: s = "()[]{}"
  Output: true
  Example 3:
-
+ 
  Input: s = "(]"
  Output: false
-
+ 
  */
 
 // ()[({})]{}
@@ -8633,7 +8633,7 @@ class Solution_isValidParenthesis {
                 }
             }
         }
-
+        
         return stack.count == 0
     }
     
@@ -8658,36 +8658,36 @@ class Solution_isValidParenthesis {
 }
 
 /*
-print(Solution_isValidParenthesis().isValid("{{((()))}}({})"))
-print(Solution_isValidParenthesis().isValid("()"))
-print(Solution_isValidParenthesis().isValid("([])"))
-*/
+ print(Solution_isValidParenthesis().isValid("{{((()))}}({})"))
+ print(Solution_isValidParenthesis().isValid("()"))
+ print(Solution_isValidParenthesis().isValid("([])"))
+ */
 
 /*
-""
-Find The Duplicates
-
-Given two sorted arrays arr1 and arr2 of passport numbers, implement a function findDuplicates that returns an array of all passport numbers
-that are both in arr1 and arr2. Note that the output array should be sorted in an ascending order.
-
-Let N and M be the lengths of arr1 and arr2, respectively. Solve for two cases and analyze the time & space complexities of your solutions:
-  M ≈ N - the array lengths are approximately the same
-  M ≫ N - arr2 is much bigger than arr1.
+ ""
+ Find The Duplicates
  
-input:  arr1 = [1, 2, 3, 5, 6, 7], arr2 = [3, 6, 7, 8, 20]
-output: [3, 6, 7]
-
-""
-*/
+ Given two sorted arrays arr1 and arr2 of passport numbers, implement a function findDuplicates that returns an array of all passport numbers
+ that are both in arr1 and arr2. Note that the output array should be sorted in an ascending order.
+ 
+ Let N and M be the lengths of arr1 and arr2, respectively. Solve for two cases and analyze the time & space complexities of your solutions:
+ M ≈ N - the array lengths are approximately the same
+ M ≫ N - arr2 is much bigger than arr1.
+ 
+ input:  arr1 = [1, 2, 3, 5, 6, 7], arr2 = [3, 6, 7, 8, 20]
+ output: [3, 6, 7]
+ 
+ ""
+ */
 
 /*
  result [3, 6, 7]
  
  [1, 2, 3, 5, 6, 7]
-  i
+ i
  
  [3, 6, 7, 8, 20]
-  j
+ j
  
  */
 
@@ -8719,20 +8719,20 @@ func findDups(_ arr1: [Int],_ arr2: [Int]) -> [Int] {
 class Solution_pruneTree {
     
     func pruneTree(_ root: TreeNode?) -> TreeNode? {
-
+        
         guard let root = root else { return nil }
         
         if root.val == 0 && root.left == nil && root.right == nil {
             return nil
         }
-
+        
         if root.left == nil && root.right == nil && root.val == 1 {
             return root
         }
-
+        
         root.left = pruneTree(root.left)
         root.right = pruneTree(root.right)
-
+        
         if root.left == nil && root.right == nil && root.val == 0 {
             return nil
         } else {
@@ -8744,139 +8744,139 @@ class Solution_pruneTree {
 }
 
 func singleBinSearch(arr: [Int], target: Int) -> Int? {
-
-  var l = 0
-  var u = arr.count - 1
-
-  while l != u {
-
-    let m = (l + u)/2
-    let mItem = arr[m]
-
-    if mItem == target {
-      return m
-    } else {
-      // find out if target is in sorted half or not
-      
-      // upper fully sorted
-      if mItem < arr[u] {
-
-        if mItem < target && target < arr[u] {
-          l = m + 1
+    
+    var l = 0
+    var u = arr.count - 1
+    
+    while l != u {
+        
+        let m = (l + u)/2
+        let mItem = arr[m]
+        
+        if mItem == target {
+            return m
         } else {
-          u = m - 1
+            // find out if target is in sorted half or not
+            
+            // upper fully sorted
+            if mItem < arr[u] {
+                
+                if mItem < target && target < arr[u] {
+                    l = m + 1
+                } else {
+                    u = m - 1
+                }
+                
+            } else {
+                // lower fully sorted
+                if arr[l] < target && target < mItem {
+                    u = m - 1
+                } else {
+                    l = m + 1
+                }
+            }
+            
         }
         
-      } else {
-        // lower fully sorted
-        if arr[l] < target && target < mItem {
-          u = m - 1
-        } else {
-          l = m + 1
-        }
-      }
-      
     }
     
-  }
-
-  return nil
+    return nil
 }
 
 func binSearch(arr: [Int], target: Int) -> Int? {
-
+    
     var l: Int = 0
     var u: Int = 0
-  
+    
     if let pivotIndex = searchPivot(arr: arr) {
-
-      if target > arr[u] {
-        // 1st sorted arr
-        l = 0
-        u = pivotIndex - 1
-      } else {
-        l = pivotIndex
-        u = arr.count-1
-        // second sorted arr
-      }
-      
+        
+        if target > arr[u] {
+            // 1st sorted arr
+            l = 0
+            u = pivotIndex - 1
+        } else {
+            l = pivotIndex
+            u = arr.count-1
+            // second sorted arr
+        }
+        
     } else {
-      l = 0
-      u = arr.count-1
+        l = 0
+        u = arr.count-1
     }
-
+    
     // write binary logic to search
     while l != u {
-      let m = (l + u)/2
-
-      if arr[m] == target {
-        return m
-      } else if target < arr[m] {
-        u = m - 1
-      } else {
-        l = m + 1
-      }
+        let m = (l + u)/2
+        
+        if arr[m] == target {
+            return m
+        } else if target < arr[m] {
+            u = m - 1
+        } else {
+            l = m + 1
+        }
     }
-
+    
     return nil
 }
 
 func searchPivot(arr: [Int]) -> Int? {
-
-  var l = 0
-  var u = arr.count-1
-
-  while l != u {
-
-    let m = (l + u)/2
-
-    if arr[m-1] > arr[m] || arr[m] < arr[m+1] {
-
-      if arr[m-1] > arr[m] {
-        return m
-      } else {
-        return m+1
-      }
-      
-    } else if arr[m] > arr[u] {
-      // pivot is in upper half
-      l = m
-    } else {
-      // pivot is in lower half
-      u = m
+    
+    var l = 0
+    var u = arr.count-1
+    
+    while l != u {
+        
+        let m = (l + u)/2
+        
+        if arr[m-1] > arr[m] || arr[m] < arr[m+1] {
+            
+            if arr[m-1] > arr[m] {
+                return m
+            } else {
+                return m+1
+            }
+            
+        } else if arr[m] > arr[u] {
+            // pivot is in upper half
+            l = m
+        } else {
+            // pivot is in lower half
+            u = m
+        }
     }
-  }
-
-  return nil
+    
+    return nil
 }
 
 
 /*
-let concurrentQ = DispatchQueue(label: "dq-concurrent", attributes: .concurrent)
-
-concurrentQ.sync {
-    for i in 0...100 {
-        print("A")
-    }
-}
-
-concurrentQ.sync {
-    for i in 0...100 {
-        print("A")
-    }
-}
-
-try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * 3))
-
-print("done")
-
-*/
+ let concurrentQ = DispatchQueue(label: "dq-concurrent", attributes: .concurrent)
+ 
+ concurrentQ.sync {
+ for i in 0...100 {
+ print("A")
+ }
+ }
+ 
+ concurrentQ.sync {
+ for i in 0...100 {
+ print("A")
+ }
+ }
+ 
+ try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * 3))
+ 
+ print("done")
+ 
+ */
 
 class Solution_binSearch {
     func binSearch(arr: [Int], target: Int) -> Int {
         binSearchRec(arr: arr, target: target, l: 0, u: arr.count - 1)
     }
-
+    
     func binSearchRec(arr: [Int], target: Int, l: Int, u: Int) -> Int {
         
         let m = (l + u)/2
@@ -8899,7 +8899,7 @@ class Solution_binSearch {
  Given an integer array nums, find the subarray with the largest sum, and return its sum.
  nums = [-2,1,-3,4,-1,2,1,-5,4]
  
-
+ 
  The subarray [4,-1,2,1] has the largest sum 6.
  
  */
@@ -8907,19 +8907,19 @@ class Solution_binSearch {
 /*
  
  nums =
-
-
+ 
+ 
  3, m = 3, mh = 3
  1, mh = mh + item = 4, m = 4
--1, mh = 3, m = 4
+ -1, mh = 3, m = 4
  2, mh = 5, m = 5
  3, mh = 8, m = 8
  
  ..................
  
--1, mh = -1, m = -1
--7, mh = -8, m = -1
--1, mh = -9, m = -1
+ -1, mh = -1, m = -1
+ -7, mh = -8, m = -1
+ -1, mh = -9, m = -1
  2, mh = -7, m = -1
  3, mh = -4, m = -1
  
@@ -8950,11 +8950,11 @@ class Solution_maxSubArray1 {
             
             print("\(num), mh = \(max_end_here), m = \(max)")
             
-//            -1, mh = -1, m = -1
-//            -7, mh = -8, m = -1
-//            -1, mh = -9, m = -1
-//             2, mh = -7, m = -1
-//             3, mh = -4, m = -1
+            //            -1, mh = -1, m = -1
+            //            -7, mh = -8, m = -1
+            //            -1, mh = -9, m = -1
+            //             2, mh = -7, m = -1
+            //             3, mh = -4, m = -1
         }
         return max
     }
@@ -8986,8 +8986,8 @@ class Solution_calcExp {
         while i < exp.count {
             let chStr = String(exp[i])
             
-             if lastChar == "(" {
-                 
+            if lastChar == "(" {
+                
                 let val = getVal(lastOp: lastOp,val: calcExpRec(exp: exp, i: &i))
                 result.append(val)
                 
@@ -9011,13 +9011,13 @@ class Solution_calcExp {
         
         return result.reduce(0,+)
     }
-
+    
     func calcExp(exp: String) -> Int {
         let charArr = Array(exp)
         var i = 0
         return calcExpRec(exp: charArr, i: &i)
     }
-
+    
     func getVal(lastOp: String, val: Int) -> Int {
         if lastOp == "-" {
             return -val
@@ -9031,13 +9031,13 @@ class Solution_calcExp {
 // print(Solution_calcExp().calcExp(exp: "1+2-(3-4+(4-2)+4)"))
 
 /*
-let a: Int = Int.max
-let b: Int = 1
-let resultAPlusB = a &+ b
-let aLargeNum = Int.max
-let sum = aLargeNum.addingReportingOverflow(45)
-print(sum)
-*/
+ let a: Int = Int.max
+ let b: Int = 1
+ let resultAPlusB = a &+ b
+ let aLargeNum = Int.max
+ let sum = aLargeNum.addingReportingOverflow(45)
+ print(sum)
+ */
 
 
 func calculate(exp: String) -> Int {
@@ -9075,7 +9075,7 @@ func calculate(exp: String) -> Int {
             if isInsideBracket && lastOpBeforeOpenBracket == "-" {
                 val = -val
             }
-
+            
             result.append(val)
             
             wholeNumber = ""
@@ -9102,30 +9102,30 @@ class Solution_longestSubstring {
     ) -> Int {
         
         var i = currI-1
-
+        
         while i >= 0 {
-
+            
             if charArr[i] == ch {
                 return i
             }
-
+            
             i = i - 1
         }
-
+        
         return 0
     }
-
+    
     func longestSubstring(input: String) -> Int {
-
+        
         let charArr = Array(input)
         
         var highestCount = 0
         var tempCount = 0
-
+        
         var i = 0
         
         var aSet: Set<Character> = Set()
-
+        
         while i < charArr.count {
             
             let ch = charArr[i]
@@ -9135,22 +9135,22 @@ class Solution_longestSubstring {
                 highestCount = max(highestCount, tempCount)
                 
                 tempCount = 0
-
+                
                 // reset the i back to previous occurance of of charArr[i]
                 i = getLastOccuranceOf(ch: charArr[i], currI: i, charArr: charArr)
-
+                
             } else {
                 aSet.insert(ch)
             }
-
+            
             i = i + 1
         }
-
+        
         return highestCount
     }
     
     func longestSubstringUsingDict(input: String) -> Int {
-
+        
         let charArr = Array(input)
         
         var lastOccuranceDict: [Character: Int] = [:]
@@ -9160,7 +9160,7 @@ class Solution_longestSubstring {
         var highestCount = 0
         
         var i = 0
-
+        
         while i < charArr.count {
             
             let ch = charArr[i]
@@ -9170,7 +9170,7 @@ class Solution_longestSubstring {
                 highestCount = max(highestCount, tempResultSet.count)
                 
                 tempResultSet = Set<Character>()
-
+                
                 i = lastOccuranceDict[ch] ?? 0
                 
             } else {
@@ -9178,18 +9178,179 @@ class Solution_longestSubstring {
             }
             
             lastOccuranceDict[ch] = i
-
+            
             i = i + 1
         }
-
+        
         return max(highestCount, tempResultSet.count)
     }
 }
 
 /*
-print(Solution_longestSubstring().longestSubstringUsingDict(input: "") == 0)
-print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcabcbc") == 3)
-print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe") == 5)
-print(Solution_longestSubstring().longestSubstringUsingDict(input: "bbbbbbbbbb") == 1)
-print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe"))
+ print(Solution_longestSubstring().longestSubstringUsingDict(input: "") == 0)
+ print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcabcbc") == 3)
+ print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe") == 5)
+ print(Solution_longestSubstring().longestSubstringUsingDict(input: "bbbbbbbbbb") == 1)
+ print(Solution_longestSubstring().longestSubstringUsingDict(input: "abcbdfe"))
+ */
+
+
+/*
+ 
+ https://leetcode.com/problems/longest-mountain-in-array/
+ 
+ 845. Longest Mountain in Array
+ 
+ [2,1,4,7,3,2,5] -> [1,4,7,3,2]
+ x
+ 
+ 
+ */
+
+
+/*
+ 
+ [2,1,4,7,3,2,5]
+ 
+ 
+ */
+
+class Solution_longestMountain {
+    func longestMountain(_ arr: [Int]) -> Int {
+        var highCount = 0
+        
+        guard arr.count >= 3 else { return  highCount }
+        
+        for i in 1..<(arr.count-1) {
+            highCount = max(highCount, getMountainCount(for: i, arr: arr))
+        }
+        
+        return highCount
+    }
+    
+    func getMountainCount(for c: Int, arr: [Int]) -> Int {
+        
+        var l = c
+
+        while l - 1 >= 0 {
+            if arr[l - 1] < arr[l] {
+                l = l - 1
+            } else {
+                break
+            }
+        }
+
+        var r = c
+        
+        while r + 1 <= (arr.count - 1) {
+            
+            if arr[r] > arr[r + 1] {
+                r = r + 1
+            } else {
+                break
+            }
+        }
+        
+        let leftCount = c - l
+        let rightCount = r - c
+        
+        guard leftCount > 0, rightCount > 0 else { return 0 }
+        
+        return leftCount + 1 + rightCount
+    }
+}
+
+/*
+ 
+let longInput = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,498,497,496,495,494,493,492,491,490,489,488,487,486,485,484,483,482,481,480,479,478,477,476,475,474,473,472,471,470,469,468,467,466,465,464,463,462,461,460,459,458,457,456,455,454,453,452,451,450,449,448,447,446,445,444,443,442,441,440,439,438,437,436,435,434,433,432,431,430,429,428,427,426,425,424,423,422,421,420,419,418,417,416,415,414,413,412,411,410,409,408,407,406,405,404,403,402,401,400,399,398,397,396,395,394,393,392,391,390,389,388,387,386,385,384,383,382,381,380,379,378,377,376,375,374,373,372,371,370,369,368,367,366,365,364,363,362,361,360,359,358,357,356,355,354,353,352,351,350,349,348,347,346,345,344,343,342,341,340,339,338,337,336,335,334,333,332,331,330,329,328,327,326,325,324,323,322,321,320,319,318,317,316,315,314,313,312,311,310,309,308,307,306,305,304,303,302,301,300,299,298,297,296,295,294,293,292,291,290,289,288,287,286,285,284,283,282,281,280,279,278,277,276,275,274,273,272,271,270,269,268,267,266,265,264,263,262,261,260,259,258,257,256,255,254,253,252,251,250,249,248,247,246,245,244,243,242,241,240,239,238,237,236,235,234,233,232,231,230,229,228,227,226,225,224,223,222,221,220,219,218,217,216,215,214,213,212,211,210,209,208,207,206,205,204,203,202,201,200,199,198,197,196,195,194,193,192,191,190,189,188,187,186,185,184,183,182,181,180,179,178,177,176,175,174,173,172,171,170,169,168,167,166,165,164,163,162,161,160,159,158,157,156,155,154,153,152,151,150,149,148,147,146,145,144,143,142,141,140,139,138,137,136,135,134,133,132,131,130,129,128,127,126,125,124,123,122,121,120,119,118,117,116,115,114,113,112,111,110,109,108,107,106,105,104,103,102,101,100,99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60,59,58,57,56,55,54,53,52,51,50,49,48,47,46,45,44,43,42,41,40,39,38,37,36,35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]
+
+
+print(Solution_longestSubstring().longestMountain([0,1,2,3,4,5,4,3,2,1,0]))
+print(Solution_longestSubstring().longestMountain([0,2,4,3,2,-1]))
+print(Solution_longestSubstring().longestMountain(longInput))
+ 
 */
+
+/*
+ 
+ https://leetcode.com/problems/long-pressed-name/description/
+ 
+ 925. Long Pressed Name
+ 
+ Your friend is typing his name into a keyboard. Sometimes, when typing a character c, the key might get long pressed, and the character will be typed 1 or more times.
+
+ You examine the typed characters of the keyboard. Return True if it is possible that it was your friends name, with some characters (possibly none) being long pressed.
+ 
+ Example 1:
+
+ Input: name = "alex", typed = "aaleex"
+ Output: true
+ Explanation: 'a' and 'e' in 'alex' were long pressed.
+ Example 2:
+
+ Input: name = "saeed", typed = "ssaaedd"
+ Output: false
+ Explanation: 'e' must have been pressed twice, but it was not in the typed output.
+ 
+ */
+
+
+// "alex", typed = "aaeex"
+
+/*
+ 
+ alex, aaleex
+ 
+ a
+ 
+ 
+ */
+
+// "a", "aaab"
+//
+
+class Solution {
+
+    func isLongPressedName(_ name: String, _ typed: String) -> Bool {
+        
+        var j = 0
+        for ch in name {
+
+            let extraTypedCount = checkExtraTyped(ch: ch, typed: typed, sIndex: j) // 2
+            
+            if extraTypedCount > j {
+                j = extraTypedCount
+            } else {
+                return false
+            }
+        }
+        
+        if typed.count > j {
+            return false
+        }
+
+        return true
+    }
+    
+    private func checkExtraTyped(ch: Character, typed: String, sIndex: Int) -> Int {
+        
+        var typedCharArr = Array(typed)
+        
+        var j = sIndex
+        
+        while j < typedCharArr.count && ch == typedCharArr[j] {
+            j = j + 1
+        }
+        
+        return j
+    }
+}
+
+print(Solution().isLongPressedName("a", "aab"))
+
+
+// Wallmart 1, 2, 3
+// ebay final
+// epic games
+// earnin
+// recruiter

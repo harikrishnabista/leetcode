@@ -366,3 +366,11 @@ func fetchData() async -> Result<Int, Error> {
         }
     }
 }
+
+func print_aToZ() {
+    for scalar in Unicode.Scalar("a").value...Unicode.Scalar("z").value {
+        if let letter = Unicode.Scalar(scalar) {
+            print(letter)
+        }
+    }
+}
